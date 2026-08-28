@@ -858,24 +858,29 @@
      base.js binds the hamburger from a Promise chain, so it may land
      after this file. Nothing here depends on it.                       */
   /* ── A logo se montando (Quebra 7) ───────────────────────────────────
-     Uma entrada, não um elemento de cena: as partículas chegam rodando
-     pela esquerda, assentam no desenho da própria lockup e entregam o
-     lugar para ela. Depois disso o canvas sai e não custa mais nada.
+     Seis tempos, na ordem do storyboard:
 
-     Os alvos saem de um rasterizado da lockup feita à mão neste canvas
-     — o contorno do mark, a linha, o nó e os contornos do wordmark —
-     medido em cima das caixas reais dos elementos, para as partículas
-     assentarem exatamente onde a logo vai acender. Cada uma guarda a COR
-     do pixel de onde veio, então o azul do gráfico e o branco do nome já
-     chegam certos e o crossfade não tem salto de cor.
+       01  o ícone existe como fantasma — só o contorno, apagado.
+       02  as partículas entram PELA DIREITA, numa onda larga e curva.
+       03  a onda alcança o ícone e assenta primeiro no contorno dele.
+       04  só então o wordmark se monta, com a cauda ainda chegando.
+       05  o gráfico acende dentro do ícone e o nome já vira sólido.
+       06  o ícone acende por último e a logo fica inteira.
 
-     Nada disso toca em arquivo externo: carregar o .svg como <img>
-     sujaria o canvas (getImageData passa a lançar SecurityError sob
-     file://). O wordmark vem como Path2D e o mark, como primitivas.
+     A ordem é o conteúdo: o símbolo se firma, o nome se escreve, e o
+     gráfico — que é o que a marca quer dizer — acende por último, como
+     remate. Por isso são dois grupos de partículas com tempos próprios,
+     e não uma nuvem só chegando de uma vez.
+
+     Os alvos saem de um rasterizado da lockup redesenhada neste canvas e
+     medida sobre as caixas reais dos elementos, então cada partícula
+     carrega a cor do pixel de onde veio e assenta onde a logo acende.
+     Nada disso toca arquivo externo: carregar o .svg como <img> sujaria
+     o canvas e getImageData passaria a lançar sob file://.
 
      O estado escrito no HTML é o de repouso. Quem apaga a logo para
-     montá-la é este código — então, sem JS ou sob prefers-reduced-motion,
-     ela simplesmente já está lá.                                      */
+     montá-la é este código — sem JS, ou sob prefers-reduced-motion, ela
+     simplesmente já está lá.                                          */
   function initLogoAssembly() {
     var host = document.getElementById('tm-logo-anim');
     var canvas = document.getElementById('tm-logo-particles');
@@ -884,9 +889,10 @@
     var ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
+    var markWrap = host.querySelector('span');
     var markEl = host.querySelector('svg');
     var wordEl = host.querySelector('img');
-    if (!markEl || !wordEl) return;
+    if (!markWrap || !markEl || !wordEl) return;
 
     /* contornos do wordmark + o translate do <g> que os acompanha */
     var WM_D = [
@@ -897,15 +903,25 @@
     var WM_VB = { w: 166.58, h: 35.21 };
     var TAU = 6.283185307179586;
 
-    /* tempos da entrada, em ms */
-    var T_SWEEP = 430;   /* defasagem entre a 1ª e a última partícula */
-    var T_FLY   = 820;   /* voo de cada uma até o seu lugar           */
-    var T_SET   = 340;   /* assenta na mola antes de entregar         */
+    /* ── a linha do tempo, em ms ────────────────────────────────────
+       Cada marco é o começo de um quadro do storyboard. Mexer aqui é a
+       maneira de calibrar o ritmo sem tocar no resto.               */
+    var T_GHOST = 300;    /* 01 · o fantasma sozinho                 */
+    var T_ICON  = 300;    /* 02/03 · a onda entra e forma o ícone    */
+    var I_SWEEP = 400;    /*        defasagem entre as partículas    */
+    var T_WORD  = 950;    /* 04 · o wordmark começa a se montar      */
+    var W_SWEEP = 460;
+    var T_FLY   = 800;    /* voo de cada partícula                   */
+    var T_SPARK = 2380;   /* 05 · o gráfico acende, o nome vira sólido */
+    var T_MARK  = 2900;   /* 06 · o ícone acende                     */
+    var T_END   = 3320;   /* o canvas sai de cena                    */
 
     var DPR = Math.min(window.devicePixelRatio || 1, 2);
     var W = 0, H = 0, parts = [], buckets = [], raf = 0, t0 = 0, done = false;
+    var mkBox = null, ghostA = 0;
 
     function ease(x) { return 1 - Math.pow(1 - x, 3); }
+    function clamp01(x) { return x < 0 ? 0 : (x > 1 ? 1 : x); }
 
     function roundRect(o, x, y, w, h, r) {
       o.beginPath();
@@ -917,19 +933,62 @@
       o.closePath();
     }
 
-    /* a lockup redesenhada no canvas, nas caixas reais dos elementos.
-       O miolo do mark não é pintado: preencher #07070a geraria partículas
-       da cor do fundo, invisíveis. O que vira ponto é o contorno. */
-    function paintLockup(o, mk, wd) {
+    /* o mark desenhado no espaço do viewBox 51x52, já escalado e posto */
+    function markSpace(o, mk) {
       var s = Math.min(mk.w / 51, mk.h / 52);
-      o.save();
       o.translate(mk.x + (mk.w - 51 * s) / 2, mk.y + (mk.h - 52 * s) / 2);
       o.scale(s, s);
+      return s;
+    }
+
+    /* 01 · o fantasma: só a silhueta, apagada. É o que o storyboard tem
+       em cena antes de qualquer partícula chegar. */
+    function paintGhost(o, mk, a) {
+      o.save();
+      markSpace(o, mk);
       o.lineJoin = 'round'; o.lineCap = 'round';
-      o.strokeStyle = '#4a6480'; o.lineWidth = 2;
+      o.strokeStyle = 'rgba(138,197,250,' + (0.13 * a).toFixed(3) + ')';
+      o.lineWidth = 2;
       roundRect(o, 1.5, 1, 48, 49, 14); o.stroke();
-      o.lineWidth = 1.4;
-      o.beginPath(); o.arc(36.5, 19.5, 6.3, 0, TAU); o.stroke();
+      o.strokeStyle = 'rgba(138,197,250,' + (0.10 * a).toFixed(3) + ')';
+      o.lineWidth = 3.6;
+      o.beginPath();
+      o.moveTo(12, 34); o.lineTo(22, 24.5); o.lineTo(28, 30); o.lineTo(36.5, 19.5);
+      o.stroke();
+      o.restore();
+    }
+
+    /* 05 · o gráfico acendendo dentro do ícone, com o nó em brasa */
+    function paintSpark(o, mk, a) {
+      o.save();
+      markSpace(o, mk);
+      o.lineJoin = 'round'; o.lineCap = 'round';
+      o.globalCompositeOperation = 'lighter';
+      o.strokeStyle = 'rgba(138,197,250,' + (0.95 * a).toFixed(3) + ')';
+      o.lineWidth = 3.6;
+      o.beginPath();
+      o.moveTo(12, 34); o.lineTo(22, 24.5); o.lineTo(28, 30); o.lineTo(36.5, 19.5);
+      o.stroke();
+      var g = o.createRadialGradient(36.5, 19.5, 0, 36.5, 19.5, 13);
+      g.addColorStop(0, 'rgba(190,225,255,' + (0.85 * a).toFixed(3) + ')');
+      g.addColorStop(0.35, 'rgba(138,197,250,' + (0.42 * a).toFixed(3) + ')');
+      g.addColorStop(1, 'rgba(138,197,250,0)');
+      o.fillStyle = g;
+      o.beginPath(); o.arc(36.5, 19.5, 13, 0, TAU); o.fill();
+      o.fillStyle = 'rgba(214,238,255,' + (0.95 * a).toFixed(3) + ')';
+      o.beginPath(); o.arc(36.5, 19.5, 4, 0, TAU); o.fill();
+      o.restore();
+    }
+
+    /* a lockup rasterizada: é dela que saem os alvos e as cores. O miolo
+       do mark não é pintado — preencher #07070a geraria partículas da cor
+       do fundo, invisíveis. O que vira ponto é o contorno. */
+    function paintTargets(o, mk, wd) {
+      o.save();
+      markSpace(o, mk);
+      o.lineJoin = 'round'; o.lineCap = 'round';
+      o.strokeStyle = '#5b86b4'; o.lineWidth = 2;
+      roundRect(o, 1.5, 1, 48, 49, 14); o.stroke();
       o.strokeStyle = '#8ac5fa'; o.lineWidth = 3.6;
       o.beginPath();
       o.moveTo(12, 34); o.lineTo(22, 24.5); o.lineTo(28, 30); o.lineTo(36.5, 19.5);
@@ -937,18 +996,19 @@
       o.fillStyle = '#8ac5fa';
       o.beginPath(); o.arc(36.5, 19.5, 4, 0, TAU); o.fill();
       o.restore();
+      var iconPixels = o.getImageData(0, 0, o.canvas.width, o.canvas.height);
 
-      var ws = wd.w / WM_VB.w;
       o.save();
       o.translate(wd.x, wd.y);
+      var ws = wd.w / WM_VB.w;
       o.scale(ws, ws);
       o.translate(WM_TR[0], WM_TR[1]);
       o.fillStyle = '#ffffff';
       for (var i = 0; i < WM_D.length; i++) {
-        try { o.fill(new Path2D(WM_D[i])); } catch (e) { return false; }
+        try { o.fill(new Path2D(WM_D[i])); } catch (e) { return null; }
       }
       o.restore();
-      return true;
+      return iconPixels;
     }
 
     function build() {
@@ -962,70 +1022,83 @@
       canvas.height = Math.round(H * DPR);
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
-      /* caixas dos elementos convertidas para o espaço do canvas */
       var mk = { x: mr.left - cr.left, y: mr.top - cr.top, w: mr.width, h: mr.height };
       var wd = { x: wr.left - cr.left, y: wr.top - cr.top, w: wr.width, h: wr.height };
+      mkBox = mk;
 
       var oc = document.createElement('canvas');
       oc.width = Math.max(2, Math.round(W));
       oc.height = Math.max(2, Math.round(H));
       var oct = oc.getContext('2d');
       if (!oct) return false;
-      if (!paintLockup(oct, mk, wd)) return false;
+      var iconOnly = paintTargets(oct, mk, wd);
+      if (!iconOnly) return false;
 
-      var img;
-      try { img = oct.getImageData(0, 0, oc.width, oc.height).data; }
+      var all;
+      try { all = oct.getImageData(0, 0, oc.width, oc.height).data; }
       catch (e) { return false; }
+      var ico = iconOnly.data;
 
-      /* pixels cobertos viram candidatos, carregando a própria cor */
-      var hx = [], hy = [], hr = [], hg = [], hb = [];
+      /* dois grupos: o que já existia antes do wordmark ser pintado é o
+         ícone; o resto é o nome. Cada um ganha o seu tempo de chegada. */
+      var G = [[], []];
       for (var y = 0; y < oc.height; y++) {
         for (var x = 0; x < oc.width; x++) {
           var i4 = (y * oc.width + x) * 4;
-          if (img[i4 + 3] > 110) {
-            hx.push(x); hy.push(y);
-            hr.push(img[i4]); hg.push(img[i4 + 1]); hb.push(img[i4 + 2]);
+          if (all[i4 + 3] > 110) {
+            G[ico[i4 + 3] > 110 ? 0 : 1].push(x, y, all[i4], all[i4 + 1], all[i4 + 2]);
           }
         }
       }
-      if (!hx.length) return false;
-
-      var N = Math.min(2600, hx.length);
-      var minX = Infinity, maxX = -Infinity, j;
-      for (j = 0; j < hx.length; j++) {
-        if (hx[j] < minX) minX = hx[j];
-        if (hx[j] > maxX) maxX = hx[j];
-      }
-      var spanX = (maxX - minX) || 1;
+      if (!G[0].length && !G[1].length) return false;
 
       parts = [];
-      for (j = 0; j < N; j++) {
-        var k = (Math.random() * hx.length) | 0;
-        var s2 = Math.random(), size;
-        if (s2 < 0.60)      size = 0.34 + Math.random() * 0.44;
-        else if (s2 < 0.88) size = 0.78 + Math.random() * 0.52;
-        else                size = 1.30 + Math.random() * 0.80;
-        parts.push({
-          tx: hx[k], ty: hy[k],
-          r: hr[k], g: hg[k], b: hb[k],
-          x: 0, y: 0, vx: 0, vy: 0, size: size,
-          alpha: 0.42 + Math.random() * 0.55,
-          /* o atraso sai do X do alvo: é o que varre da esquerda p/ a direita */
-          dly: ((hx[k] - minX) / spanX) * T_SWEEP,
-          sp: Math.random() * TAU,
-          /* de quão longe cada uma vem, para o bando não chegar em bloco */
-          far: 0.55 + Math.random() * 0.75
-        });
+      var CAP = [1500, 1700];
+      for (var g = 0; g < 2; g++) {
+        var src = G[g], n = src.length / 5;
+        if (!n) continue;
+        var minX = Infinity, maxX = -Infinity, j;
+        for (j = 0; j < n; j++) {
+          if (src[j * 5] < minX) minX = src[j * 5];
+          if (src[j * 5] > maxX) maxX = src[j * 5];
+        }
+        var span = (maxX - minX) || 1;
+        var N = Math.min(CAP[g], n);
+        for (j = 0; j < N; j++) {
+          var k = (Math.random() * n) | 0;
+          var tx = src[k * 5], ty = src[k * 5 + 1];
+          var s2 = Math.random(), size;
+          if (s2 < 0.58)      size = 0.34 + Math.random() * 0.46;
+          else if (s2 < 0.87) size = 0.80 + Math.random() * 0.54;
+          else                size = 1.34 + Math.random() * 0.86;
+          parts.push({
+            g: g, tx: tx, ty: ty,
+            r: src[k * 5 + 2], gr: src[k * 5 + 3], b: src[k * 5 + 4],
+            x: 0, y: 0, vx: 0, vy: 0, size: size,
+            alpha: 0.42 + Math.random() * 0.55,
+            /* entram pela direita, então quem está MAIS À DIREITA chega
+               primeiro — é o que faz a onda varrer para a esquerda */
+            dly: (g === 0 ? T_ICON : T_WORD) +
+                 (1 - (tx - minX) / span) * (g === 0 ? I_SWEEP : W_SWEEP),
+            /* de onde vem e como ondula: a faixa curva do quadro 02 */
+            far: 0.55 + Math.random() * 0.85,
+            arc: (Math.random() - 0.5) * H * 0.42,
+            amp: (Math.random() - 0.5) * H * 0.30,
+            sp: Math.random() * TAU
+          });
+        }
       }
 
-      /* agrupamento por cor: um beginPath/arc/fill por partícula custaria
+      /* agrupamento: um beginPath/arc/fill por partícula custaria
          milhares de chamadas por quadro. Cor e alpha são fixos, então dá
-         para quantizá-los, ordenar uma vez e desenhar cada faixa num
-         único path — a posição muda a cada quadro, a ordem não. */
+         para quantizá-los, ordenar uma vez e desenhar cada faixa num só
+         path — a posição muda a cada quadro, a ordem não. O grupo entra
+         na chave para que ícone e nome possam apagar em tempos
+         diferentes, via globalAlpha por faixa. */
       parts.forEach(function (q) {
-        q.bk = ((q.r >> 5) << 10) | ((q.g >> 5) << 5) | (q.b >> 5);
         q.ab = Math.min(4, Math.floor((q.alpha - 0.42) / 0.55 * 5));
-        q.key = q.bk * 5 + q.ab;
+        q.key = (q.g << 20) | ((q.r >> 5) << 13) | ((q.gr >> 5) << 8) |
+                ((q.b >> 5) << 3) | q.ab;
       });
       parts.sort(function (a, c) { return a.key - c.key; });
 
@@ -1036,8 +1109,8 @@
           cur = parts[bi].key;
           var p0 = parts[bi];
           buckets.push({
-            start: bi, end: bi,
-            style: 'rgba(' + p0.r + ',' + p0.g + ',' + p0.b + ',' +
+            start: bi, end: bi, g: p0.g,
+            style: 'rgba(' + p0.r + ',' + p0.gr + ',' + p0.b + ',' +
                    (0.42 + ((p0.ab + 0.5) / 5) * 0.55).toFixed(3) + ')'
           });
         }
@@ -1046,33 +1119,35 @@
       return true;
     }
 
+    /* o handoff é em dois tempos, como nos quadros 05 e 06: o nome fica
+       sólido antes do ícone, que acende por último com o gráfico. */
+    var wordLit = false, markLit = false;
+
     function frame(now) {
       if (!t0) t0 = now;
       var el = now - t0;
       var i, p;
 
+      /* o fantasma entra, segura, e recua quando as partículas assumem */
+      ghostA = clamp01(el / T_GHOST) *
+               (1 - clamp01((el - (T_SPARK - 260)) / 420));
+
       for (i = 0; i < parts.length; i++) {
         p = parts[i];
         var lt = (el - p.dly) / T_FLY;
-
-        if (lt <= 0) {
-          /* antes da sua vez, espera fora do canvas: assim não precisa de
-             alpha próprio e o agrupamento por cor continua valendo */
-          p.x = -W; p.y = p.ty;
-          continue;
-        }
+        if (lt <= 0) { p.x = W * 2; p.y = p.ty; continue; }
         if (lt < 1) {
-          /* voo: espiral que se fecha enquanto avança da esquerda */
+          /* 02 · o voo: vem da direita, ondulando, e a onda se fecha */
           var e = ease(lt);
-          var a = lt * Math.PI * 3.4 + p.sp;
-          var rad = (1 - e) * H * 0.34;
-          var sx = p.tx - W * 0.52 * p.far;
-          p.x = sx + (p.tx - sx) * e + Math.cos(a) * rad;
-          p.y = p.ty + Math.sin(a) * rad;
+          var sx = p.tx + W * 0.60 * p.far;
+          var sy = p.ty + p.arc;
+          var wv = Math.sin(lt * Math.PI) * p.amp;
+          var sc = (1 - e) * Math.sin(lt * Math.PI * 2.6 + p.sp) * H * 0.05;
+          p.x = sx + (p.tx - sx) * e;
+          p.y = sy + (p.ty - sy) * e + wv + sc;
           p.vx = p.vy = 0;
           continue;
         }
-        /* assenta na mola */
         p.vx += (p.tx - p.x) * 0.26;
         p.vy += (p.ty - p.y) * 0.26;
         p.vx *= 0.62; p.vy *= 0.62;
@@ -1080,8 +1155,16 @@
       }
 
       ctx.clearRect(0, 0, W, H);
+      if (mkBox && ghostA > 0.004) paintGhost(ctx, mkBox, ghostA);
+
+      /* as partículas de cada grupo apagam quando a camada real acende */
+      var aW = 1 - clamp01((el - T_SPARK) / 420);
+      var aM = 1 - clamp01((el - T_MARK) / 380);
       for (var kk = 0; kk < buckets.length; kk++) {
         var bk = buckets[kk];
+        var ga = bk.g === 0 ? aM : aW;
+        if (ga <= 0.004) continue;
+        ctx.globalAlpha = ga;
         ctx.fillStyle = bk.style;
         ctx.beginPath();
         for (i = bk.start; i <= bk.end; i++) {
@@ -1091,17 +1174,28 @@
         }
         ctx.fill();
       }
+      ctx.globalAlpha = 1;
 
-      /* montada: acende a logo real, apaga as partículas e sai de cena */
-      if (!done && el > T_SWEEP + T_FLY + T_SET) {
+      /* 05 · o gráfico acende: sobe rápido e entrega ao ícone real */
+      if (mkBox && el > T_SPARK - 120) {
+        var sp = clamp01((el - (T_SPARK - 120)) / 360) *
+                 (1 - clamp01((el - T_MARK) / 380));
+        if (sp > 0.004) paintSpark(ctx, mkBox, sp);
+      }
+
+      if (!wordLit && el >= T_SPARK) { wordLit = true; wordEl.style.opacity = '1'; }
+      if (!markLit && el >= T_MARK)  { markLit = true; markWrap.style.opacity = '1'; }
+
+      if (!done && el >= T_END) {
         done = true;
         host.classList.remove('is-assembling');
         host.classList.add('is-done');
-        setTimeout(function () {
-          cancelAnimationFrame(raf);
-          ctx.clearRect(0, 0, W, H);
-          canvas.style.display = 'none';
-        }, 420);
+        cancelAnimationFrame(raf);
+        ctx.clearRect(0, 0, W, H);
+        canvas.style.display = 'none';
+        wordEl.style.opacity = '';
+        markWrap.style.opacity = '';
+        return;
       }
       raf = requestAnimationFrame(frame);
     }
@@ -1110,8 +1204,7 @@
        tem width:auto, então antes de carregar ela mede zero e a lockup
        inteira — e o canvas, que se dimensiona por ela — nasce menor do
        que vai ficar. Os alvos sairiam desse espaço encolhido e as
-       partículas montariam a logo fora do lugar. Espera-se a imagem
-       decodificada e as fontes prontas antes de tirar qualquer medida. */
+       partículas montariam a logo fora do lugar. */
     function whenMeasurable(cb) {
       var fire = function () {
         if (wordEl.complete && wordEl.naturalWidth) { cb(); }
@@ -1126,8 +1219,6 @@
       if (done || raf) return;
       host.classList.add('is-assembling');
       whenMeasurable(function () {
-        /* a classe precisa pintar antes do primeiro quadro, senão a logo
-           real aparece por um quadro e a troca ganha um piscado */
         requestAnimationFrame(function () {
           if (!build()) { host.classList.remove('is-assembling'); return; }
           t0 = 0;
