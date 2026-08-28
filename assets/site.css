@@ -2203,6 +2203,35 @@
   .tm-choice { grid-template-columns:1fr }
 }
 
+/* ── A logo se montando (Quebra 7) ────────────────────────────────────
+   As partículas chegam rodando e assentam no desenho da lockup; quando
+   ela está formada, o canvas apaga e a logo de verdade acende por baixo.
+   A troca é um crossfade curto: as duas camadas desenham a mesma coisa
+   no mesmo lugar, então o olho lê continuidade e não substituição.
+
+   A pista é generosa nas laterais porque o voo começa fora da lockup —
+   um canvas do tamanho dela cortaria a entrada. Não intercepta ponteiro
+   e sai de cena assim que termina.                                    */
+.tm-logo-anim { position:relative }
+.tm-logo-particles {
+  /* width/height explícitos, e não left+right: <canvas> é elemento
+     replaced — sem largura declarada ele ignora o par de offsets e fica
+     no tamanho intrínseco do buffer (300x150), que era menor que a
+     lockup e jogava as partículas para fora do lugar. Os percentuais são
+     da caixa do host, então a pista acompanha a logo em qualquer breakpoint. */
+  position:absolute; left:-100%; width:300%; top:-200%; height:500%;
+  pointer-events:none; z-index:2;
+  opacity:0; transition:opacity .34s ease;
+}
+.tm-logo-anim.is-assembling .tm-logo-particles { opacity:1 }
+.tm-logo-anim.is-done       .tm-logo-particles { opacity:0 }
+
+/* a logo real espera apagada enquanto as partículas a montam */
+.tm-logo-anim > span,
+.tm-logo-anim > img { transition:opacity .38s ease }
+.tm-logo-anim.is-assembling > span,
+.tm-logo-anim.is-assembling > img { opacity:0 }
+
 /* ── Responsive ───────────────────────────────────────────────────── */
 @media (max-width:767px) {
   .tm-fan-card:not(:first-child) { margin-left:-16px }

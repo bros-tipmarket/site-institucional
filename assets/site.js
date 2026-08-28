@@ -857,8 +857,300 @@
   /* ── Boot ──────────────────────────────────────────────────────────
      base.js binds the hamburger from a Promise chain, so it may land
      after this file. Nothing here depends on it.                       */
+  /* ── A logo se montando (Quebra 7) ───────────────────────────────────
+     Uma entrada, não um elemento de cena: as partículas chegam rodando
+     pela esquerda, assentam no desenho da própria lockup e entregam o
+     lugar para ela. Depois disso o canvas sai e não custa mais nada.
+
+     Os alvos saem de um rasterizado da lockup feita à mão neste canvas
+     — o contorno do mark, a linha, o nó e os contornos do wordmark —
+     medido em cima das caixas reais dos elementos, para as partículas
+     assentarem exatamente onde a logo vai acender. Cada uma guarda a COR
+     do pixel de onde veio, então o azul do gráfico e o branco do nome já
+     chegam certos e o crossfade não tem salto de cor.
+
+     Nada disso toca em arquivo externo: carregar o .svg como <img>
+     sujaria o canvas (getImageData passa a lançar SecurityError sob
+     file://). O wordmark vem como Path2D e o mark, como primitivas.
+
+     O estado escrito no HTML é o de repouso. Quem apaga a logo para
+     montá-la é este código — então, sem JS ou sob prefers-reduced-motion,
+     ela simplesmente já está lá.                                      */
+  function initLogoAssembly() {
+    var host = document.getElementById('tm-logo-anim');
+    var canvas = document.getElementById('tm-logo-particles');
+    if (!host || !canvas || !canvas.getContext || reduced) return;
+    if (typeof Path2D === 'undefined') return;
+    var ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    var markEl = host.querySelector('svg');
+    var wordEl = host.querySelector('img');
+    if (!markEl || !wordEl) return;
+
+    /* contornos do wordmark + o translate do <g> que os acompanha */
+    var WM_D = [
+      "M10.296-4.785L12.309-4.785L12.309 0L9.438 0Q6.369 0 4.653-1.502Q2.937-3.003 2.937-6.402L2.937-13.728L0.693-13.728L0.693-18.414L2.937-18.414L2.937-22.902L8.580-22.902L8.580-18.414L12.276-18.414L12.276-13.728L8.580-13.728L8.580-6.336Q8.580-5.511 8.976-5.148Q9.372-4.785 10.296-4.785 M16.962-20.328Q15.477-20.328 14.537-21.203Q13.596-22.077 13.596-23.364Q13.596-24.684 14.537-25.559Q15.477-26.433 16.962-26.433Q18.414-26.433 19.355-25.559Q20.295-24.684 20.295-23.364Q20.295-22.077 19.355-21.203Q18.414-20.328 16.962-20.328M14.124-18.414L19.767-18.414L19.767 0L14.124 0 M28.182-15.807Q29.007-17.094 30.459-17.886Q31.911-18.678 33.858-18.678Q36.135-18.678 37.983-17.523Q39.831-16.368 40.904-14.223Q41.976-12.078 41.976-9.240Q41.976-6.402 40.904-4.240Q39.831-2.079 37.983-0.908Q36.135 0.264 33.858 0.264Q31.944 0.264 30.476-0.528Q29.007-1.320 28.182-2.574L28.182 8.778L22.539 8.778L22.539-18.414L28.182-18.414L28.182-15.807M36.234-9.240Q36.234-11.352 35.063-12.556Q33.891-13.761 32.175-13.761Q30.492-13.761 29.321-12.540Q28.149-11.319 28.149-9.207Q28.149-7.095 29.321-5.874Q30.492-4.653 32.175-4.653Q33.858-4.653 35.046-5.891Q36.234-7.128 36.234-9.240 M67.122-18.612Q70.554-18.612 72.584-16.533Q74.613-14.454 74.613-10.758L74.613 0L69.003 0L69.003-9.999Q69.003-11.781 68.063-12.755Q67.122-13.728 65.472-13.728Q63.822-13.728 62.882-12.755Q61.941-11.781 61.941-9.999L61.941 0L56.331 0L56.331-9.999Q56.331-11.781 55.391-12.755Q54.450-13.728 52.800-13.728Q51.150-13.728 50.209-12.755Q49.269-11.781 49.269-9.999L49.269 0L43.626 0L43.626-18.414L49.269-18.414L49.269-16.104Q50.127-17.259 51.513-17.936Q52.899-18.612 54.648-18.612Q56.727-18.612 58.361-17.721Q59.994-16.830 60.918-15.180Q61.875-16.698 63.525-17.655Q65.175-18.612 67.122-18.612 M76.131-9.240Q76.131-12.078 77.203-14.223Q78.276-16.368 80.124-17.523Q81.972-18.678 84.249-18.678Q86.196-18.678 87.664-17.886Q89.133-17.094 89.925-15.807L89.925-18.414L95.568-18.414L95.568 0L89.925 0L89.925-2.607Q89.100-1.320 87.631-0.528Q86.163 0.264 84.216 0.264Q81.972 0.264 80.124-0.908Q78.276-2.079 77.203-4.240Q76.131-6.402 76.131-9.240M89.925-9.207Q89.925-11.319 88.753-12.540Q87.582-13.761 85.899-13.761Q84.216-13.761 83.044-12.556Q81.873-11.352 81.873-9.240Q81.873-7.128 83.044-5.891Q84.216-4.653 85.899-4.653Q87.582-4.653 88.753-5.874Q89.925-7.095 89.925-9.207 M103.983-15.345Q104.973-16.863 106.458-17.738Q107.943-18.612 109.758-18.612L109.758-12.639L108.207-12.639Q106.095-12.639 105.039-11.732Q103.983-10.824 103.983-8.547L103.983 0L98.340 0L98.340-18.414L103.983-18.414 M129.393 0L122.397 0L116.787-7.722L116.787 0L111.144 0L111.144-24.420L116.787-24.420L116.787-10.923L122.364-18.414L129.327-18.414L121.671-9.174 M147.576-9.504Q147.576-8.712 147.477-7.854L134.706-7.854Q134.838-6.138 135.811-5.231Q136.785-4.323 138.204-4.323Q140.316-4.323 141.141-6.105L147.147-6.105Q146.685-4.290 145.481-2.838Q144.276-1.386 142.461-0.561Q140.646 0.264 138.402 0.264Q135.696 0.264 133.584-0.891Q131.472-2.046 130.284-4.191Q129.096-6.336 129.096-9.207Q129.096-12.078 130.267-14.223Q131.439-16.368 133.551-17.523Q135.663-18.678 138.402-18.678Q141.075-18.678 143.154-17.556Q145.233-16.434 146.404-14.355Q147.576-12.276 147.576-9.504M134.739-10.989L141.801-10.989Q141.801-12.441 140.811-13.299Q139.821-14.157 138.336-14.157Q136.917-14.157 135.944-13.332Q134.970-12.507 134.739-10.989 M157.476-4.785L159.489-4.785L159.489 0L156.618 0Q153.549 0 151.833-1.502Q150.117-3.003 150.117-6.402L150.117-13.728L147.873-13.728L147.873-18.414L150.117-18.414L150.117-22.902L155.760-22.902L155.760-18.414L159.456-18.414L159.456-13.728L155.760-13.728L155.760-6.336Q155.760-5.511 156.156-5.148Q156.552-4.785 157.476-4.785",
+      "M163.944 0.264Q162.459 0.264 161.519-0.611Q160.578-1.485 160.578-2.772Q160.578-4.092 161.519-4.983Q162.459-5.874 163.944-5.874Q165.396-5.874 166.337-4.983Q167.277-4.092 167.277-2.772Q167.277-1.485 166.337-0.611Q165.396 0.264 163.944 0.264"
+    ];
+    var WM_TR = [-0.69, 26.43];
+    var WM_VB = { w: 166.58, h: 35.21 };
+    var TAU = 6.283185307179586;
+
+    /* tempos da entrada, em ms */
+    var T_SWEEP = 430;   /* defasagem entre a 1ª e a última partícula */
+    var T_FLY   = 820;   /* voo de cada uma até o seu lugar           */
+    var T_SET   = 340;   /* assenta na mola antes de entregar         */
+
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var W = 0, H = 0, parts = [], buckets = [], raf = 0, t0 = 0, done = false;
+
+    function ease(x) { return 1 - Math.pow(1 - x, 3); }
+
+    function roundRect(o, x, y, w, h, r) {
+      o.beginPath();
+      o.moveTo(x + r, y);
+      o.lineTo(x + w - r, y); o.quadraticCurveTo(x + w, y, x + w, y + r);
+      o.lineTo(x + w, y + h - r); o.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      o.lineTo(x + r, y + h); o.quadraticCurveTo(x, y + h, x, y + h - r);
+      o.lineTo(x, y + r); o.quadraticCurveTo(x, y, x + r, y);
+      o.closePath();
+    }
+
+    /* a lockup redesenhada no canvas, nas caixas reais dos elementos.
+       O miolo do mark não é pintado: preencher #07070a geraria partículas
+       da cor do fundo, invisíveis. O que vira ponto é o contorno. */
+    function paintLockup(o, mk, wd) {
+      var s = Math.min(mk.w / 51, mk.h / 52);
+      o.save();
+      o.translate(mk.x + (mk.w - 51 * s) / 2, mk.y + (mk.h - 52 * s) / 2);
+      o.scale(s, s);
+      o.lineJoin = 'round'; o.lineCap = 'round';
+      o.strokeStyle = '#4a6480'; o.lineWidth = 2;
+      roundRect(o, 1.5, 1, 48, 49, 14); o.stroke();
+      o.lineWidth = 1.4;
+      o.beginPath(); o.arc(36.5, 19.5, 6.3, 0, TAU); o.stroke();
+      o.strokeStyle = '#8ac5fa'; o.lineWidth = 3.6;
+      o.beginPath();
+      o.moveTo(12, 34); o.lineTo(22, 24.5); o.lineTo(28, 30); o.lineTo(36.5, 19.5);
+      o.stroke();
+      o.fillStyle = '#8ac5fa';
+      o.beginPath(); o.arc(36.5, 19.5, 4, 0, TAU); o.fill();
+      o.restore();
+
+      var ws = wd.w / WM_VB.w;
+      o.save();
+      o.translate(wd.x, wd.y);
+      o.scale(ws, ws);
+      o.translate(WM_TR[0], WM_TR[1]);
+      o.fillStyle = '#ffffff';
+      for (var i = 0; i < WM_D.length; i++) {
+        try { o.fill(new Path2D(WM_D[i])); } catch (e) { return false; }
+      }
+      o.restore();
+      return true;
+    }
+
+    function build() {
+      var cr = canvas.getBoundingClientRect();
+      var mr = markEl.getBoundingClientRect();
+      var wr = wordEl.getBoundingClientRect();
+      if (!cr.width || !cr.height || !mr.width || !wr.width) return false;
+
+      W = cr.width; H = cr.height;
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+      /* caixas dos elementos convertidas para o espaço do canvas */
+      var mk = { x: mr.left - cr.left, y: mr.top - cr.top, w: mr.width, h: mr.height };
+      var wd = { x: wr.left - cr.left, y: wr.top - cr.top, w: wr.width, h: wr.height };
+
+      var oc = document.createElement('canvas');
+      oc.width = Math.max(2, Math.round(W));
+      oc.height = Math.max(2, Math.round(H));
+      var oct = oc.getContext('2d');
+      if (!oct) return false;
+      if (!paintLockup(oct, mk, wd)) return false;
+
+      var img;
+      try { img = oct.getImageData(0, 0, oc.width, oc.height).data; }
+      catch (e) { return false; }
+
+      /* pixels cobertos viram candidatos, carregando a própria cor */
+      var hx = [], hy = [], hr = [], hg = [], hb = [];
+      for (var y = 0; y < oc.height; y++) {
+        for (var x = 0; x < oc.width; x++) {
+          var i4 = (y * oc.width + x) * 4;
+          if (img[i4 + 3] > 110) {
+            hx.push(x); hy.push(y);
+            hr.push(img[i4]); hg.push(img[i4 + 1]); hb.push(img[i4 + 2]);
+          }
+        }
+      }
+      if (!hx.length) return false;
+
+      var N = Math.min(2600, hx.length);
+      var minX = Infinity, maxX = -Infinity, j;
+      for (j = 0; j < hx.length; j++) {
+        if (hx[j] < minX) minX = hx[j];
+        if (hx[j] > maxX) maxX = hx[j];
+      }
+      var spanX = (maxX - minX) || 1;
+
+      parts = [];
+      for (j = 0; j < N; j++) {
+        var k = (Math.random() * hx.length) | 0;
+        var s2 = Math.random(), size;
+        if (s2 < 0.60)      size = 0.34 + Math.random() * 0.44;
+        else if (s2 < 0.88) size = 0.78 + Math.random() * 0.52;
+        else                size = 1.30 + Math.random() * 0.80;
+        parts.push({
+          tx: hx[k], ty: hy[k],
+          r: hr[k], g: hg[k], b: hb[k],
+          x: 0, y: 0, vx: 0, vy: 0, size: size,
+          alpha: 0.42 + Math.random() * 0.55,
+          /* o atraso sai do X do alvo: é o que varre da esquerda p/ a direita */
+          dly: ((hx[k] - minX) / spanX) * T_SWEEP,
+          sp: Math.random() * TAU,
+          /* de quão longe cada uma vem, para o bando não chegar em bloco */
+          far: 0.55 + Math.random() * 0.75
+        });
+      }
+
+      /* agrupamento por cor: um beginPath/arc/fill por partícula custaria
+         milhares de chamadas por quadro. Cor e alpha são fixos, então dá
+         para quantizá-los, ordenar uma vez e desenhar cada faixa num
+         único path — a posição muda a cada quadro, a ordem não. */
+      parts.forEach(function (q) {
+        q.bk = ((q.r >> 5) << 10) | ((q.g >> 5) << 5) | (q.b >> 5);
+        q.ab = Math.min(4, Math.floor((q.alpha - 0.42) / 0.55 * 5));
+        q.key = q.bk * 5 + q.ab;
+      });
+      parts.sort(function (a, c) { return a.key - c.key; });
+
+      buckets = [];
+      var cur = -1;
+      for (var bi = 0; bi < parts.length; bi++) {
+        if (parts[bi].key !== cur) {
+          cur = parts[bi].key;
+          var p0 = parts[bi];
+          buckets.push({
+            start: bi, end: bi,
+            style: 'rgba(' + p0.r + ',' + p0.g + ',' + p0.b + ',' +
+                   (0.42 + ((p0.ab + 0.5) / 5) * 0.55).toFixed(3) + ')'
+          });
+        }
+        buckets[buckets.length - 1].end = bi;
+      }
+      return true;
+    }
+
+    function frame(now) {
+      if (!t0) t0 = now;
+      var el = now - t0;
+      var i, p;
+
+      for (i = 0; i < parts.length; i++) {
+        p = parts[i];
+        var lt = (el - p.dly) / T_FLY;
+
+        if (lt <= 0) {
+          /* antes da sua vez, espera fora do canvas: assim não precisa de
+             alpha próprio e o agrupamento por cor continua valendo */
+          p.x = -W; p.y = p.ty;
+          continue;
+        }
+        if (lt < 1) {
+          /* voo: espiral que se fecha enquanto avança da esquerda */
+          var e = ease(lt);
+          var a = lt * Math.PI * 3.4 + p.sp;
+          var rad = (1 - e) * H * 0.34;
+          var sx = p.tx - W * 0.52 * p.far;
+          p.x = sx + (p.tx - sx) * e + Math.cos(a) * rad;
+          p.y = p.ty + Math.sin(a) * rad;
+          p.vx = p.vy = 0;
+          continue;
+        }
+        /* assenta na mola */
+        p.vx += (p.tx - p.x) * 0.26;
+        p.vy += (p.ty - p.y) * 0.26;
+        p.vx *= 0.62; p.vy *= 0.62;
+        p.x += p.vx; p.y += p.vy;
+      }
+
+      ctx.clearRect(0, 0, W, H);
+      for (var kk = 0; kk < buckets.length; kk++) {
+        var bk = buckets[kk];
+        ctx.fillStyle = bk.style;
+        ctx.beginPath();
+        for (i = bk.start; i <= bk.end; i++) {
+          p = parts[i];
+          ctx.moveTo(p.x + p.size, p.y);
+          ctx.arc(p.x, p.y, p.size, 0, TAU);
+        }
+        ctx.fill();
+      }
+
+      /* montada: acende a logo real, apaga as partículas e sai de cena */
+      if (!done && el > T_SWEEP + T_FLY + T_SET) {
+        done = true;
+        host.classList.remove('is-assembling');
+        host.classList.add('is-done');
+        setTimeout(function () {
+          cancelAnimationFrame(raf);
+          ctx.clearRect(0, 0, W, H);
+          canvas.style.display = 'none';
+        }, 420);
+      }
+      raf = requestAnimationFrame(frame);
+    }
+
+    /* Medir cedo demais é o erro que custa caro aqui: a <img> do wordmark
+       tem width:auto, então antes de carregar ela mede zero e a lockup
+       inteira — e o canvas, que se dimensiona por ela — nasce menor do
+       que vai ficar. Os alvos sairiam desse espaço encolhido e as
+       partículas montariam a logo fora do lugar. Espera-se a imagem
+       decodificada e as fontes prontas antes de tirar qualquer medida. */
+    function whenMeasurable(cb) {
+      var fire = function () {
+        if (wordEl.complete && wordEl.naturalWidth) { cb(); }
+        else { wordEl.addEventListener('load', cb, { once: true }); }
+      };
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(fire)['catch'](fire);
+      } else { fire(); }
+    }
+
+    function play() {
+      if (done || raf) return;
+      host.classList.add('is-assembling');
+      whenMeasurable(function () {
+        /* a classe precisa pintar antes do primeiro quadro, senão a logo
+           real aparece por um quadro e a troca ganha um piscado */
+        requestAnimationFrame(function () {
+          if (!build()) { host.classList.remove('is-assembling'); return; }
+          t0 = 0;
+          raf = requestAnimationFrame(frame);
+        });
+      });
+    }
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) { io.disconnect(); play(); }
+        });
+      }, { threshold: 0.45 });
+      io.observe(host);
+    } else {
+      play();
+    }
+  }
+
   function boot() {
     initTickers();
+    initLogoAssembly();
     initTopbar();
     initSwipeRail({
       rail: 'tm-proofs', dots: 'tm-proof-dots',

@@ -1451,8 +1451,17 @@
 
 <div class="max-w-[840px] mx-auto relative z-10 flex flex-col items-center text-center gap-8" data-reveal>
 
-  <!-- 6.1 — logo animada -->
-  <div class="tm-logo-anim flex items-center gap-4">
+  <!-- 6.1 — logo animada.
+       A entrada é feita de partículas: elas chegam rodando pela esquerda,
+       montam o desenho da própria logo abaixo e entregam o lugar para ela.
+       O canvas é maior que a lockup de propósito — o voo precisa de pista
+       antes de chegar. Ele sai de cena assim que a troca termina.
+
+       O estado escrito no HTML é o de repouso, com a logo visível: quem
+       esconde é o JS, ao assumir a animação. Sem script, ou com
+       prefers-reduced-motion, a logo simplesmente já está aqui.      -->
+  <div class="tm-logo-anim flex items-center gap-4" id="tm-logo-anim">
+    <canvas class="tm-logo-particles" id="tm-logo-particles" aria-hidden="true"></canvas>
     <span class="relative flex items-center justify-center w-[54px] h-[54px]">
       <span class="tm-logo-glow absolute inset-0 rounded-[16px]" style="background:radial-gradient(closest-side,#8ac5fa66,transparent 72%);filter:blur(10px);"></span>
       <!-- same geometry as assets/logo-mark.svg, with the line drawn on -->
