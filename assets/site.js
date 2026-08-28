@@ -1022,7 +1022,9 @@
       var mk = { x: mr.left - cr.left, y: mr.top - cr.top, w: mr.width, h: mr.height };
       mkBox = mk;
       var wr2 = wordEl.getBoundingClientRect();
-      wdBox = { x: wr2.left - cr.left, w: wr2.width };
+      wdBox = { x: wr2.left - cr.left, w: wr2.width,
+                cy: wr2.top - cr.top + wr2.height / 2 };
+      revealed = 0;
       cy = mk.y + mk.h / 2;
       /* a amplitude também depende da LARGURA: presa só à altura do
          canvas ela dava o mesmo laço de 76px num telefone de 390,
@@ -1117,7 +1119,7 @@
       return true;
     }
 
-    var wordDone = false, markLit = false;
+    var wordDone = false, markLit = false, revealed = 0;
     var pt = { x: 0, y: 0 };
 
     function frame(now) {
@@ -1198,9 +1200,29 @@
          que faz a luz parecer estar acendendo as letras, e não um
          retângulo deslizando por cima delas. */
       if (wdBox && !wordDone) {
-        pathAt(Math.min(head, 1), pt);
-        var frac = clamp01((wdBox.x + wdBox.w - pt.x) / wdBox.w);
-        var lit = Math.round(frac * 124);
+        /* A frente de revelação segue um ponto ATRÁS da cabeça, onde a
+           fita tem corpo — a ponta sozinha é rala demais para ler como
+           "a luz passou aqui".
+
+           E só avança enquanto a fita estiver na faixa vertical do nome.
+           Sem essa trava, bastava o X cruzar as letras para revelar, e no
+           começo do percurso a fita voa bem acima delas: o nome acendia
+           sem nenhum facho à vista, que era o defeito. Guardar o máximo
+           impede que a revelação ande para trás quando a onda sobe de
+           novo. */
+        var uRef = Math.min(head - 0.10, 1);
+        if (uRef > 0) {
+          pathAt(uRef, pt);
+          if (Math.abs(pt.y - wdBox.cy) < ampY * 0.85) {
+            var f2 = clamp01((wdBox.x + wdBox.w - pt.x) / wdBox.w);
+            if (f2 > revealed) revealed = f2;
+          }
+        }
+        /* rede de segurança: passada a cabeça pelo ícone, o nome está
+           inteiro aceso de qualquer maneira */
+        if (head >= 1) revealed = 1;
+        var frac = revealed;
+        var lit = Math.round(frac * 141) - 17;
         if (lit >= 124) {
           wordDone = true;
           wordEl.style.webkitMaskImage = '';
@@ -1250,7 +1272,7 @@
       if (done || raf) return;
       /* a máscara nasce fechada: o nome está em opacity 1 desde já, e
          quem o esconde é a máscara — é ela que a fita vai abrindo */
-      var m0 = 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 17%)';
+      var m0 = 'linear-gradient(to left, rgba(0,0,0,1) -17%, rgba(0,0,0,0) 0%)';
       wordEl.style.webkitMaskImage = m0;
       wordEl.style.maskImage = m0;
       host.classList.add('is-assembling');
