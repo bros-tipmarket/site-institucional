@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" data-page="contact">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start operating — Tipmarket</title>
+<meta name="description" content="Tell Tipmarket about your audience. We come back with the operation design, the markets we suggest and a go-live timeline.">
+<meta name="theme-color" content="#07070a">
+<link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml">
+<link rel="alternate icon" href="assets/logo-mark.png">
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     RUNTIME — idêntico ao da home, na mesma ordem. A página de contato
+     não carrega nada de novo: os campos saem do .field-input do design
+     system e o resto é composição em .tm-lead-* / .tm-aside-*.
+   ═══════════════════════════════════════════════════════════════════ -->
+<script src="assets/tailwind.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="assets/fonts.css">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          void:   '#0e0e14',
+          ink:    '#1c1c26',
+          signal: '#3a80c8',
+          slate:  '#5a6070',
+          haze:   '#f2f4f6',
+          cloud:  '#edf0f2',
+          stone:  '#c4c8d0',
+          sky:    '#7eb8e8',
+          mist:   '#c2daf0',
+          frost:  '#e8f2fa',
+          deep:   '#1a3a5c',
+          ember:  '#e8904a',
+          abyss:  '#07070a',
+          beam:   '#8ac5fa',
+          steel:  '#384f66',
+          yes:    '#2ebd85',
+          no:     '#e5484d'
+        },
+        fontFamily: {
+          display: ['"Multima"', 'Georgia', 'serif'],
+          body:    ['"Plus Jakarta Sans"', 'sans-serif']
+        }
+      }
+    }
+  }
+</script>
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body class="font-body">
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     RAIL — o mesmo da home, com duas diferenças de propósito:
+
+     · os links de seção apontam de volta para a home, porque aqui essas
+       âncoras não existem;
+     · o botão "Quero operar" sai. Ele é o que trouxe a pessoa até aqui;
+       mantê-lo seria um CTA apontando para a própria página, e o lugar
+       dele agora é o submit do formulário — um alvo só.
+   ═══════════════════════════════════════════════════════════════════ -->
+<header class="tm-topbar">
+<div class="tm-topbar-inner max-w-[1280px] mx-auto px-6 md:px-8 flex items-center justify-between gap-6">
+  <a class="tm-logo" href="index.html">
+    <img src="assets/logo-white.svg" alt="Tipmarket" width="234" height="52">
+  </a>
+
+  <nav class="hidden lg:flex items-center gap-8 xl:gap-10 font-body" aria-label="Sections">
+    <a class="tm-navlink" href="index.html#opportunity"><span class="tm-navlink-label">Opportunity</span></a>
+    <a class="tm-navlink" href="index.html#b2b"><span class="tm-navlink-label">White-Label</span></a>
+    <a class="tm-navlink" href="index.html#widget"><span class="tm-navlink-label">Widget</span></a>
+    <a class="tm-navlink" href="index.html#integration"><span class="tm-navlink-label">Integration</span></a>
+    <a class="tm-navlink" href="index.html#affiliates"><span class="tm-navlink-label">Affiliates</span></a>
+    <span class="tm-navlink is-active" aria-current="page"><span class="tm-navlink-label">Start operating</span></span>
+  </nav>
+
+  <div class="flex items-center gap-3 flex-shrink-0">
+    <a class="tm-railback font-body hidden lg:inline-flex" href="index.html">
+      <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+      Back to site
+    </a>
+    <button id="hamburger" aria-label="Menu" class="lg:hidden flex items-center justify-center w-10 h-10 -mr-2">
+      <img id="icon-bars" src="assets/icon-menu.svg" alt="Menu" class="w-5 h-5 brightness-0 invert">
+      <svg id="icon-close" class="w-5 h-5 text-white hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z"></path></svg>
+    </button>
+  </div>
+</div>
+<span class="tm-progress" id="tm-progress" aria-hidden="true"></span>
+</header>
+
+<div id="mobile-menu" class="fixed inset-0 z-40 flex-col pt-28 px-6 gap-0">
+  <a class="tm-sheet-item" href="index.html#opportunity"><span class="tm-sheet-label">Opportunity</span></a>
+  <a class="tm-sheet-item" href="index.html#b2b"><span class="tm-sheet-label">White-Label</span></a>
+  <a class="tm-sheet-item" href="index.html#widget"><span class="tm-sheet-label">Widget</span></a>
+  <a class="tm-sheet-item" href="index.html#integration"><span class="tm-sheet-label">Integration</span></a>
+  <a class="tm-sheet-item" href="index.html#affiliates"><span class="tm-sheet-label">Affiliates</span></a>
+  <a class="tm-sheet-item" href="#form" onclick="closeMobileMenu()"><span class="tm-sheet-label v2-shiny">Start operating</span></a>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CABEÇALHO DA PÁGINA
+     Fundo branco, como o herói da home: quem clicou em "Quero operar"
+     atravessa para cá sem trocar de terreno. O que muda é o tom — a
+     home argumenta, esta página só quer o formulário preenchido.
+   ═══════════════════════════════════════════════════════════════════ -->
+<section class="bg-white px-6 md:px-8" style="padding-top:132px;">
+<div class="max-w-[1280px] mx-auto flex flex-col gap-5" data-reveal>
+  <span class="inline-flex items-center gap-2.5 self-start px-4 py-1.5 rounded-full border border-cloud bg-haze">
+    <span class="ds-dot" style="background:#3a80c8;"></span>
+    <span class="label">Talk to us</span>
+  </span>
+  <h1 class="font-display font-light text-ink ds-h1 max-w-[16ch]" style="text-wrap:balance;">
+    Let’s design your operation.
+  </h1>
+  <p class="font-body ds-paragraph text-slate max-w-[62ch]">
+    The infrastructure is ready. The rest is your call: which markets your audience
+    wants, how they look when they go live and
+    <span class="text-ink font-medium">from when.</span>
+  </p>
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     FORMULÁRIO + O QUE ESPERAR
+
+     Duas colunas, como na referência: o formulário à esquerda e, à direita, a
+     resposta para a pergunta que trava todo mundo antes de digitar o
+     e-mail — o que acontece depois que eu apertar isso.
+   ═══════════════════════════════════════════════════════════════════ -->
+<section id="form" class="bg-white px-6 md:px-8 pt-[56px] pb-[120px]" style="scroll-margin-top:88px;">
+<div class="tm-lead-shell max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-[1.08fr_.92fr] gap-10 lg:gap-[72px] items-start" id="tm-lead-shell" data-reveal>
+
+  <!-- ── a coluna do formulário ─────────────────────────────────── -->
+  <div class="tm-lead min-w-0" id="tm-lead">
+
+    <!-- data-endpoint recebe a URL que aceita o POST do lead. Enquanto
+         estiver vazio o envio não sai do navegador: a tela de confirmação
+         aparece igual, para a página poder ser revisada inteira, e um
+         aviso vai para o console de quem for ligar o back-end.
+
+         data-mailto não é caminho de envio — é só o endereço de socorro
+         citado quando o POST falha, para a pessoa não ficar sem saída. -->
+    <form class="tm-lead-form border border-cloud rounded-[24px] p-6 md:p-8 flex flex-col gap-5 bg-white"
+          id="tm-lead-form" novalidate
+          data-endpoint=""
+          data-mailto="comercial@tipmarket.com">
+
+      <!-- armadilha de robô: fora da tela e fora da ordem de tabulação.
+           Se vier preenchida, o envio é descartado em silêncio. -->
+      <div class="tm-hp" aria-hidden="true">
+        <label for="tm-lead-site">Do not fill in this field</label>
+        <input id="tm-lead-site" name="site_url" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-3">
+        <div class="tm-field" data-field="name">
+          <label class="tm-field-label font-body" for="tm-lead-name">Full name<span class="tm-field-req">*</span></label>
+          <input class="field-input w-full border border-cloud rounded-[10px] px-4 h-[52px] font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white transition-all"
+                 id="tm-lead-name" name="name" type="text" autocomplete="name"
+                 placeholder="Your name" aria-describedby="tm-err-name">
+          <span class="tm-field-err font-body" id="tm-err-name"></span>
+        </div>
+
+        <div class="tm-field" data-field="email">
+          <label class="tm-field-label font-body" for="tm-lead-email">Work email<span class="tm-field-req">*</span></label>
+          <input class="field-input w-full border border-cloud rounded-[10px] px-4 h-[52px] font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white transition-all"
+                 id="tm-lead-email" name="email" type="email" autocomplete="email" inputmode="email"
+                 placeholder="you@company.com" aria-describedby="tm-err-email">
+          <span class="tm-field-err font-body" id="tm-err-email"></span>
+        </div>
+
+        <div class="tm-field" data-field="company">
+          <label class="tm-field-label font-body" for="tm-lead-company">Company<span class="tm-field-req">*</span></label>
+          <input class="field-input w-full border border-cloud rounded-[10px] px-4 h-[52px] font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white transition-all"
+                 id="tm-lead-company" name="company" type="text" autocomplete="organization"
+                 placeholder="Your company" aria-describedby="tm-err-company">
+          <span class="tm-field-err font-body" id="tm-err-company"></span>
+        </div>
+
+        <div class="tm-field" data-field="phone">
+          <label class="tm-field-label font-body" for="tm-lead-phone">Phone or WhatsApp<span class="tm-field-opt">optional</span></label>
+          <input class="field-input w-full border border-cloud rounded-[10px] px-4 h-[52px] font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white transition-all"
+                 id="tm-lead-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"
+                 placeholder="+55 11 90000-0000" aria-describedby="tm-err-phone">
+          <span class="tm-field-err font-body" id="tm-err-phone"></span>
+        </div>
+      </div>
+
+      <!-- o site vende dois produtos e eles caem em conversas
+           diferentes. Perguntar aqui custa um clique; descobrir na
+           chamada custa a chamada. -->
+      <fieldset class="tm-field" data-field="interest">
+        <legend class="tm-field-label font-body">What are you interested in<span class="tm-field-req">*</span></legend>
+        <div class="tm-choice" id="tm-lead-interest">
+          <label class="tm-choice-opt font-body">
+            <input type="radio" name="interest" value="White-label platform" aria-describedby="tm-err-interest">
+            <span>White-label platform</span>
+          </label>
+          <label class="tm-choice-opt font-body">
+            <input type="radio" name="interest" value="Widget for my site" aria-describedby="tm-err-interest">
+            <span>Widget for my site</span>
+          </label>
+          <label class="tm-choice-opt font-body">
+            <input type="radio" name="interest" value="Affiliate program" aria-describedby="tm-err-interest">
+            <span>Affiliate program</span>
+          </label>
+          <label class="tm-choice-opt font-body">
+            <input type="radio" name="interest" value="Still evaluating" aria-describedby="tm-err-interest">
+            <span>Still evaluating</span>
+          </label>
+        </div>
+        <span class="tm-field-err font-body" id="tm-err-interest"></span>
+      </fieldset>
+
+      <div class="tm-field" data-field="message">
+        <label class="tm-field-label font-body" for="tm-lead-message">Tell us more<span class="tm-field-opt">optional</span></label>
+        <textarea class="field-input w-full border border-cloud rounded-[10px] px-4 py-3 font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white resize-none transition-all"
+                  id="tm-lead-message" name="message" rows="5"
+                  placeholder="Who is your audience, what do you already have live, and where are you today?"></textarea>
+      </div>
+
+      <div class="flex flex-col gap-3 pt-1">
+        <button class="cta-btn flex items-center justify-center gap-3 bg-void text-white font-body text-[16px] leading-[1.62] pl-6 pr-2 h-[52px] rounded-full w-full"
+                id="tm-lead-submit" type="submit">
+          <span data-label>Start operating</span>
+          <span class="cta-icon"><img src="assets/icon-arrow-up-right.svg" alt="" class="w-[18px] h-[18px]"></span>
+        </button>
+
+        <p class="font-body ds-regular-m text-slate">
+          By submitting, you agree that Tipmarket may contact you about this request.
+        </p>
+
+        <p class="tm-lead-status font-body ds-regular-l" id="tm-lead-status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+
+    <!-- ── o estado de enviado ──────────────────────────────────────
+         Toma o lugar do formulário, e a coluna do "o que esperar" sai
+         junto: aquele texto existia para convencer alguém a preencher,
+         e nesse instante já não tem ninguém para convencer.
+
+         Vem escuro sobre a página clara pelo mesmo motivo que o cartão
+         de fecho do widget na Quebra 4: até aqui a página era um
+         formulário, daqui em diante é a Tipmarket falando. É o único
+         momento em que a marca fala em primeira pessoa com quem
+         acabou de virar cliente, e ele merece o peso.             -->
+    <div class="tm-lead-ok" id="tm-lead-ok" tabindex="-1">
+      <div class="v2-aurora" aria-hidden="true" style="left:50%;margin-left:-260px;top:-320px;width:520px;height:520px;opacity:.55;"></div>
+      <div class="v2-grid-bg" aria-hidden="true"></div>
+
+      <div class="tm-lead-ok-inner">
+        <span class="tm-lead-check" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 8 14.5 16 6"/></svg>
+        </span>
+
+        <h2 class="tm-lead-ok-h font-display font-light">Got it.</h2>
+
+        <!-- o e-mail digitado volta em destaque: prova que o envio levou
+             o que a pessoa escreveu, e deixa o erro de digitação
+             aparecer agora, e não depois de uma semana de silêncio -->
+        <p class="tm-lead-ok-p font-body">
+          The reply goes to <b class="tm-lead-ok-mail" id="tm-lead-ok-mail">the email you left</b>
+          within one business day. Until then there is nothing to do — the next move is ours.
+        </p>
+
+        <!-- um lugar específico para ir enquanto espera. Devolver para o
+             topo da home seria mandar reler o que ela acabou de ler. -->
+        <a class="tm-lead-ok-link font-body" href="index.html#integration">
+          See how the integration works
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M7 7h10v10"></path></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── a coluna do que esperar ────────────────────────────────── -->
+  <aside class="tm-aside min-w-0">
+
+    <div class="tm-aside-block">
+      <h2 class="tm-aside-h font-display font-light text-void">What happens next</h2>
+      <p class="font-body ds-paragraph text-slate">
+        A Tipmarket specialist replies within one business day. We set up a call to understand
+        your audience and show how the operation looks end to end — from the first live market
+        to the user’s withdrawal.
+      </p>
+    </div>
+
+    <div class="tm-aside-block">
+      <h2 class="tm-aside-h font-display font-light text-void">What we will cover</h2>
+      <ul class="tm-aside-list font-body">
+        <li>Which markets make sense for your audience</li>
+        <li>Payments, KYC and compliance in your country</li>
+        <li>Liquidity, risk management and what the BackOffice delivers</li>
+        <li>A real go-live timeline and what happens after it</li>
+      </ul>
+    </div>
+
+    <div class="tm-aside-block">
+      <h2 class="tm-aside-h font-display font-light text-void">For technical teams</h2>
+      <p class="font-body ds-paragraph text-slate">
+        If you would rather start from the API documentation and the integration scope, say so
+        in your message — we will put the right people on the call.
+      </p>
+    </div>
+  </aside>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     RODAPÉ — o mesmo da home, com os links de seção apontando para ela
+   ═══════════════════════════════════════════════════════════════════ -->
+<footer class="relative overflow-hidden px-6 md:px-8 pt-[80px] pb-[60px]" style="background:#07070a;border-top:1px solid var(--border);">
+<div class="max-w-[1280px] mx-auto relative z-10 flex flex-col gap-10">
+
+  <div class="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr] gap-10 md:gap-14 pb-10" style="border-bottom:1px solid var(--border);">
+    <div class="flex flex-col gap-4">
+      <a class="tm-logo self-start" href="index.html">
+        <img src="assets/logo-white.svg" alt="Tipmarket" width="234" height="52">
+      </a>
+      <p class="font-body ds-regular-l max-w-[460px]" style="color:rgba(255,255,255,.6);">
+        Tipmarket is white-label prediction market infrastructure. We provide the platform,
+        liquidity, payment rails, KYC and BackOffice so companies can launch their own markets
+        under their own brand, without building anything from scratch.
+      </p>
+    </div>
+
+    <nav class="flex flex-col gap-3">
+      <span class="tm-mono tm-eyebrow" style="color:#6b7484;font-size:10px;">Product</span>
+      <a class="font-body ds-paragraph transition-colors hover:[color:#8ac5fa]" style="color:var(--muted);" href="index.html#b2b">White-Label</a>
+      <a class="font-body ds-paragraph transition-colors hover:[color:#8ac5fa]" style="color:var(--muted);" href="index.html#widget">Market Widget</a>
+      <a class="font-body ds-paragraph transition-colors hover:[color:#8ac5fa]" style="color:var(--muted);" href="index.html#integration">Integration</a>
+      <a class="font-body ds-paragraph transition-colors hover:[color:#8ac5fa]" style="color:var(--muted);" href="index.html#affiliates">Affiliates</a>
+      <a class="font-body ds-paragraph transition-colors hover:[color:#8ac5fa]" style="color:var(--muted);" href="#form">Talk to us</a>
+    </nav>
+
+    <nav class="flex flex-col gap-3">
+      <span class="tm-mono tm-eyebrow" style="color:#6b7484;font-size:10px;">Social</span>
+      <a class="inline-flex items-center gap-2.5 font-body ds-paragraph transition-colors hover:[color:#8ac5fa]" style="color:var(--muted);" href="#">
+        <svg class="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98C.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        Instagram
+      </a>
+      <a class="inline-flex items-center gap-2.5 font-body ds-paragraph transition-colors hover:[color:#8ac5fa]" style="color:var(--muted);" href="#">
+        <svg class="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/></svg>
+        X
+      </a>
+    </nav>
+  </div>
+
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <p class="font-body ds-regular-m" style="color:#6b7484;">© 2026 Tipmarket. All rights reserved.</p>
+  </div>
+</div>
+</footer>
+
+<script src="assets/base.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

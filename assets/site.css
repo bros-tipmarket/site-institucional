@@ -1,0 +1,2219 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   TIPMARKET — SITE LAYER
+   Extends the base layer (assets/base.css). Nothing here invents a new
+   token: every value below is lifted from the design system's
+   LAYER B (surfaces + motion), LAYER D (brand CTA recolour) and
+   LAYER E (typography), plus the site-only compositions prefixed .tm-*.
+   Base reset, .label, .cta-btn, .btn-outline, [data-reveal], pills-left,
+   hiw-glow and the Multima @font-face all come from base.css.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Real weights for Plus Jakarta Sans ───────────────────────────────
+   The css2.css that ships with the design system declares only 400 and
+   500 for the latin subset, so every request for 600/700 on this site
+   was being faked by the browser — it took Medium and thickened the
+   strokes, keeping Medium's metrics. This is the variable file (axis
+   200..800), declared over the full range so the real weights are used.
+   ═══════════════════════════════════════════════════════════════════ */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('PlusJakartaSans-latin-var.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+                 U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+                 U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ── LAYER B · tokens ─────────────────────────────────────────────── */
+:root {
+  --bg:      #07070a;
+  --surface: #0f0f16;
+  --accent:  #8ac5fa;
+  --text:    #f5f7fa;
+  --muted:   #8a909b;
+  --yes:     #2ebd85;
+  --no:      #e5484d;
+  --border:  #ffffff14;
+}
+
+/* ── LAYER E · typography ─────────────────────────────────────────── */
+.ds-h1        { font-size:clamp(40px,5vw,60px); line-height:1.1  }
+.ds-h2        { font-size:clamp(32px,4vw,60px); line-height:1.1  }
+.ds-h3        { font-size:clamp(28px,4vw,40px); line-height:1.2  }
+.ds-h4        { font-size:20px; line-height:1.3  }
+.ds-bold-l    { font-size:20px; line-height:1.6;  font-weight:500 }
+.ds-bold-m    { font-size:16px; line-height:1.62; font-weight:500 }
+.ds-bold-s    { font-size:14px; line-height:1.57; font-weight:500 }
+.ds-paragraph { font-size:16px; line-height:1.62 }
+.ds-regular-l { font-size:14px; line-height:1.57 }
+.ds-regular-m { font-size:12px; line-height:1.5  }
+.ds-regular-s { font-size:12px; line-height:1.33 }
+
+.ds-code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+           font-size:11px; line-height:1.5; letter-spacing:0 }
+.ds-code-light { color:#5a6070; background:#f2f4f6; border:1px solid #edf0f2;
+                 border-radius:6px; padding:2px 6px; display:inline-block }
+.ds-code-dark  { color:#9fd2fc; background:rgba(138,197,250,0.08);
+                 border:1px solid rgba(138,197,250,0.18); border-radius:6px;
+                 padding:2px 6px; display:inline-block }
+
+/* ── LAYER B · surfaces & atmosphere ──────────────────────────────── */
+.section-inner { max-width:1280px; margin:0 auto }
+.v2-surface { background:var(--surface); border:1px solid var(--border); border-radius:16px }
+.v2-aurora  { pointer-events:none; position:absolute; filter:blur(80px);
+              background:radial-gradient(closest-side,#8ac5fa4d,#0000 70%); border-radius:50% }
+.v2-grid-bg { pointer-events:none; position:absolute; inset:0;
+              background-image:radial-gradient(#ffffff0e 1px,#0000 0); background-size:26px 26px;
+              -webkit-mask-image:radial-gradient(70% 60% at 50% 38%,#000 0,#0000 78%);
+                      mask-image:radial-gradient(70% 60% at 50% 38%,#000 0,#0000 78%) }
+.v2-gradient-text {
+  color:#0000;
+  background:linear-gradient(110deg,#cfeaff,#8ac5fa 38%,#9fdcff 64%,#8ac5fa) 0 0/220% 100%;
+  -webkit-background-clip:text; background-clip:text;
+  animation:v2Sheen 7s ease-in-out infinite alternate
+}
+.v2-shiny { color:var(--accent) }
+.v2-settle { animation:fadeUp .62s cubic-bezier(.16,1,.3,1) both; animation-delay:var(--d,0s) }
+
+/* ── LAYER B · buttons ────────────────────────────────────────────── */
+.v2-cta {
+  background:var(--accent); color:var(--bg);
+  border-radius:9999px; justify-content:center; align-items:center; gap:.5rem;
+  font-weight:600; display:inline-flex; position:relative; overflow:hidden;
+  transition:transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s;
+  box-shadow:0 10px 36px -8px #8ac5fa8c, 0 0 0 1px #8ac5fa40
+}
+.v2-cta:hover { transform:translateY(-1px) scale(1.02);
+                box-shadow:0 14px 44px -8px #8ac5faa6, 0 0 0 1px #8ac5fa59 }
+.v2-cta:after { content:""; pointer-events:none; position:absolute; inset:0; transform:translate(-130%);
+                background:linear-gradient(115deg,#0000 32%,#fff9 50%,#0000 68%) }
+.v2-cta:hover:after { animation:v2Shine .9s cubic-bezier(.16,1,.3,1) }
+.v2-cta:active { transform:translateY(0) scale(.99) }
+.v2-cta:focus-visible { outline:none;
+  box-shadow:0 10px 36px -8px #8ac5fa8c, 0 0 0 2px var(--bg), 0 0 0 4px #8ac5fa }
+
+.v2-ghost-btn {
+  border:1px solid var(--border); color:var(--text); border-radius:9999px;
+  justify-content:center; align-items:center; gap:.5rem; font-weight:600;
+  display:inline-flex; transition:border-color .2s, background-color .2s
+}
+.v2-ghost-btn:hover  { background:#ffffff0d; border-color:#fff3 }
+.v2-ghost-btn:active { background:#ffffff1a }
+.v2-ghost-btn:focus-visible { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px #8ac5fa2e }
+
+/* ── LAYER D · brand CTA recolour ─────────────────────────────────── */
+.cta-btn-beam::before { background:linear-gradient(180deg,#8ac5fa 0%,#5296d4 100%) }
+.cta-btn-beam:hover {
+  color:#07070a !important;
+  box-shadow:0 0 0 3px rgba(138,197,250,0.20), 0 0 28px 8px rgba(138,197,250,0.28)
+}
+.cta-btn-beam:hover .cta-icon img { filter:none }
+
+/* ── LAYER B · market chip ────────────────────────────────────────── */
+.v2-chip {
+  color:#e7e9ea; white-space:nowrap; display:flex; align-items:center; gap:8px;
+  height:32px; padding:0 6px 0 11px; font-size:13px;
+  background:linear-gradient(#ffffff0d,#fff0 55%),#16181c;
+  border:1px solid #ffffff17; border-radius:999px;
+  box-shadow:inset 0 1px #ffffff0d, 0 1px 2px #00000073, 0 6px 16px -8px #00000080
+}
+.v2-chip-badge { color:#9fd9ff; letter-spacing:.02em; background:#8ac5fa24; border-radius:50%;
+                 flex-shrink:0; justify-content:center; align-items:center; width:18px; height:18px;
+                 font-size:9px; font-weight:700; display:inline-flex; overflow:hidden;
+                 box-shadow:inset 0 0 0 1px #ffffff14 }
+.v2-chip-ticker { font-weight:700 }
+.v2-chip-px, .v2-chip-chg { font-variant-numeric:tabular-nums }
+.v2-chip-px  { color:#e7e9ea }
+.v2-chip-chg { border-radius:999px; flex-shrink:0; padding:1px 6px; font-size:11px; font-weight:700 }
+.v2-chip-chg.up   { color:#30d158; background:#30d1581a; box-shadow:inset 0 0 0 1px #30d15829 }
+.v2-chip-chg.down { color:#ff453a; background:#ff453a1a; box-shadow:inset 0 0 0 1px #ff453a29 }
+.v2-chip-buy  { color:#06202e; background:linear-gradient(#8ad4ff,#5ec1ff); margin-left:auto;
+                border-radius:999px; flex-shrink:0; padding:5px 14px; font-size:12.5px; font-weight:700;
+                box-shadow:inset 0 1px #ffffff59, 0 2px 8px -2px #8ac5fa80 }
+.v2-chip-sell { color:#ff6b61d1; border-radius:999px; flex-shrink:0; padding:5px 11px;
+                font-size:12.5px; font-weight:700 }
+
+/* ── LAYER B · staggered reveal ───────────────────────────────────── */
+.reveal > *  { opacity:0; transform:translateY(24px);
+               transition:opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1) }
+.reveal.is-visible > * { opacity:1; transform:none }
+.reveal.is-visible > :nth-child(2) { transition-delay:70ms }
+.reveal.is-visible > :nth-child(3) { transition-delay:.14s }
+.reveal.is-visible > :nth-child(4) { transition-delay:.21s }
+
+/* ── LAYER B · keyframes ──────────────────────────────────────────── */
+@keyframes v2Sheen  { 0%{background-position:0} to{background-position:100%} }
+@keyframes v2Shine  { to{transform:translate(130%)} }
+@keyframes fadeUp   { 0%{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+@keyframes breathe  { 0%,to{transform:scale(1)} 50%{transform:scale(1.03)} }
+@keyframes pulseDot { 0%,to{opacity:1;box-shadow:0 0 #8ac5fa80} 50%{opacity:.7;box-shadow:0 0 0 5px #8ac5fa00} }
+@keyframes shimmerSweep { 0%{transform:translate(-110%)} 55%,to{transform:translate(120%)} }
+
+.ds-dot     { width:8px; height:8px; border-radius:50%; background:var(--accent);
+              animation:pulseDot 2s ease-in-out infinite }
+.ds-breathe { animation:breathe 3.4s ease-in-out infinite }
+.ds-lift    { transition:transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease }
+.ds-lift:hover { transform:translateY(-4px); box-shadow:0 20px 50px -20px rgba(138,197,250,0.45) }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SITE COMPOSITIONS — .tm-*
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Hero surface — the operator's own front end, light theme ──────
+   The headline promises two things at once: every market your customer
+   wants, AND under your brand. The picture answers both with the real
+   product screen (demo.372.one) rather than an impression of one.
+
+   Two decisions carry this:
+
+   1. TRUE SCALE. The previous pass squeezed a ~900px app into a 470px
+      frame; a product at half size stops looking like the product. Here
+      the app runs at its own size and the frame simply crops it, so the
+      top of the screen — header, search, category rail, the Featured
+      cards, the start of Explore — is exactly what it is in the app.
+   2. LIGHT THEME on a dark bezel. The app ships light and dark; light
+      against the dark ground reads as a lit screen in a frame, and it
+      solves the flatness of the old dark-app-on-dark-banner, which had
+      almost no contrast to give.
+
+   The colour split is copied from the product, not invented here. The
+   app tokenises --primary / --sidebar-primary / --ring off one brand
+   hue and hard-codes --success, --danger and the seven --cat-* hues, so
+   the rotation repaints the mark, the active nav, the buttons, the pills
+   and the accent word — and never Sim/Não or a category. Everything is
+   drawn from type and token; no photography, no screenshots.        */
+:root {
+  /* :root[data-theme=light] in the product, verbatim, so the mock cannot
+     drift from the app it is claiming to be */
+  --tm-canvas:  #f6f7f9;
+  --tm-surf:    #ffffff;
+  --tm-surf-2:  #f1f3f6;
+  --tm-line:    #0000001f;
+  --tm-ink:     #14161a;
+  --tm-soft:    #585f6b;
+  --tm-faint:   #616875;
+  --tm-field:   #00000008;
+  --tm-yes:     #096e4a;
+  --tm-no:      #b32b28;
+  --tm-card-sh: 0 1px 2px #1018280f, 0 8px 24px -12px #10182824;
+}
+
+/* The stage runs wider than the text column and its screen is cut off in a
+   straight line by the bottom of the bezel — no fade. A fade announces an
+   ending, and mine was announcing it directly over the Sim/Não, which is
+   the one thing in the picture a reader is trying to read. The reference does the
+   honest version: hard crop, rounded on top only, and the next section
+   rides up over it (.tm-overlap) so the screen disappears under the page
+   rather than dissolving into it. That is what reads as continuing.   */
+.tm-stage { margin-top:44px; padding:0 clamp(16px,3.4vw,52px) }
+.tm-bezel {
+  position:relative; overflow:hidden;
+  max-width:1420px; margin:0 auto;
+  border-radius:24px 24px 0 0;
+  padding:0 10px;
+  /* Grafite e não o #07070a do resto do site: entre o herói branco e a
+     tela quase branca do app, preto puro dá 20:1 de contraste e a
+     moldura vira a coisa mais alta da dobra — justamente ela, que só
+     precisa dizer "isto é uma tela". O grafite mantém a leitura de
+     aparelho e cede o palco ao produto. O brilho ficou um pouco mais
+     fraco porque sobre um fundo mais claro ele rende mais.          */
+  background:#292d34;
+  background-image:radial-gradient(closest-side,#8ac5fa42,#0000 70%);
+  background-size:150% 150%; background-position:center top;
+  background-repeat:no-repeat;
+}
+/* the crop itself: fixed height, square-bottomed, contents overflow past it */
+.tm-screen {
+  position:relative; z-index:1;
+  /* praticamente fixa de propósito: escalar a altura com vw fazia o corte
+     passear pelo conteúdo, e entre ~1100 e ~1250px ele caía em cima da
+     pergunta ou dos botões. Altura estável = corte previsível. */
+  height:clamp(706px,49vw,730px);
+  overflow:hidden;
+  border-radius:14px 14px 0 0;
+}
+/* Quebra 2 climbs over the bottom of the screen. Its top padding carries
+   the overlap so the copy inside keeps its original 120px of air. */
+.tm-overlap { position:relative; z-index:3; margin-top:-84px; padding-top:120px }
+.tm-banner-head {
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:15px 22px 0;
+}
+.tm-banner-note { display:flex; align-items:center; gap:7px;
+                  font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+                  /* subiu de #6d7686: no grafite aquele cinza caía para
+                     2,6:1 e a linha sumia */
+                  color:#9aa3b2 }
+.tm-banner-live { width:5px; height:5px; border-radius:50%; background:#8ac5fa;
+                  box-shadow:0 0 0 3px #8ac5fa1f; animation:tmPulse 2.6s ease-in-out infinite }
+@keyframes tmPulse { 0%,100% { opacity:1 } 50% { opacity:.35 } }
+@media (max-width:1023px) { .tm-banner-note { display:none } }
+
+.tm-surface {
+  /* Um azul só, o da Tipmarket em fundo claro — o mesmo #3a80c8 que a
+     página usa nos eyebrows, nos pontos e nos links sobre branco. O
+     produto tokeniza esta cor como --primary/--sidebar-primary/--ring,
+     então trocá-la aqui repinta a barra, o Sign up, o Trade, o "view
+     all" e a rosca dos Featured de uma vez. Yes/No e os --cat-* não
+     dependem dela de propósito: a marca é sua, ler um mercado não é. */
+  --brand:#3a80c8;
+  width:100%; min-height:100%;
+  background:var(--tm-canvas); color:var(--tm-ink);
+  display:flex; align-items:stretch;
+  font-size:13px;
+}
+
+/* ── sidebar — nearly everything in here is brand ─────────────────── */
+.tm-side { width:228px; flex-shrink:0; background:var(--tm-surf);
+           border-right:1px solid var(--tm-line);
+           display:flex; flex-direction:column; gap:14px; padding:14px 12px }
+.tm-side-brand { display:flex; align-items:center; gap:9px; padding:2px 4px 2px }
+/* a lockup inteira no lugar do par marca+nome que girava */
+.tm-side-logo { height:21px; width:auto; display:block; flex-shrink:0 }
+
+.tm-side-burger { margin-left:auto; color:var(--tm-faint); flex-shrink:0;
+                  display:inline-flex; align-items:center }
+.tm-side-burger svg { width:15px; height:15px }
+
+.tm-side-nav { display:flex; flex-direction:column; gap:1px }
+
+/* Os dois botões que o produto passou a ancorar no pé da barra. O Sign up
+   é o segundo lugar da tela onde a marca se pinta sozinha — entra no
+   repaint pelo mesmo --brand do botão do cabeçalho.                   */
+/* O margin-bottom não é decoração: colado no pé da barra, o par ficava
+   sob a sobreposição da Quebra 2 e aparecia por 8px — meio-botão lê como
+   defeito de render, e o resto do quadro segue a regra de que nada é
+   mostrado pela metade. O valor acompanha o -84px de .tm-overlap. Abaixo
+   de 1024px a barra vira trilho de ícones e o par sai de cena.       */
+.tm-side-auth { margin-top:auto; margin-bottom:92px;
+                display:flex; flex-direction:column; gap:8px; padding:0 2px 2px }
+.tm-side-signup, .tm-side-login {
+  display:flex; align-items:center; justify-content:center;
+  height:34px; border-radius:9px; font-size:12.5px; font-weight:700
+}
+.tm-side-signup { background:var(--brand); color:#fff;
+                  transition:background-color .55s ease }
+.tm-side-login  { color:var(--tm-ink); border:1px solid var(--tm-line);
+                  background:var(--tm-surf) }
+.tm-side-item { display:flex; align-items:center; gap:10px; padding:8px 10px;
+                border-radius:9px; font-size:12.5px; color:var(--tm-soft);
+                white-space:nowrap;
+                transition:background-color .55s ease, color .55s ease }
+.tm-side-item i { font-style:normal }
+.tm-side-item svg { width:16px; height:16px; flex-shrink:0 }
+.tm-side-item.is-dim { color:#a7adb8 }
+/* --sidebar-accent / --sidebar-accent-foreground in the app */
+.tm-side-item.is-on { background:color-mix(in srgb, var(--brand) 10%, #fff);
+                      color:var(--brand); font-weight:600 }
+
+/* ── main column ──────────────────────────────────────────────────── */
+.tm-main { flex:1; min-width:0; display:flex; flex-direction:column;
+           padding:0; background:var(--tm-canvas) }
+/* Nothing in the column may shrink. The whole point of this picture is
+   that the app runs at its own size and the frame crops it — let a flex
+   child compress to fit and the Featured rail collapses to nothing,
+   which is exactly the squeezed-app problem this pass exists to fix. */
+.tm-main > * { flex-shrink:0 }
+
+.tm-main-head { display:flex; align-items:center; gap:8px;
+                padding:13px 22px 12px; background:var(--tm-surf) }
+.tm-main-title { font-size:19px; font-weight:800; color:var(--tm-ink);
+                 letter-spacing:-.03em; margin-right:auto }
+.tm-icon-btn { width:30px; height:30px; border-radius:50%; flex-shrink:0;
+               display:inline-flex; align-items:center; justify-content:center;
+               border:1px solid var(--tm-line); color:var(--tm-soft);
+               background:var(--tm-surf) }
+.tm-icon-btn svg { width:14px; height:14px }
+.tm-btn-ghost, .tm-btn-brand { font-size:12px; font-weight:600; padding:7px 15px;
+                               border-radius:15px; white-space:nowrap }
+.tm-btn-ghost { color:var(--tm-ink); border:1px solid var(--tm-line);
+                background:var(--tm-surf) }
+.tm-btn-brand { background:var(--brand); color:#fff;
+                transition:background-color .55s ease }
+
+.tm-search-row { display:flex; align-items:center; gap:8px;
+                 padding:0 22px 11px; background:var(--tm-surf) }
+.tm-search { flex:1; min-width:0; display:flex; align-items:center; gap:9px;
+             border:1px solid var(--tm-line); border-radius:14px;
+             padding:10px 14px; font-size:12.5px; color:var(--tm-faint);
+             background:var(--tm-field); white-space:nowrap; overflow:hidden }
+.tm-search svg { width:15px; height:15px; flex-shrink:0 }
+
+.tm-tabs { display:flex; align-items:center; gap:19px; white-space:nowrap;
+           padding:0 22px; background:var(--tm-surf);
+           border-bottom:1px solid var(--tm-line) }
+.tm-tab { display:inline-flex; align-items:center; gap:5px; font-size:12.5px;
+          color:var(--tm-soft); padding:0 0 10px; position:relative }
+.tm-tab svg { width:13px; height:13px }
+.tm-tab.is-on { color:var(--tm-ink); font-weight:700 }
+.tm-tab.is-on::after { content:''; position:absolute; left:0; right:0; bottom:-1px;
+                       height:2px; border-radius:2px; background:var(--brand);
+                       transition:background-color .55s ease }
+
+/* ── the Featured cards — the premium rail above Explore ──────────── */
+.tm-feat { display:flex; gap:14px; padding:16px 0 0 22px; position:relative;
+           overflow:hidden }
+.tm-fcard { position:relative; overflow:hidden; flex:0 0 auto;
+            display:flex; flex-direction:column;
+            width:clamp(248px,34%,352px); height:158px;
+            background:var(--tm-surf); border:1px solid var(--tm-line);
+            border-radius:16px; padding:13px 15px;
+            box-shadow:var(--tm-card-sh);
+            --gauge-bg:var(--tm-surf); --gauge-track:#e1e5ea;
+            --gauge-arc:var(--brand) }
+
+/* A imagem de fundo do evento. Vetor e não foto: o quadro inteiro é
+   desenhado à mão, e uma foto exigiria hospedar arquivo sem deixar o
+   mock mais verdadeiro. Trocar por foto depois é uma linha — o elemento
+   já ocupa o card todo e já tem o véu de contraste por cima.        */
+.tm-fcard-art { position:absolute; inset:0; z-index:0; width:100%; height:100%;
+                pointer-events:none }
+.tm-fcard--dark { color:#fff; border-color:#ffffff26;
+                  --gauge-bg:#0f141b; --gauge-track:#ffffff2e;
+                  --gauge-arc:color-mix(in srgb, var(--brand) 62%, #fff) }
+/* O véu rebaixa o desenho, não o apaga: a arte já escurece sozinha para
+   baixo, então aqui basta o suficiente para o texto ganhar contraste. */
+.tm-fcard--dark::after { content:''; position:absolute; inset:0; z-index:0;
+                         background:linear-gradient(160deg,#0b0f1410 0%,#0b0f1450 44%,#0b0f14b5 100%) }
+.tm-fcard--dark .tm-fcard-q { color:#fff }
+.tm-fcard--dark .tm-feat-pill { color:#e4f1ff; background:#ffffff24 }
+.tm-fcard--dark .tm-feat-save { background:#ffffff2b }
+.tm-fcard--dark .tm-fcard-cap { color:#ffffffa8 }
+.tm-fcard--dark .tm-mult { color:#e4f1ff; background:#ffffff1f }
+.tm-feat-pill { display:inline-flex; align-items:center; gap:5px; align-self:flex-start;
+                font-size:10.5px; font-weight:700; padding:4px 9px; border-radius:999px;
+                color:var(--brand); background:color-mix(in srgb, var(--brand) 11%, #fff);
+                transition:color .55s ease, background-color .55s ease }
+.tm-feat-pill svg { width:11px; height:11px }
+.tm-feat-save { position:absolute; top:11px; right:12px;
+                width:26px; height:26px; border-radius:50%;
+                display:inline-flex; align-items:center; justify-content:center;
+                background:#2c3138; color:#fff }
+.tm-feat-save svg { width:12px; height:12px }
+.tm-feat-pill, .tm-fcard-q { position:relative; z-index:1 }
+.tm-fcard-q { margin:12px 0 0; font-size:15.5px; font-weight:800; line-height:1.26;
+              letter-spacing:-.02em; color:var(--tm-ink); max-width:82%;
+              display:-webkit-box; -webkit-box-orient:vertical;
+              -webkit-line-clamp:2; line-clamp:2; overflow:hidden }
+.tm-feat-save { z-index:1 }
+
+/* ── o rodapé do card: medidor, multiplicador e o botão ───────────
+   O produto trocou a marca-d'água por este bloco: uma rosca com a
+   probabilidade dentro, o multiplicador ao lado e a legenda do que a
+   porcentagem quer dizer — que muda por tipo de evento ("Yes chance"
+   num sim/não, "Flamengo leads" num jogo).
+
+   Ele ocupa espaço real (margin-top:auto), não position:absolute. Preso
+   à base por absolute ele não empurrava nada: quando o card encolheu no
+   telefone e a pergunta passou a ocupar duas linhas, a rosca subia por
+   cima dos descendentes do título. Em fluxo, o título sempre reserva a
+   altura dele e o clamp de 2 linhas resolve o que sobra.            */
+.tm-fcard-foot { position:relative; z-index:1; margin-top:auto;
+                 display:flex; align-items:center; gap:10px }
+.tm-gauge { position:relative; width:42px; height:42px; border-radius:50%;
+            flex-shrink:0; display:grid; place-items:center; --p:45;
+            background:conic-gradient(var(--gauge-arc) calc(var(--p) * 3.6deg),
+                                      var(--gauge-track) 0);
+            transition:background .55s ease }
+.tm-gauge::before { content:''; position:absolute; inset:4px; border-radius:50%;
+                    background:var(--gauge-bg) }
+.tm-gauge i { position:relative; font-style:normal; font-size:11px; font-weight:800;
+              letter-spacing:-.03em }
+.tm-fcard-meta { display:flex; flex-direction:column; align-items:flex-start;
+                 gap:3px; min-width:0 }
+.tm-mult { font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:6px;
+           color:var(--brand); background:color-mix(in srgb, var(--brand) 12%, #fff);
+           transition:color .55s ease, background-color .55s ease }
+.tm-fcard-cap { font-size:10px; color:var(--tm-faint); white-space:nowrap }
+.tm-fcard-cta { margin-left:auto; flex-shrink:0;
+                font-size:12px; font-weight:700; color:#fff;
+                background:var(--brand); padding:7px 17px; border-radius:999px;
+                transition:background-color .55s ease }
+.tm-feat-next { position:absolute; z-index:2; right:14px; top:50%; transform:translateY(-50%);
+                width:28px; height:28px; border-radius:50%;
+                display:inline-flex; align-items:center; justify-content:center;
+                background:var(--tm-surf); border:1px solid var(--tm-line);
+                color:var(--tm-ink); box-shadow:var(--tm-card-sh) }
+.tm-feat-next svg { width:13px; height:13px }
+
+.tm-dots { display:flex; align-items:center; justify-content:center; gap:5px;
+           padding:11px 0 0 }
+.tm-dots i { width:5px; height:5px; border-radius:999px; background:#c8ccd3 }
+.tm-dots i.is-on { width:15px; background:var(--tm-ink) }
+
+.tm-explore { display:flex; align-items:baseline; justify-content:space-between;
+              gap:12px; padding:14px 22px 0 }
+.tm-explore-t { font-size:16px; font-weight:800; color:var(--tm-ink);
+                letter-spacing:-.03em }
+.tm-explore-t i { font-style:italic; color:var(--brand); transition:color .55s ease }
+.tm-explore-n { font-size:11px; color:var(--tm-faint) }
+
+/* ── Explore: colunas por categoria ──────────────────────────────
+   O produto deixou de listar tudo numa grade uniforme: agora separa por
+   categoria em colunas, cada uma com o seu "view all", e usa dois tipos
+   de card. Evento agrupado traz uma linha por resultado possível; o
+   binário traz as duas faixas de preço. Os dois cabem aqui porque a
+   diferença entre eles é o argumento — "todo mercado que seu cliente
+   deseja" vai de jogo com três resultados a sim/não.
+
+   auto-fit em vez de duas colunas fixas: a mesma regra dá duas colunas
+   ao lado da barra, uma quando o quadro estreita, sem breakpoint
+   decidindo.                                                        */
+.tm-cols { display:grid; gap:14px 18px; padding:12px 22px 0;
+           grid-template-columns:repeat(auto-fit,minmax(300px,1fr)) }
+.tm-col { display:flex; flex-direction:column; gap:9px; min-width:0 }
+.tm-col-head { display:flex; align-items:center; justify-content:space-between;
+               gap:12px }
+.tm-col-t { display:inline-flex; align-items:center; gap:6px;
+            font-size:13.5px; font-weight:800; font-style:italic;
+            letter-spacing:-.02em; color:var(--tm-ink) }
+/* o ponto herda a cor fixa da categoria, não a da marca */
+.tm-col-t i { width:5px; height:5px; border-radius:50%; background:var(--cat) }
+.tm-col-all { display:inline-flex; align-items:center; gap:5px; flex-shrink:0;
+              font-size:11px; font-weight:600; color:var(--brand);
+              transition:color .55s ease }
+.tm-col-all svg { width:12px; height:12px }
+
+/* fixo por categoria — o app trava --cat-esportes, --cat-cripto … então
+   estes são os tokens que ficam parados enquanto a marca se repinta */
+.tm-card-icon { width:28px; height:28px; border-radius:9px; flex-shrink:0;
+                display:inline-flex; align-items:center; justify-content:center;
+                color:var(--cat);
+                background:color-mix(in srgb, var(--cat) 11%, #fff);
+                box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--cat) 26%, #fff) }
+.tm-card-icon svg { width:15px; height:15px }
+
+.tm-ev, .tm-bin { border:1px solid var(--tm-line); border-radius:14px;
+                  background:var(--tm-surf); padding:11px 12px;
+                  display:flex; flex-direction:column; gap:9px;
+                  box-shadow:var(--tm-card-sh) }
+
+/* ── evento agrupado ─────────────────────────────────────────────── */
+.tm-ev-head { display:flex; align-items:center; gap:9px }
+.tm-ev-q { margin:0; flex:1; min-width:0; font-size:12.5px; font-weight:700;
+           line-height:1.25; letter-spacing:-.02em; color:var(--tm-ink);
+           white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.tm-ev-n { font-size:10px; color:var(--tm-faint); white-space:nowrap; flex-shrink:0 }
+.tm-ev-chev { width:12px; height:12px; flex-shrink:0; color:var(--tm-faint) }
+
+.tm-ev-rows { display:flex; flex-direction:column; gap:6px }
+.tm-ev-row  { display:flex; align-items:center; gap:8px; font-size:11.5px }
+.tm-ev-av   { width:17px; height:17px; border-radius:50%; flex-shrink:0;
+              display:inline-flex; align-items:center; justify-content:center;
+              font-style:normal; font-size:8.5px; font-weight:800;
+              color:var(--tm-faint); background:var(--tm-surf-2);
+              box-shadow:inset 0 0 0 1px var(--tm-line) }
+.tm-ev-row b { flex:1; min-width:0; font-weight:600; color:var(--tm-ink);
+               white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.tm-ev-mult { font-size:10.5px; color:var(--tm-faint); flex-shrink:0 }
+/* verde e vermelho travados: --color-success / --color-danger do tema
+   claro, verbatim. É a divisão que sustenta a seção — a marca é sua,
+   ler um mercado não é.                                             */
+.tm-ev-y  { flex-shrink:0; min-width:38px; text-align:center;
+            font-size:11px; font-weight:800; padding:3px 7px; border-radius:7px;
+            color:var(--tm-yes); background:#096e4a1a;
+            border:1px solid color-mix(in srgb, var(--tm-yes) 22%, transparent) }
+.tm-ev-n2 { flex-shrink:0; font-size:11px; font-weight:700; padding:3px 9px;
+            border-radius:7px; color:var(--tm-no); background:#b32b281a;
+            border:1px solid color-mix(in srgb, var(--tm-no) 22%, transparent) }
+
+.tm-ev-foot { display:flex; align-items:center; justify-content:space-between;
+              gap:10px; font-size:10px; color:var(--tm-faint) }
+.tm-ev-more { color:var(--brand); font-weight:600; flex-shrink:0;
+              transition:color .55s ease }
+
+/* ── mercado binário ─────────────────────────────────────────────── */
+.tm-bin-head { display:flex; align-items:flex-start; gap:9px }
+.tm-bin-q { margin:0; flex:1; min-width:0; font-size:12.5px; font-weight:700;
+            line-height:1.28; letter-spacing:-.02em; color:var(--tm-ink);
+            display:-webkit-box; -webkit-box-orient:vertical;
+            -webkit-line-clamp:2; line-clamp:2; overflow:hidden }
+.tm-bin-pct { display:flex; flex-direction:column; align-items:flex-end;
+              gap:1px; flex-shrink:0 }
+.tm-bin-pct b { font-size:14.5px; font-weight:800; letter-spacing:-.03em;
+                color:var(--tm-ink) }
+.tm-bin-pct i { font-style:normal; font-size:10px; color:var(--brand);
+                transition:color .55s ease }
+
+/* a faixa é uma barra de probabilidade, não um botão: o preenchimento
+   claro atrás do preço é o próprio preço lido como largura */
+.tm-bin-bars { display:grid; grid-template-columns:1fr 1fr; gap:8px }
+.tm-bin-bar  { position:relative; overflow:hidden; border-radius:9px;
+               display:flex; align-items:center; justify-content:space-between;
+               gap:8px; padding:8px 10px; font-size:11.5px; font-weight:700 }
+.tm-bin-bar > * { position:relative; z-index:1 }
+.tm-bin-fill { position:absolute; left:0; top:0; bottom:0; z-index:0; width:45%;
+               transition:width .8s cubic-bezier(.16,1,.3,1) }
+.tm-bin-y { color:var(--tm-yes); background:#096e4a12;
+            border:1px solid color-mix(in srgb, var(--tm-yes) 20%, transparent) }
+.tm-bin-y .tm-bin-fill { background:#096e4a26 }
+.tm-bin-n { color:var(--tm-no); background:#b32b2812;
+            border:1px solid color-mix(in srgb, var(--tm-no) 20%, transparent) }
+.tm-bin-n .tm-bin-fill { background:#b32b2826 }
+
+/* ── narrower frames ──────────────────────────────────────────────── */
+@media (max-width:1279px) { .tm-tab:nth-child(n+6) { display:none } }
+
+@media (max-width:1023px) {
+  /* the sidebar collapses to the icon rail the app itself uses */
+  .tm-screen  { height:clamp(640px,80vw,704px) }
+  .tm-overlap { margin-top:-76px; padding-top:120px }
+  .tm-side { width:50px; padding:14px 7px }
+  .tm-side-brand { justify-content:center }
+  /* a lockup inteira não cabe em 50px; recortada pela esquerda ela vira
+     a marca sozinha, sem precisar de um segundo arquivo */
+  .tm-side-logo { width:21px; object-fit:cover; object-position:left center }
+  .tm-side-item { justify-content:center; padding:8px 0 }
+  .tm-side-item i { display:none }
+  .tm-tab:nth-child(n+5) { display:none }
+  .tm-main-head, .tm-search-row, .tm-tabs, .tm-feat, .tm-explore, .tm-cols {
+    padding-left:16px; padding-right:16px;
+  }
+  /* na barra reduzida a ícones não cabe rótulo de botão: some o par
+     daqui — mas entrar é a ação principal de quem chega, então o Log in
+     não pode sumir da tela junto. Ele fica no cabeçalho, ao lado do
+     Sign up, que é onde o produto o mostra quando não há barra. */
+  .tm-side-burger, .tm-side-auth { display:none }
+  .tm-btn-ghost { padding:7px 13px }
+}
+
+/* ── phones ───────────────────────────────────────────────────────────
+   A phone is portrait, so the screen gets TALLER here rather than
+   shorter — that is what buys a market row its full Sim/Não instead of
+   slicing it. The order of what survives is deliberate: the brand (the
+   claim), then a complete market row (the product), then the Featured
+   rail, then search. Nothing is half-shown; whatever does not fit falls
+   past the crop and under Quebra 2, same as on desktop.              */
+@media (max-width:767px) {
+  .tm-stage   { margin-top:30px; padding:0 12px }
+  .tm-bezel   { padding:0 7px; border-radius:20px 20px 0 0 }
+  .tm-screen  { height:clamp(568px,152vw,640px); border-radius:12px 12px 0 0 }
+  .tm-overlap { margin-top:-62px; padding-top:104px }
+
+  .tm-surface { font-size:12px }
+  .tm-side { display:none }
+
+  .tm-main-head { padding:11px 14px 9px; gap:7px }
+  .tm-main-title { font-size:15.5px }
+  .tm-icon-btn { display:none }
+  /* sem a barra lateral, a marca precisa estar em algum lugar — e agora
+     que ela é uma só, cabe a própria logo em vez de um quadrado de cor */
+  .tm-main-head::before {
+    content:''; width:19px; height:19px; flex-shrink:0;
+    background:url(logo-mark.svg) center/contain no-repeat;
+  }
+  /* sem barra lateral o cabeçalho é o único lugar onde entrar existe;
+     os dois cabem folgados em 360px porque o par de ícones já saiu */
+  .tm-btn-ghost { padding:6px 11px; font-size:11.5px }
+  .tm-btn-brand { padding:6px 12px; font-size:11.5px }
+
+  .tm-search-row { padding:0 14px 9px }
+  .tm-search { padding:8px 11px; font-size:11.5px; border-radius:11px }
+  .tm-tabs { gap:15px; padding:0 14px }
+  .tm-tab { font-size:11.5px; padding-bottom:8px }
+  .tm-tab:nth-child(n+4) { display:none }
+
+  /* one card, and the next one entering the crop on the right — a rail
+     has to still read as a rail or the carousel stops being one */
+  .tm-feat { padding:12px 0 0 14px; gap:10px }
+  /* 138 e não 122: a pergunta quebra em duas linhas nesta largura, e
+     122 punha a rosca 2,5px POR CIMA do descendente. 138 devolve ao
+     rodapé a mesma folga proporcional que ele tem no desktop. */
+  .tm-fcard { width:76%; height:138px; padding:11px 13px; border-radius:14px }
+  .tm-fcard-q { font-size:13px; margin-top:8px; max-width:74% }
+  .tm-feat-save { width:23px; height:23px; top:9px; right:10px }
+  .tm-fcard-cta { padding:6px 14px; font-size:11.5px }
+  /* nada de left/right/bottom aqui: o rodapé é relative agora, e esses
+     valores viravam deslocamento, jogando a rosca por cima do título.
+     O recuo horizontal já vem do padding do card. */
+  .tm-fcard-foot { gap:8px }
+  .tm-gauge { width:36px; height:36px }
+  .tm-gauge i { font-size:10px }
+  .tm-fcard-cap { display:none }
+  .tm-feat-next { display:none }
+  .tm-dots { padding-top:9px }
+
+  .tm-explore { padding:12px 14px 0 }
+  .tm-explore-t { font-size:14.5px }
+  .tm-explore-n { display:none }
+
+  /* uma coluna no telefone: duas deixariam ~160px por card, que nenhuma
+     pergunta de mercado em português sobrevive */
+  .tm-cols { padding:9px 14px 0; gap:12px; grid-template-columns:1fr }
+  .tm-ev, .tm-bin { padding:10px 11px; gap:8px }
+  .tm-ev-q, .tm-bin-q { font-size:12px }
+  .tm-card-icon { width:26px; height:26px; border-radius:8px }
+  .tm-bin-bars { gap:7px }
+  .tm-bin-bar { padding:7px 9px; font-size:11px }
+}
+
+/* ── Browser chrome frame (BackOffice + widget mocks) ─────────────── */
+.tm-frame       { position:relative; border:1px solid var(--border); border-radius:16px; overflow:hidden; background:#07070a;
+                  box-shadow:0 40px 90px -40px rgba(7,7,10,.7) }
+.tm-frame-bar   { display:flex; align-items:center; gap:12px; padding:13px 18px;
+                  border-bottom:1px solid var(--border); background:rgba(255,255,255,.02) }
+.tm-frame-dots  { display:flex; gap:6px }
+.tm-frame-dots span { width:9px; height:9px; border-radius:50%; background:#2e3542 }
+.tm-frame-url   { flex:1; max-width:320px; padding:5px 12px; border-radius:6px;
+                  background:rgba(255,255,255,.04); color:var(--muted) }
+.tm-frame--light                     { background:#f6f6f4; border-color:rgba(0,0,0,.1) }
+.tm-frame--light .tm-frame-bar       { background:#eeeeeb; border-bottom-color:rgba(0,0,0,.08) }
+.tm-frame--light .tm-frame-dots span { background:#cfcfca }
+.tm-frame--light .tm-frame-url       { background:#fff; color:#8a8a85 }
+
+/* ── The four proofs (Quebra 2) ────────────────────────────
+   One object at three densities: a row of four on the desktop, 2×2 on
+   the tablet, and on the phone that same row — swiped, not stacked.
+   Stacked, four short sentences cost a full screen of scroll.
+
+   Below 640px the track bleeds past the section padding to both edges
+   of the viewport. A card that stops short of the edge reads as a
+   broken grid; one that runs off it reads as something you can drag.
+   The sliver of the next card is the whole affordance — no arrows.  */
+.tm-proofs { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px }
+.tm-proof  { display:flex; flex-direction:column; gap:12px; padding:20px;
+             background:#fff; border:1px solid #edf0f2; border-radius:18px }
+
+@media (max-width:1023px) {
+  .tm-proofs { grid-template-columns:repeat(2,minmax(0,1fr)) }
+}
+
+@media (max-width:639px) {
+  .tm-proofs {
+    display:flex; gap:12px;
+    margin-inline:calc(50% - 50vw);   /* section is px-6 here, so −24px a side */
+    padding-inline:24px;              /* first card stays on the text's margin */
+    overflow-x:auto; overscroll-behavior-x:contain;
+    scroll-snap-type:x mandatory; scroll-padding-inline:24px;
+    -webkit-overflow-scrolling:touch; scrollbar-width:none;
+  }
+  .tm-proofs::-webkit-scrollbar { display:none }
+  .tm-proofs > .tm-proof { flex:0 0 80%; scroll-snap-align:start }
+  /* tail room, so the last card can snap flush left like the others
+     instead of jamming against the end of the track */
+  .tm-proofs::after { content:""; flex:0 0 calc(20% - 12px) }
+}
+
+/* The position indicator exists only where the rail does: four cards
+   have to read as four, and a scrollbar is hidden.                   */
+.tm-proof-dots, .tm-step-dots { display:none }
+@media (max-width:639px) {
+  .tm-proof-dots, .tm-step-dots { display:flex; justify-content:center; gap:2px }
+  .tm-proof-dot, .tm-step-dot   { width:24px; height:24px; padding:0; border:0;
+                                  background:none; cursor:pointer;
+                                  display:grid; place-items:center }
+  .tm-proof-dot::before, .tm-step-dot::before {
+                          content:""; width:6px; height:6px; border-radius:50%;
+                          background:#c4c8d0;
+                          transition:background-color .3s ease,
+                                     transform .3s cubic-bezier(.16,1,.3,1) }
+  .tm-proof-dot[aria-current="true"]::before,
+  .tm-step-dot[aria-current="true"]::before { background:#3a80c8; transform:scale(1.5) }
+  .tm-proof-dot:focus-visible, .tm-step-dot:focus-visible { outline:none }
+  .tm-proof-dot:focus-visible::before,
+  .tm-step-dot:focus-visible::before { box-shadow:0 0 0 3px rgba(138,197,250,.55) }
+}
+
+/* ── The line that closes the thesis (Quebra 2) ─────────────────
+   Everything above this line is evidence; this is the verdict, and it
+   should arrive like one. The rule draws itself down the margin, the
+   wash follows it across, and only then does the sentence settle:
+   mark, highlight, statement — in that order, inside 800ms. One
+   gesture in three beats, not three animations.
+
+   The wash is deliberately not a card. Four white cards sit directly
+   above it, and a fifth would read as one more proof instead of the
+   conclusion drawn from all of them. So it stays a tint on the
+   section's own grey, and the rule does the pointing.
+
+   The resting state IS the finished state — the hidden state exists
+   only while .is-armed is on, and only JS ever puts it there. If the
+   script never runs, the sentence is simply there, which is the one
+   outcome that must not depend on a script.                        */
+.tm-close { position:relative; padding:14px 22px 14px 26px; border-radius:0 12px 12px 0 }
+
+.tm-close::before, .tm-close::after { content:""; position:absolute; pointer-events:none }
+
+/* the rule: 2px in the margin, drawn top-down */
+.tm-close::before { left:0; top:0; bottom:0; width:2px; background:#3a80c8;
+                    transform:scaleY(1); transform-origin:top;
+                    transition:transform .46s cubic-bezier(.16,1,.3,1) }
+
+/* the wash: laid left-to-right, behind the sentence */
+.tm-close::after  { inset:0; z-index:0; border-radius:inherit;
+                    background:linear-gradient(90deg,
+                      rgba(58,128,200,.10), rgba(58,128,200,.02) 78%, transparent);
+                    transform:scaleX(1); transform-origin:left;
+                    transition:transform .62s cubic-bezier(.16,1,.3,1) .14s }
+
+/* positioned, or the absolutely-placed ::after would paint over it */
+.tm-close > p { position:relative; z-index:1; opacity:1; transform:none;
+                transition:opacity .52s cubic-bezier(.16,1,.3,1) .22s,
+                           transform .52s cubic-bezier(.16,1,.3,1) .22s }
+
+.tm-close.is-armed::before { transform:scaleY(0) }
+.tm-close.is-armed::after  { transform:scaleX(0) }
+.tm-close.is-armed > p     { opacity:0; transform:translateY(6px) }
+
+/* ── BackOffice mock (Quebra 2) ───────────────────────────
+   Tema claro, e tudo aqui sai de tokens locais em vez de cores soltas:
+   trocar o painel de tema é reescrever este bloco de seis linhas, não
+   caçar #fff pelo HTML. Foi assim que ele nasceu escuro e virou claro.
+
+   --brand cai de #8ac5fa para #3a80c8 no claro pelo mesmo motivo que o
+   próprio app derruba a cor de marca no tema light: beam sobre branco
+   não passa em contraste no momento em que vira texto de botão ou
+   número de tabela. É a mesma nota que o herói já carrega.
+
+   O que a marca pinta: nav ativo, botão primário, chip ativo, as
+   sparklines, o preço do Sim, a barra de probabilidade. O que ela não
+   pinta: as variações (alta verde, baixa vermelha), os pontos de
+   categoria e as luzes de status. Sua marca colore o produto, ela não
+   recolore o que um número significa — mesma regra do Sim/Não.
+
+   Os contadores nos chips são a fila de "precisa de ação" do BackOffice
+   real, dobrada dentro da linha de filtros. Um dashboard mostra
+   números; isto mostra que há trabalho a fazer.                     */
+#tm-backoffice {
+  --bo-bg:      #ffffff;   /* corpo            */
+  --bo-panel:   #fafbfc;   /* barra lateral    */
+  --bo-tile:    #fbfcfd;   /* cartões de KPI   */
+  --bo-line:    #e6e9ed;   /* bordas e réguas  */
+  --bo-text:    #14161a;   /* texto principal  */
+  --bo-dim:     #5a6070;   /* texto secundário */
+  --bo-faint:   #6f7788;   /* rótulos          */
+  --bo-onbrand: #ffffff;   /* sobre a marca    */
+  --bo-up:      #0d7a55;
+  --bo-down:    #c62b30;
+  --bo-due:     #a3670b;   /* espera por gente, não pelo mercado */
+  --brand:      #3077bf;
+}
+
+/* a moldura, em claro */
+.tm-frame--bo { background:var(--bo-bg); border-color:var(--bo-line);
+                box-shadow:0 30px 70px -34px rgba(20,32,54,.28) }
+.tm-frame--bo .tm-frame-bar       { background:#f4f6f8; border-bottom-color:var(--bo-line) }
+.tm-frame--bo .tm-frame-dots span { background:#ccd2da }
+.tm-frame--bo .tm-frame-url       { background:#fff; color:var(--bo-faint);
+                                    border:1px solid var(--bo-line) }
+
+.tm-bo-side  { background:var(--bo-panel) }
+.tm-bo-rule  { border-color:var(--bo-line) !important }
+
+/* cabeçalho */
+.tm-bo-head  { display:flex; align-items:flex-start; justify-content:space-between;
+               gap:14px; flex-wrap:wrap }
+.tm-bo-title { font-size:16px; font-weight:600; letter-spacing:-.01em; color:var(--bo-text) }
+.tm-bo-sub   { font-size:12px; line-height:1.5; color:var(--bo-dim); margin-top:3px }
+.tm-bo-acts  { display:flex; align-items:center; gap:8px; flex-shrink:0 }
+.tm-bo-btn   { display:inline-flex; align-items:center; gap:6px; height:30px; padding:0 12px;
+               border-radius:8px; font-size:12.5px; font-weight:500; white-space:nowrap }
+.tm-bo-btn svg { width:13px; height:13px; flex-shrink:0 }
+.tm-bo-btn--ghost   { border:1px solid var(--bo-line); color:var(--bo-dim); background:#fff }
+.tm-bo-btn--primary { background:var(--brand); color:var(--bo-onbrand) }
+
+/* menu lateral */
+.tm-bo-nav     { display:flex; flex-direction:column; gap:1px }
+.tm-bo-navitem { display:flex; align-items:center; gap:9px; padding:7px 10px; border-radius:8px;
+                 font-size:13px; color:var(--bo-dim) }
+.tm-bo-navitem svg   { width:14px; height:14px; flex-shrink:0; opacity:.8 }
+.tm-bo-navitem.is-on { background:color-mix(in srgb, var(--brand) 12%, transparent);
+                       color:var(--brand); font-weight:600 }
+.tm-bo-navitem.is-on svg { opacity:1 }
+
+/* filtros — a fila da operação */
+.tm-bo-chips { display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; padding-bottom:1px }
+.tm-bo-chips::-webkit-scrollbar { display:none }
+.tm-bo-chip  { display:inline-flex; align-items:center; gap:6px; height:27px; padding:0 11px;
+               border-radius:999px; border:1px solid var(--bo-line); background:#fff;
+               color:var(--bo-dim); font-size:11.5px; white-space:nowrap; flex-shrink:0 }
+.tm-bo-chip b        { font-variant-numeric:tabular-nums; font-weight:600; color:var(--bo-text) }
+.tm-bo-chip.is-on    { border-color:color-mix(in srgb, var(--brand) 45%, transparent);
+                       background:color-mix(in srgb, var(--brand) 10%, transparent); color:var(--brand) }
+.tm-bo-chip.is-on b  { color:var(--brand) }
+.tm-bo-chip.is-due b { color:var(--bo-due) }
+
+/* KPIs */
+.tm-bo-kpis  { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px }
+.tm-bo-kpi   { display:flex; flex-direction:column; gap:9px; min-width:0;
+               padding:13px 14px; border-radius:11px;
+               border:1px solid var(--bo-line); background:var(--bo-tile) }
+.tm-bo-kpi-l { font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--bo-faint) }
+.tm-bo-kpi-v { font-size:20px; font-weight:600; letter-spacing:-.02em; color:var(--bo-text);
+               font-variant-numeric:tabular-nums; line-height:1 }
+.tm-bo-kpi-f { display:flex; align-items:flex-end; justify-content:space-between; gap:8px }
+.tm-bo-delta { display:inline-flex; align-items:center; gap:3px; font-size:10.5px;
+               font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap }
+.tm-bo-delta svg     { width:11px; height:11px }
+.tm-bo-delta i       { font-style:normal; font-weight:400; color:var(--bo-faint) }
+.tm-bo-delta.is-up   { color:var(--bo-up) }
+.tm-bo-delta.is-down { color:var(--bo-down) }
+
+.tm-spark    { width:54px; height:20px; flex-shrink:0 }
+.tm-spark path           { fill:none; stroke:var(--brand); stroke-width:1.5;
+                           stroke-linecap:round; stroke-linejoin:round }
+.tm-spark .tm-spark-fill { stroke:none; fill:color-mix(in srgb, var(--brand) 14%, transparent) }
+
+/* tabela — a grade vive aqui, e não em classe utilitária, porque no
+   telefone ela perde duas colunas em vez de virar rolagem lateral: a
+   moldura já é uma imagem larga num aparelho estreito, e uma segunda
+   coisa para arrastar dentro dela ninguém encontra. Categoria e Volume
+   saem; Mercado, Preço Sim e Status sustentam a leitura sozinhos.    */
+.tm-bo-table   { border:1px solid var(--bo-line); border-radius:10px; overflow-x:auto }
+.tm-bo-tbody   { min-width:600px }
+.tm-bo-thead,
+.tm-bo-tr      { display:grid; grid-template-columns:2.5fr 1.1fr 1fr .9fr .9fr;
+                 gap:12px; padding:12px 16px; align-items:center }
+.tm-bo-thead   { border-bottom:1px solid var(--bo-line); color:var(--bo-faint); font-size:9.5px }
+.tm-bo-tr      { border-bottom:1px solid var(--bo-line); color:var(--bo-text); font-size:13.5px }
+.tm-bo-tr:last-child { border-bottom:0 }
+.tm-bo-vol     { color:var(--bo-dim) }
+.tm-bo-price   { color:var(--brand); font-weight:600 }
+.tm-bo-tag     { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; color:var(--bo-dim) }
+.tm-bo-tag i   { width:6px; height:6px; border-radius:2px; display:block; flex-shrink:0 }
+.tm-bo-status  { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; white-space:nowrap }
+.tm-bo-status i { width:5px; height:5px; border-radius:50%; display:block; flex-shrink:0 }
+.tm-bo-status.is-open    { color:var(--bo-dim) }   .tm-bo-status.is-open i    { background:var(--bo-up) }
+.tm-bo-status.is-due     { color:var(--bo-due) }   .tm-bo-status.is-due i     { background:var(--bo-due) }
+.tm-bo-status.is-settled { color:var(--bo-faint) } .tm-bo-status.is-settled i { background:#c3c9d2 }
+.tm-bo-bar   { height:3px; border-radius:2px; margin-top:6px; overflow:hidden; background:var(--bo-line) }
+.tm-bo-bar i { display:block; height:100%; border-radius:2px; background:var(--brand) }
+
+/* ── O BackOffice no telefone ───────────────────────────────
+   Não é o painel de desktop espremido: é a versão mobile dele. A
+   moldura de navegador some (contradiz um app), a lateral vira barra
+   de topo, o menu desce para uma barra de abas no rodapé — onde a mão
+   procura — e a tabela deixa de ser tabela.
+
+   Linha de tabela em 340px não existe. Cada mercado vira um card de
+   duas linhas: nome e preço em cima, categoria, volume e status
+   embaixo. Assim Categoria e Volume, que eu tinha escondido para caber
+   na largura, voltam — a lista ganhou altura e sobra espaço.       */
+.tm-bo-only-sm { display:none }
+.tm-bo-tabs    { display:none }
+
+@media (max-width:1023px) {
+  .tm-bo-kpis { grid-template-columns:repeat(2,minmax(0,1fr)) }
+  .tm-frame--bo .tm-frame-bar { display:none }   /* app não tem barra de navegador */
+  .tm-bo-only-sm { display:flex }
+  .tm-bo-side svg { width:20px; height:20px; color:var(--bo-dim) }
+  .tm-bo-avatar   { width:28px; height:28px; border-radius:50%; background:#eef1f4;
+                    align-items:center; justify-content:center; flex-shrink:0 }
+  .tm-bo-avatar svg { width:16px; height:16px }
+
+  .tm-bo-tabs { display:grid; grid-template-columns:repeat(4,1fr);
+                border-top:1px solid var(--bo-line); background:#fff }
+  .tm-bo-tab  { display:flex; flex-direction:column; align-items:center; gap:4px;
+                padding:9px 4px 11px; color:var(--bo-faint) }
+  .tm-bo-tab svg { width:18px; height:18px }
+  .tm-bo-tab i   { font-style:normal; font-size:10px; letter-spacing:-.01em }
+  .tm-bo-tab.is-on { color:var(--brand) }
+  .tm-bo-tab.is-on i { font-weight:600 }
+}
+
+@media (max-width:639px) {
+  .tm-bo-hide-sm { display:none }
+  .tm-bo-tbody   { min-width:0 }
+  .tm-bo-table   { border:0; border-radius:0 }
+  .tm-bo-thead   { display:none }               /* lista não tem cabeçalho de tabela */
+
+  .tm-bo-tr { grid-template-columns:auto 1fr auto;
+              grid-template-areas:"name name price" "tag vol status";
+              gap:6px 10px; padding:13px 14px; align-items:center }
+  .tm-bo-tr > :nth-child(1) { grid-area:name }
+  .tm-bo-tr > .tm-bo-tag    { grid-area:tag }
+  .tm-bo-tr > .tm-bo-vol    { grid-area:vol; font-size:11px }
+  .tm-bo-tr > .tm-bo-price  { grid-area:price; justify-self:end; font-size:16px }
+  .tm-bo-tr > .tm-bo-status { grid-area:status; justify-self:end }
+  /* nome de mercado cabe em duas linhas aqui; cortar com reticências
+     perderia justamente a palavra que diz do que o mercado trata */
+  .tm-bo-tr .truncate { white-space:normal; overflow:visible }
+  .tm-bo-status  { white-space:normal; line-height:1.25 }
+
+  .tm-bo-kpi   { padding:11px 12px }
+  .tm-bo-kpi-v { font-size:18px }
+  .tm-bo-head  { gap:10px }
+}
+
+/* A seção de baixo abre o topo para o painel pousar nela. Sem isso o
+   "Produto 01" nasceria debaixo da moldura.                        */
+.tm-under { position:relative; padding-top:168px }
+/* Abaixo de 1024px nada atravessa, então o topo volta ao normal. */
+@media (max-width:1023px) { .tm-under { padding-top:120px } }
+@media (max-width:639px)  { .tm-under { padding-top:104px } }
+
+/* ── O palco do BackOffice (Quebra 2) ─────────────────────────
+   Duas ideias foram testadas e descartadas aqui, e vale registrar por
+   quê. A primeira foi cortar o painel com a Quebra 3, como o herói faz
+   com a Quebra 2: repetido, o mesmo gesto deixava as duas seções
+   idênticas, e no herói ele só funciona porque a tela é enorme e cortar
+   diz "não cabe" — numa moldura menor dizia "faltou pedaço". A segunda
+   foi inclinar 9 graus só no eixo X: inclinação pequena não lê como
+   decisão, lê como torto. Ou o painel está reto, ou está claramente em
+   perspectiva; o meio-termo parece defeito.
+
+   O que ficou assume a diagonal e assume o custo dela. Gira no Y (a
+   lateral fica perto e grande, a direita recua), deita no X, e um Z
+   mínimo tira a horizontal da horizontal. Depois desce: a seção fecha
+   antes da base do painel, e o resto pousa sobre a Quebra 3. Não é a
+   seção comendo a imagem — é a imagem saindo dela.
+
+   O custo é legibilidade na borda que recua, e é exatamente por isso
+   que o cartão de aprovação existe: reto, na frente, fora da
+   perspectiva. O painel dá volume; o cartão dá o recado.           */
+.tm-bo-stage { position:relative; perspective:1600px; perspective-origin:32% 46%;
+               padding:20px 0 40px;
+               /* A seção fecha 56px acima da base do painel, e só esses
+                  56px pousam sobre a Quebra 3 — com o giro em Z o canto
+                  direito desce mais uns 16px, então é ele que atravessa
+                  de fato. Mais do que isso deixa de ser um canto saindo
+                  da seção e vira imagem plantada na seção errada.     */
+               margin-bottom:-56px }
+
+/* Da referência veio isto: o painel não flutua no vazio, ele fica num
+   ambiente. Grade fina e um halo quente/frio dando volume ao cinza. */
+.tm-bo-grid  { position:absolute; z-index:0; pointer-events:none;
+               left:-6%; right:-6%; top:-6%; bottom:70px;
+               background-image:radial-gradient(rgba(20,32,54,.10) 1px, transparent 0);
+               background-size:26px 26px;
+               -webkit-mask-image:radial-gradient(66% 62% at 50% 46%,#000 0,transparent 76%);
+                       mask-image:radial-gradient(66% 62% at 50% 46%,#000 0,transparent 76%) }
+
+/* O halo desce com o painel e passa a ser a única pista de
+   profundidade na parte de baixo: sombra escura sobre uma seção
+   #07070a simplesmente não aparece — luz aparece.                  */
+.tm-bo-glow  { position:absolute; z-index:0; pointer-events:none;
+               left:-4%; right:8%; top:4%; bottom:-26%;
+               background:radial-gradient(50% 50% at 30% 40%, rgba(58,128,200,.24), transparent 68%),
+                          radial-gradient(44% 46% at 78% 70%, rgba(232,144,74,.17), transparent 70%),
+                          radial-gradient(58% 30% at 46% 96%, rgba(138,197,250,.22), transparent 72%);
+               filter:blur(56px) }
+
+.tm-bo-tilt  { position:relative; z-index:1;
+               transform:rotateY(-17deg) rotateX(7deg) rotateZ(1.4deg) scale(1.06);
+               transform-origin:24% 58%;
+               /* sombra deslocada para a direita e para baixo: é para onde
+                  o painel recua, e sombra centrada denuncia o truque */
+               box-shadow:46px 70px 96px -58px rgba(20,32,54,.55),
+                          14px 26px 50px -36px rgba(20,32,54,.3);
+               transition:transform 1.05s cubic-bezier(.16,1,.3,1),
+                          opacity .75s cubic-bezier(.16,1,.3,1) }
+
+/* o cartão do primeiro plano — reto, fora da perspectiva */
+/* entrada: chega mais deitado e assenta. Estado de repouso é o estado
+   final — só o JS arma o inicial, então sem script nada some.      */
+.tm-bo-stage.is-armed .tm-bo-tilt  { transform:translateY(26px) rotateY(-25deg) rotateX(12deg)
+                                               rotateZ(2.4deg) scale(1.01); opacity:0 }
+
+/* Abaixo de 1024px não há palco: a moldura já ocupa a tela inteira e
+   inclinar só rouba altura e nitidez. Fica reta, e o cartão sai.    */
+@media (max-width:1023px) {
+  /* Sem palco não há travessia: aqui a moldura é reta e frontal, e um
+     retangulo branco plantado no preto só parece erro de margem. A
+     margem positiva devolve o rodapé que a seção abriu mão (pb-0) para
+     o desktop poder transbordar. */
+  .tm-bo-stage { perspective:none; padding-bottom:0; margin-bottom:96px }
+  .tm-bo-tilt  { transform:none;
+                 box-shadow:0 30px 60px -38px rgba(20,32,54,.34) }
+  .tm-bo-stage.is-armed .tm-bo-tilt { transform:translateY(20px); opacity:0 }
+  .tm-bo-grid, .tm-bo-glow { display:none }
+}
+
+/* ── Bento de capacidades (Quebra 3) ────────────────────────────
+   Três versões desta seção morreram antes desta, e cada morte ensinou
+   uma coisa.
+
+   A primeira eram seis cards iguais, cada um com eyebrow + visor +
+   título + parágrafo + nota. Custava ~1000px no desktop e ~2200px no
+   telefone, e o visor era cortado em 104px: pagava-se a altura de um
+   card inteiro por um fragmento pequeno demais para ler.
+
+   A segunda trocou os seis cards por um trilho com um palco só. Cortava
+   a altura, mas errava o alvo por outro motivo: continuava tratando a
+   seção como um catálogo a ser percorrido. O trabalho dela não é
+   enumerar especificação — é transmitir segurança e abrir apetite. Quem
+   quiser a lista tem a Quebra 5 e a conversa.
+
+   Esta é o bento da referência de mercado, que acerta os dois de
+   uma vez. Quatro tiles, cada um com uma frase e uma imagem:
+
+   · O tile largo é o equivalente do "Direct link to live markets" deles
+     — título grande, uma linha, e um pedaço do produto de verdade
+     sangrando pela borda do card. Ali vai o livro de ofertas, que é a
+     peça que mais vende a categoria e a única que precisa ser mostrada
+     em detalhe, porque mercado vazio é a razão número um de fracasso.
+
+   · O tile de acento é o Payments & Compliance deles quase literal: uma
+     faixa de pílulas engolindo uma lista inteira de fornecedores sem
+     travar número em lugar nenhum. Este engole três dos seis cards
+     antigos — pagamentos, identidade e compliance — mais toda a lista
+     do antigo rodapé "o que ninguém lembra de orçar". É a consolidação
+     que faz a seção caber.
+
+   · Os outros dois têm imagem atmosférica, não infográfico. A curva
+     sangra pela base sem eixo e sem legenda; o ciclo é quatro linhas.
+
+   O acento é azul e não laranja porque o laranja é da referência. O
+   gradiente sai do sweep de botão que já existe no design system
+   (#5296d4 → #2d6ab4), empurrado para o fundo até o branco por cima
+   passar de 5,5:1 em toda a extensão.
+
+   Verde e vermelho seguem reservados a bid/ask e aprovado/negado.   */
+.tm-bento { display:grid; gap:16px; grid-template-columns:1fr }
+
+.tm-bx { position:relative; display:flex; flex-direction:column; gap:12px;
+         overflow:hidden; padding:24px 22px 0;
+         border:1px solid var(--border); border-radius:22px; background:#0b0b11;
+         transition:border-color .4s ease, transform .4s cubic-bezier(.16,1,.3,1),
+                    box-shadow .4s ease }
+.tm-bx:hover { border-color:rgba(138,197,250,.34); transform:translateY(-3px);
+               box-shadow:0 26px 64px -30px rgba(138,197,250,.4) }
+
+.tm-bx-txt   { display:flex; flex-direction:column; gap:11px; max-width:44ch }
+.tm-bx-title { font-size:clamp(23px,2.1vw,29px); line-height:1.16;
+               letter-spacing:-.02em; text-wrap:balance }
+.tm-bx-title--lg { font-size:clamp(29px,6vw,38px); line-height:1.1 }
+.tm-bx-lead  { color:rgba(255,255,255,.66); font-size:15px; line-height:1.55 }
+
+/* ── o tile de acento ─────────────────────────────────────── */
+.tm-bx--accent { border-color:transparent;
+                 background:linear-gradient(158deg,#2d6ab4 0%,#1a4478 100%) }
+.tm-bx--accent::before { content:""; position:absolute; inset:0; pointer-events:none;
+                 background-image:radial-gradient(#ffffff14 1px, transparent 0);
+                 background-size:20px 20px;
+                 -webkit-mask-image:linear-gradient(200deg,#000,transparent 62%);
+                         mask-image:linear-gradient(200deg,#000,transparent 62%) }
+.tm-bx--accent:hover { border-color:transparent;
+                 box-shadow:0 26px 64px -30px rgba(45,106,180,.75) }
+.tm-bx--accent .tm-bx-txt,
+.tm-bx--accent .tm-pills { position:relative; z-index:1 }
+.tm-bx--accent .tm-bx-lead { color:rgba(255,255,255,.82) }
+
+/* as pílulas herdam a faixa que já existia; só trocam de pele para
+   pousar no azul em vez de no fundo do abismo */
+.tm-bx .tm-pills--accent { margin:18px -22px 24px; padding:0 }
+.tm-bx .tm-pills--accent::before { background:linear-gradient(to right,#28619f,transparent) }
+.tm-bx .tm-pills--accent::after  { background:linear-gradient(to left,#1d4a80,transparent) }
+.tm-bx .tm-pills--accent .tm-pill { color:#fff; border-color:rgba(255,255,255,.26);
+                             background:rgba(255,255,255,.13) }
+
+/* ── o tile largo, com o produto sangrando ────────────────── */
+.tm-bx--wide .tm-bx-txt { max-width:38ch }
+/* No telefone a janela entra no fluxo e termina inteira. Sangrar aqui não
+   funciona: sem largura sobrando, o corte cai no meio de uma linha do
+   livro e lê como bug de render, não como enquadramento. O sangramento
+   volta a partir do tablet, onde há espaço para cortar num lugar que
+   pareça escolhido. */
+.tm-bx-bleed { position:relative; flex:1; margin:0 0 24px }
+
+.tm-glass { position:relative; display:flex; flex-direction:column; overflow:hidden;
+            border:1px solid rgba(255,255,255,.09); border-radius:14px;
+            background:#0e0e16;
+            box-shadow:0 -8px 40px -12px rgba(138,197,250,.22),
+                       0 24px 60px -24px rgba(0,0,0,.7) }
+.tm-glass-bar { display:flex; align-items:center; flex-shrink:0; height:36px;
+                padding:0 14px; border-bottom:1px solid rgba(255,255,255,.07);
+                background:rgba(255,255,255,.03); font-size:9.5px;
+                letter-spacing:.16em; text-transform:uppercase; color:#6b7484;
+                white-space:nowrap }
+.tm-glass-bar::before { content:""; flex-shrink:0; width:6px; height:6px;
+                margin-right:28px; border-radius:50%; background:#242b38;
+                box-shadow:11px 0 0 #242b38, 22px 0 0 #242b38 }
+.tm-glass-in  { padding:12px 14px }
+
+/* dois níveis a menos no telefone — sete já dizem "os dois lados estão
+   cheios", e o livro passa a caber inteiro */
+@media (max-width:699px) {
+  .tm-bx--wide .tm-ob-row:first-child,
+  .tm-bx--wide .tm-ob-row:last-child { display:none }
+}
+.tm-bx--wide .tm-ob       { gap:2px; font-size:12px }
+.tm-bx--wide .tm-ob-row   { padding:3px 9px }
+.tm-bx--wide .tm-ob-mid   { padding:3px 9px; font-size:9px }
+
+/* ── o tile alto: o ciclo ─────────────────────────────────── */
+.tm-bx--cycle::after { content:""; position:absolute; z-index:0; left:50%; bottom:14%;
+                    width:118%; aspect-ratio:1; transform:translateX(-50%);
+                    border-radius:50%; pointer-events:none;
+                    background:radial-gradient(closest-side,rgba(138,197,250,.13),transparent 70%) }
+.tm-bx--cycle > *  { position:relative; z-index:1 }
+/* os quatro visores encostam na base do tile: a curva, a faixa de
+   pílulas, o livro e o ciclo. Alinhados, a fileira lê como uma coisa
+   só em vez de quatro composições diferentes. */
+.tm-bx-art--steps { flex:1; display:flex; align-items:flex-end;
+                    padding:4px 0 24px }
+.tm-bx--cycle .tm-steps  { gap:14px; font-size:13px }
+.tm-bx--cycle .tm-step::before { top:-14px; height:19px }
+
+/* ── o tile de infra: a curva sangra pela base ────────────── */
+.tm-bx--infra { padding-bottom:0 }
+.tm-bx-curvewrap { position:relative; margin:auto -23px -1px; flex-shrink:0 }
+.tm-bx-curve  { display:block; width:100%; height:102px }
+.tm-bx-cap    { position:absolute; right:23px; top:15.2%;
+                transform:translateY(-130%); font-size:9px;
+                letter-spacing:.14em; text-transform:uppercase;
+                color:#5c6472; white-space:nowrap }
+
+/* ── a linha de fecho ─────────────────────────────────────── */
+.tm-b2b-close { display:flex; flex-direction:column; gap:10px;
+                padding:20px 24px; border:1px solid var(--border);
+                border-radius:20px; background:rgba(255,255,255,.02) }
+@media (min-width:768px) {
+  .tm-b2b-close   { flex-direction:row; align-items:center; gap:24px;
+                    padding:18px 28px }
+  .tm-b2b-close p { flex:1 }
+}
+
+/* ── tablet: duas colunas, o largo por cima ───────────────── */
+@media (min-width:700px) {
+  .tm-bento { grid-template-columns:repeat(2,minmax(0,1fr)) }
+  .tm-bx { min-height:300px; padding:26px 26px 0; gap:14px }
+  .tm-bx .tm-pills--accent { margin:auto -26px 26px }
+  .tm-bx--cycle .tm-steps { gap:22px; font-size:13.5px }
+  .tm-bx--cycle .tm-step::before { top:-22px; height:27px }
+  .tm-bx-art--steps { padding:6px 0 30px }
+  .tm-bx-curvewrap { margin:auto -27px -1px }
+  .tm-bx-curve { height:128px }
+  .tm-bx-cap   { right:27px }
+  /* dois largos e dois quadrados: o alto virava uma coluna de 625px com
+     300px de nada dentro quando esticava por duas linhas */
+  .tm-bx--wide   { grid-column:1 / 3; grid-row:1 }
+  .tm-bx--accent { grid-column:1; grid-row:2 }
+  .tm-bx--cycle   { grid-column:2; grid-row:2 }
+  .tm-bx--infra  { grid-column:1 / 3; grid-row:3 }
+  /* a largura do texto é percentual, não em ch: em ch ela encostava na
+     janela e o parágrafo sumia por baixo do livro */
+  .tm-bx--wide .tm-bx-txt { max-width:38% }
+  .tm-bx-bleed { position:absolute; inset:0; flex:none; margin:0; min-height:0;
+                 pointer-events:none }
+  .tm-glass { position:absolute; left:auto; right:24px; top:auto; bottom:-38px;
+              width:min(48%,352px); border-radius:14px 14px 0 0 }
+  .tm-bx--wide { min-height:286px }
+}
+
+/* ── desktop: o molde da referência — três em cima, largo embaixo ─ */
+@media (min-width:1024px) {
+  .tm-bento { grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px }
+  /* três iguais em cima, o produto largo embaixo. O tile do ciclo já
+     esticou por duas linhas, como na referência, e virava 635px com 260px de
+     buraco no meio: o vão que dá charme lá só funciona com uma imagem
+     grande dentro, e a imagem grande é justamente o que esta seção não
+     quer. Fileira reta, e o largo ganha o dobro de palco. */
+  .tm-bx--infra  { grid-column:1; grid-row:1 }
+  .tm-bx--accent { grid-column:2; grid-row:1 }
+  .tm-bx--cycle  { grid-column:3; grid-row:1 }
+  .tm-bx--wide   { grid-column:1 / -1; grid-row:2 }
+  .tm-bx         { min-height:326px; padding:30px 30px 0 }
+  .tm-bx--wide   { min-height:296px }
+  .tm-bx--wide .tm-bx-txt { max-width:40% }
+  .tm-bx .tm-pills--accent { margin:auto -30px 30px }
+  .tm-glass  { left:auto; right:30px; top:auto; bottom:-44px; width:min(48%,568px) }
+  .tm-bx-curvewrap { margin:auto -31px -1px }
+  .tm-bx-curve { height:140px }
+  .tm-bx-cap   { right:31px }
+}
+
+/* ── fragmento: livro de ofertas ───────────────────────────── */
+.tm-ob      { display:flex; flex-direction:column; gap:2px;
+              font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+              font-variant-numeric:tabular-nums; font-size:11px }
+.tm-ob-row  { position:relative; display:flex; justify-content:space-between;
+              padding:2px 8px; border-radius:3px; overflow:hidden }
+.tm-ob-row i { position:absolute; inset:0 auto 0 0; border-radius:3px }
+.tm-ob-row b, .tm-ob-row em { position:relative; font-style:normal; font-weight:500 }
+.tm-ob-row em { color:#8a909b }
+.is-ask i   { background:rgba(229,72,77,.16) }   .is-ask b  { color:#e5484d }
+.is-bid i   { background:rgba(46,189,133,.16) }  .is-bid b  { color:#2ebd85 }
+.tm-ob-mid  { display:flex; align-items:center; gap:8px; padding:3px 8px;
+              font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+              color:#6b7484 }
+.tm-ob-mid::before, .tm-ob-mid::after { content:""; flex:1; height:1px;
+              background:var(--border) }
+
+/* ── fragmento: ciclo de vida ──────────────────────────── */
+.tm-steps    { display:flex; flex-direction:column; gap:3px; font-size:11.5px }
+.tm-step     { position:relative; display:flex; align-items:center; gap:10px;
+               padding-left:2px; color:#6b7484 }
+.tm-step i   { width:9px; height:9px; border-radius:50%; flex-shrink:0;
+               border:1.5px solid #2a3140; background:#0d0d15 }
+.tm-step::before { content:""; position:absolute; left:6px; top:-3px; width:1.5px;
+                   height:8px; background:#2a3140 }
+.tm-step:first-child::before { display:none }
+.tm-step.is-done       { color:#c8cdd6 }
+.tm-step.is-done i     { background:#8ac5fa; border-color:#8ac5fa }
+.tm-step.is-done::before { background:#8ac5fa }
+
+/* ── a faixa de pílulas ──────────────────────────────── */
+.tm-pills      { position:relative; display:flex; flex-direction:column; gap:10px;
+                 overflow:hidden; margin:0 -20px -18px; padding-bottom:18px }
+.tm-pills::before, .tm-pills::after { content:""; position:absolute; top:0; bottom:0;
+                 width:56px; z-index:2; pointer-events:none }
+.tm-pills::before { left:0;  background:linear-gradient(to right,#0b0b11,transparent) }
+.tm-pills::after  { right:0; background:linear-gradient(to left,#0b0b11,transparent) }
+.tm-pill-row   { overflow:hidden }
+.tm-pill-track { display:flex; gap:9px; width:max-content }
+.tm-pill-track.to-left  { animation:pills-left  34s linear infinite }
+.tm-pill-track.to-right { animation:pills-right 40s linear infinite }
+.tm-pill       { flex-shrink:0; padding:0 14px; height:33px; display:flex;
+                 align-items:center; border-radius:999px; font-size:12.5px;
+                 color:#a8b0bd; border:1px solid var(--border);
+                 background:rgba(255,255,255,.035) }
+
+/* ── O widget simulado (Quebra 4) ────────────────────────────────
+   A seção vende um produto que só convence em movimento: o argumento não
+   é "existe um mercado na sua página", é "seu leitor entra, deposita e
+   opera sem sair dela". Isso é sequência, e sequência não cabe em foto.
+
+   A primeira versão encenava os passos certos e mesmo assim saía robótica,
+   porque toda a animação era a mesma: cada tela entrava com o mesmo fade
+   de 7px, o cursor ia de A a B sempre na mesma duração e a digitação era
+   um metrônomo. O que conserta isso não é mais movimento, é movimento
+   com hierarquia:
+
+   · as telas deslizam na direção do avanço — entra pela direita, sai pela
+     esquerda — então o olho lê "navegou", não "trocou de div";
+   · o cursor tem duração proporcional à distância e passa um fio do alvo
+     antes de assentar, que é como a mão se comporta;
+   · o clique deixa uma onda no ponto de contato;
+   · a digitação varia por caractere e hesita nos separadores;
+   · o sucesso tem mola e clarão, porque é o pico emocional da peça.
+
+   Duas decisões estruturais seguram tudo: o corpo tem altura fixa (sem
+   isso o frame pulsa a cada troca e lê como bug), e o cursor é posicionado
+   em coordenada calculada em tempo de execução, não em pixel fixo, porque
+   o mesmo widget tem três larguras.
+
+   Roda como um gif: em laço, sem controle visível. As duas defesas que
+   sobram são as que atuam sozinhas — prefers-reduced-motion congela tudo
+   na posição aberta, que é o final feliz, e o laço só corre com o widget
+   em cena. Ver a nota em initWidgetDemo sobre o que isso custa.       */
+/* ── o palco: a matéria atrás, o widget ancorado no canto ─────────
+   Recolhido, o widget é só a barra — é o estado que a própria plataforma
+   tem, e é o que prova que ele não toma a página do cliente. Ao abrir,
+   cresce e apaga o fundo.
+
+   O desfoque é do conteúdo da matéria, não do frame: a barra de URL e os
+   pontinhos ficam nítidos, porque numa sobreposição real o navegador não
+   desfoca junto. É esse detalhe que mantém a cena crível.
+
+   A altura do palco é fixa e dimensionada para o widget aberto, senão o
+   frame do navegador saltaria de tamanho a cada abertura.            */
+.tm-w-stage { position:relative; min-height:498px; padding:0 }
+.tm-w-page  { transition:filter .55s ease, opacity .55s ease }
+.tm-w-stage.is-open .tm-w-page { filter:blur(3.5px); opacity:.42 }
+
+/* ── a página do portal por baixo ─────────────────────────────────
+   Ela não é cenário: é o argumento. O widget ocupa um slot de anúncio
+   que o portal já vende, então o diretor consegue comparar com o que
+   aquele espaço rende hoje. Por isso o rótulo "Publicidade" — é o que
+   os portais brasileiros põem em cima de todo espaço vendido.      */
+.tm-p-bar   { display:flex; align-items:center; gap:12px; height:36px;
+              padding:0 16px; background:#14161a; color:#fff }
+.tm-p-menu  { width:14px; height:9px; flex-shrink:0;
+              border-top:2px solid #fff; border-bottom:2px solid #fff;
+              box-shadow:inset 0 0 0 1px transparent, 0 3.5px 0 -1px #fff }
+.tm-p-logo  { font-size:12.5px; font-weight:300; letter-spacing:-.01em }
+.tm-p-logo b{ font-weight:700 }
+.tm-p-nav   { margin-left:auto; font-size:10.5px; color:#9a9a93 }
+
+.tm-p-grid  { display:grid; grid-template-columns:minmax(0,1fr) 300px;
+              gap:26px; padding:20px 16px 22px }
+.tm-p-kicker{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+              font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+              color:#b4413e; margin-bottom:7px }
+.tm-p-h     { font-size:22px; line-height:1.16; font-weight:600;
+              letter-spacing:-.02em; color:#b4413e; margin-bottom:9px }
+.tm-p-lead  { font-size:12.5px; line-height:1.6; color:#14161a; margin-bottom:11px }
+.tm-p-txt   { font-size:11.5px; line-height:1.75; color:#7a7f88; margin-bottom:9px }
+
+.tm-p-side  { display:flex; flex-direction:column }
+.tm-p-adlabel { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+              font-size:8.5px; letter-spacing:.16em; text-transform:uppercase;
+              color:#b4b4ae; margin-bottom:5px }
+/* o buraco que o widget preenche: existe para reservar a altura do slot */
+.tm-p-slot  { height:236px; margin-bottom:16px }
+.tm-p-card  { display:flex; gap:9px; padding-top:11px;
+              border-top:1px solid #eeeeea; margin-bottom:11px }
+.tm-p-thumb { width:52px; height:40px; flex-shrink:0; border-radius:5px;
+              background:linear-gradient(150deg,#dfe3e8,#c9ced6) }
+.tm-p-ct    { font-size:11.5px; line-height:1.34; font-weight:600; color:#14161a }
+
+.tm-w { position:absolute; z-index:2;
+        left:8%; width:84%; top:44px;
+        border:1px solid #e2e2dd; border-radius:13px; overflow:hidden;
+        background:linear-gradient(180deg,#fff 0%,#fcfcfb 100%);
+        box-shadow:0 22px 54px -16px rgba(20,22,26,.34);
+        transition:left .6s cubic-bezier(.22,1,.28,1),
+                   width .6s cubic-bezier(.22,1,.28,1),
+                   top .6s cubic-bezier(.22,1,.28,1),
+                   box-shadow .6s ease }
+/* encaixado no retângulo da direita: os valores acompanham
+   .tm-p-grid (300px de coluna, 16px de padding, 26px de gap) */
+.tm-w.is-mini { left:auto; right:16px; width:300px; top:73px;
+        box-shadow:0 6px 18px -8px rgba(20,22,26,.26) }
+
+/* tudo o que se dobra: some por altura, não por display, para a abertura
+   ter o que animar */
+.tm-w-fold { max-height:120px; opacity:1; overflow:hidden;
+        transition:max-height .6s cubic-bezier(.22,1,.28,1),
+                   opacity .34s ease }
+.tm-w.is-mini .tm-w-fold { max-height:0; opacity:0 }
+/* no slot mostra só o essencial do mercado; o resto é do estado aberto */
+.tm-w.is-mini .tm-w-body   { height:166px }
+.tm-w.is-mini .tm-w-meta,
+.tm-w.is-mini .tm-w-hint,
+.tm-w.is-mini .tm-w-dots   { display:none }
+.tm-w.is-mini .tm-w-q      { font-size:14px; margin-bottom:11px }
+.tm-w.is-mini .tm-w-side   { padding:9px 11px }
+.tm-w.is-mini .tm-w-side-v { font-size:17px }
+.tm-w.is-mini .tm-w-screen { padding:13px 14px }
+
+/* a seta gira: recolhido aponta para cima, aberto para baixo */
+.tm-w-chev { width:9px; height:9px; flex-shrink:0; margin-left:9px;
+        border-right:1.6px solid #9a9a93; border-bottom:1.6px solid #9a9a93;
+        transform:rotate(-135deg) translate(-1px,-1px);
+        transition:transform .5s cubic-bezier(.22,1,.28,1) }
+.tm-w:not(.is-mini) .tm-w-chev { transform:rotate(45deg) translate(-2px,-2px) }
+
+/* ── cabeçalho: o slot de marca do parceiro ───────────────────────── */
+.tm-w-head   { display:flex; align-items:center; gap:10px;
+               padding:11px 16px; border-bottom:1px solid #eeeeea;
+               transition:background .3s ease }
+.tm-w.is-mini .tm-w-head { border-bottom-color:transparent }
+.tm-w-head.is-press { background:#f4f4f1 }
+.tm-w.is-mini .tm-w-brand { font-size:11.5px }
+.tm-w.is-mini .tm-w-bal   { font-size:10.5px; padding:2px 8px }
+.tm-w-avatar { width:22px; height:22px; border-radius:50%; flex-shrink:0;
+               display:flex; align-items:center; justify-content:center;
+               background:linear-gradient(160deg,#4f95dc,#2f6fb4);
+               color:#fff; font-size:11px; font-weight:600;
+               box-shadow:0 2px 6px rgba(47,111,180,.34) }
+.tm-w-brand  { font-size:13px; font-weight:600; color:#14161a;
+               white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.tm-w-bal    { margin-left:auto; padding:3px 10px; border-radius:999px;
+               border:1px solid #e2e2dd; background:#fafaf8; color:#14161a;
+               font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+               font-size:11px; transition:color .4s ease, background .4s ease,
+               border-color .4s ease }
+.tm-w-bal.is-funded { color:#096e4a; background:#eaf5ef; border-color:#c6e3d3 }
+@keyframes tmwPulse {
+  0%   { box-shadow:0 0 0 0 rgba(58,128,200,.5) }
+  70%  { box-shadow:0 0 0 7px rgba(58,128,200,0) }
+  100% { box-shadow:0 0 0 0 rgba(58,128,200,0) }
+}
+
+/* ── abas ─────────────────────────────────────────────────────────── */
+.tm-w-tabs { display:flex; align-items:center; gap:20px; padding:0 16px;
+             border-bottom:1px solid #eeeeea }
+.tm-w-tab  { padding:10px 0; font-size:12px; color:#9a9a93;
+             box-shadow:inset 0 -2px 0 transparent;
+             transition:color .35s ease, box-shadow .45s cubic-bezier(.22,1,.28,1) }
+.tm-w-tab.is-on { color:#14161a; font-weight:600; box-shadow:inset 0 -2px 0 #3a80c8 }
+.tm-w-rules { margin-left:auto; font-size:11px; color:#9a9a93 }
+.tm-w-rules::before { content:"\24D8"; margin-right:4px }
+
+/* ── a trilha de passos ───────────────────────────────────────────
+   Quatro rótulos custam 20px e mudam a leitura da peça inteira: sem
+   eles o espectador conta telas e a jornada parece longa; com eles
+   conta passos, e quatro passos é pouco. O ponto preenchido marca o
+   que já passou, então a barra também comunica "falta pouco".      */
+.tm-w-steps { display:flex; align-items:center; gap:6px;
+              padding:9px 16px; border-bottom:1px solid #eeeeea }
+.tm-w-steps span { display:flex; align-items:center; gap:5px; flex:1;
+              font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+              font-size:8.5px; letter-spacing:.1em; text-transform:uppercase;
+              color:#b4b4ae; white-space:nowrap;
+              transition:color .4s ease }
+.tm-w-steps span::before { content:""; width:6px; height:6px; flex-shrink:0;
+              border-radius:50%; background:#e2e2dd;
+              transition:background .4s ease, box-shadow .4s ease }
+.tm-w-steps span.is-done { color:#8a8a85 }
+.tm-w-steps span.is-done::before { background:#9dc4e8 }
+.tm-w-steps span.is-on { color:#2b6cb0 }
+.tm-w-steps span.is-on::before { background:#3a80c8;
+              box-shadow:0 0 0 3px rgba(58,128,200,.18) }
+
+/* ── o palco: altura fixa, telas deslizando na direção do avanço ──── */
+.tm-w-body   { position:relative; height:250px }
+.tm-w-screen { position:absolute; inset:0; padding:18px 20px;
+               display:flex; flex-direction:column;
+               opacity:0; visibility:hidden;
+               transform:translateX(30px) scale(.99);
+               transition:opacity .34s ease,
+                          transform .5s cubic-bezier(.22,1,.28,1),
+                          visibility .5s }
+.tm-w-screen.is-on  { opacity:1; visibility:visible; transform:none }
+.tm-w-screen.is-out { opacity:0; visibility:visible;
+                      transform:translateX(-30px) scale(.99) }
+
+/* os filhos da tela ativa entram escalonados: dá cadência à leitura */
+.tm-w-screen.is-on > * { animation:tmwRise .46s cubic-bezier(.22,1,.28,1) both }
+.tm-w-screen.is-on > :nth-child(1) { animation-delay:.04s }
+.tm-w-screen.is-on > :nth-child(2) { animation-delay:.10s }
+.tm-w-screen.is-on > :nth-child(3) { animation-delay:.16s }
+.tm-w-screen.is-on > :nth-child(4) { animation-delay:.22s }
+.tm-w-screen.is-on > :nth-child(5) { animation-delay:.28s }
+@keyframes tmwRise { from { opacity:0; transform:translateY(9px) }
+                     to   { opacity:1; transform:none } }
+
+/* ── 1 · mercado ──────────────────────────────────────────────────── */
+.tm-w-q      { font-size:16px; line-height:1.28; font-weight:600;
+               letter-spacing:-.015em; color:#14161a; margin-bottom:14px }
+.tm-w-sides  { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px }
+.tm-w-side   { display:block; width:100%; text-align:left; padding:11px 13px;
+               border-radius:9px; border:1px solid #e2e2dd; background:#f6f6f3;
+               transition:transform .3s cubic-bezier(.22,1,.28,1),
+                          box-shadow .3s ease, border-color .3s ease }
+.tm-w-side.is-yes { background:linear-gradient(170deg,#eef8f2,#e3f2ea);
+                    border-color:#bfe0cd }
+.tm-w-side.is-no  { background:linear-gradient(170deg,#fdf0f0,#f9e5e5);
+                    border-color:#eecccc }
+.tm-w-side.is-picked { border-color:#3a80c8; transform:translateY(-3px);
+                    box-shadow:0 6px 18px -6px rgba(58,128,200,.5),
+                               0 0 0 3px rgba(58,128,200,.15);
+                    animation:tmwPick .7s cubic-bezier(.22,1,.28,1) }
+@keyframes tmwPick {
+  0%   { box-shadow:0 0 0 0 rgba(58,128,200,.45), 0 0 0 0 rgba(58,128,200,.2) }
+  100% { box-shadow:0 6px 18px -6px rgba(58,128,200,.5),
+                    0 0 0 3px rgba(58,128,200,.15) }
+}
+.tm-w-side-l { display:block; font-size:12.5px; color:#5c6270; margin-bottom:3px }
+.tm-w-side-l b { font-weight:600 }
+.tm-w-side-v { display:block; font-size:19px; font-weight:500;
+               font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
+.is-yes .tm-w-side-l b, .is-yes .tm-w-side-v { color:#0a7a52 }
+.is-no  .tm-w-side-l b, .is-no  .tm-w-side-v { color:#b4413e }
+.tm-w-side.is-picked { border-color:#0a7a52 }
+
+/* o relógio do produto: mesmo componente, estado não-urgente */
+.tm-w-clock { align-self:flex-start; display:inline-flex; align-items:center;
+              gap:5px; margin-bottom:9px; padding:3px 9px; border-radius:999px;
+              background:#f4f4f1; color:#6a6f78;
+              font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+              font-size:10.5px }
+.tm-w-clock svg { width:11px; height:11px }
+
+/* ── 4 · atalhos de valor: a tela em que se toca, não se digita ──── */
+.tm-w-sum    { border-radius:9px; padding:9px 11px; margin-bottom:10px;
+               background:linear-gradient(170deg,#eef5fc,#e4eff9);
+               border:1px solid #cfe2f4 }
+.tm-w-sum-q  { font-size:12px; line-height:1.32; font-weight:600; color:#14161a;
+               margin-bottom:4px }
+.tm-w-sum-r  { display:flex; align-items:baseline; justify-content:space-between }
+.tm-w-sum-r b{ font-size:12px; font-weight:600; color:#2b6cb0 }
+.tm-w-sum-r i{ font-style:normal; font-size:10.5px; color:#8a8a85;
+               font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
+.tm-w-bal-row{ display:flex; justify-content:space-between; align-items:baseline;
+               font-size:11.5px; color:#6a6f78; margin-bottom:7px }
+.tm-w-bal-row b { font-weight:600; color:#14161a;
+               font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
+.tm-w-field.is-amount em { font-style:normal; color:#9a9a93; margin-right:7px }
+.tm-w-quick  { display:grid; grid-template-columns:repeat(4,1fr); gap:6px;
+               margin-bottom:9px }
+.tm-w-quick span { display:flex; align-items:center; justify-content:center;
+               height:30px; border-radius:8px; border:1px solid #e2e2dd;
+               background:#fafaf8; color:#5c6270; font-size:12px;
+               font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+               transition:background .3s ease, border-color .3s ease,
+                          color .3s ease, transform .3s cubic-bezier(.22,1,.28,1) }
+.tm-w-quick span::before { content:"$"; opacity:.55 }
+.tm-w-quick span.is-on { background:linear-gradient(170deg,#eef8f2,#e3f2ea);
+               border-color:#bfe0cd; color:#0a7a52; transform:translateY(-1px) }
+.tm-w-fee    { font-size:10.5px; color:#9a9a93; text-align:center;
+               margin-bottom:9px; opacity:0; transition:opacity .35s ease }
+.tm-w-fee.is-in { opacity:1 }
+.tm-w-back   { align-self:center; margin-top:9px; font-size:11.5px; color:#8a8a85 }
+.tm-w-bar    { display:flex; height:5px; border-radius:999px; overflow:hidden;
+               background:#e8e8e3; margin-bottom:12px }
+.tm-w-bar > span { background:linear-gradient(90deg,#4f95dc,#2f6fb4);
+               transition:width .6s cubic-bezier(.22,1,.28,1) }
+.tm-w-meta   { display:flex; justify-content:space-between;
+               font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+               font-size:10px; letter-spacing:.1em; color:#9a9a93 }
+.tm-w-hint   { margin-top:auto; font-size:11.5px; color:#3a80c8 }
+
+/* ── textos comuns ────────────────────────────────────────────────── */
+.tm-w-t { font-size:16.5px; font-weight:600; letter-spacing:-.018em;
+          color:#14161a; margin-bottom:5px }
+.tm-w-s { font-size:12.5px; line-height:1.5; color:#6a6f78; margin-bottom:14px }
+
+/* ── campos ───────────────────────────────────────────────────────── */
+.tm-w-field { display:flex; align-items:center; height:42px; padding:0 13px;
+              border:1px solid #e2e2dd; border-radius:9px; background:#fafaf8;
+              font-size:13.5px; color:#14161a; margin-bottom:12px;
+              transition:border-color .3s ease, box-shadow .35s ease,
+                         background .3s ease }
+.tm-w-field.is-focus { border-color:#3a80c8; background:#fff;
+              box-shadow:0 0 0 3px rgba(58,128,200,.14),
+                         0 2px 10px -4px rgba(58,128,200,.4) }
+.tm-w-field.is-amount { font-size:19px; font-weight:500;
+              font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
+.tm-w-caret { width:1.5px; height:17px; background:#3a80c8; margin-left:1px;
+              opacity:0 }
+.tm-w-field.is-focus .tm-w-caret { animation:tmwCaret 1.05s steps(1) infinite }
+@keyframes tmwCaret { 0%,50% { opacity:1 } 50.01%,100% { opacity:0 } }
+
+.tm-w-calc { font-size:11.5px; color:#6a6f78; margin-bottom:12px; min-height:16px;
+             opacity:0; transform:translateY(4px);
+             transition:opacity .4s ease, transform .4s cubic-bezier(.22,1,.28,1) }
+.tm-w-calc.is-in { opacity:1; transform:none }
+
+/* ── botão ────────────────────────────────────────────────────────── */
+.tm-w-btn { margin-top:auto; height:40px; border-radius:9px; border:0;
+            background:linear-gradient(170deg,#22252b,#101216); color:#fff;
+            font-size:13px; font-weight:500;
+            box-shadow:0 4px 14px -6px rgba(20,22,26,.7);
+            transition:transform .22s cubic-bezier(.22,1,.28,1),
+                       box-shadow .22s ease, filter .22s ease,
+                       background .35s ease, color .35s ease;
+            transition:transform .22s cubic-bezier(.22,1,.28,1),
+                       box-shadow .22s ease, filter .22s ease }
+.tm-w-btn.is-press { transform:scale(.965) translateY(1px);
+            filter:brightness(1.5); box-shadow:0 2px 7px -4px rgba(20,22,26,.7) }
+.tm-w-btn.is-buy { background:linear-gradient(170deg,#3f8ad4,#2566ab);
+            box-shadow:0 4px 14px -6px rgba(37,102,171,.8) }
+.tm-w-btn.is-off { background:#eeeeea; color:#a8a8a2; box-shadow:none }
+
+/* ── 3 · o código ─────────────────────────────────────────────────── */
+.tm-w-code   { display:grid; grid-template-columns:repeat(6,1fr); gap:7px;
+               margin-bottom:12px }
+.tm-w-code i { height:42px; border:1px solid #e2e2dd; border-radius:8px;
+               background:#fafaf8; display:flex; align-items:center;
+               justify-content:center; font-style:normal; font-size:16px;
+               font-weight:500; color:#14161a;
+               font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+               transition:border-color .25s ease, background .25s ease }
+.tm-w-code i.is-in { border-color:#b9d5f0;
+               background:linear-gradient(170deg,#eef5fc,#e4eff9);
+               animation:tmwCell .36s cubic-bezier(.3,1.5,.5,1) }
+@keyframes tmwCell { 0% { transform:scale(.82) } 100% { transform:scale(1) } }
+
+/* ── 4 · o lado escolhido ─────────────────────────────────────────── */
+.tm-w-pick { align-self:flex-start; padding:4px 10px; border-radius:999px;
+             background:linear-gradient(170deg,#eef5fc,#e4eff9);
+             border:1px solid #b9d5f0; color:#2b6cb0;
+             font-size:11.5px; font-weight:600; margin-bottom:10px }
+
+/* ── 5 · falta saldo ──────────────────────────────────────────────── */
+.tm-w-warn { align-self:flex-start; padding:4px 10px; border-radius:999px;
+             background:#f2f2ee; color:#6a6f78; font-size:11.5px;
+             font-weight:600; margin-bottom:10px;
+             font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
+
+/* ── 6 · depósito ─────────────────────────────────────────────────── */
+.tm-w-net   { display:flex; gap:7px; margin-bottom:12px }
+.tm-w-chip  { padding:4px 11px; border-radius:999px; font-size:11.5px;
+              background:#f4f4f1; color:#5c6270; border:1px solid #e2e2dd }
+.tm-w-chip.is-on { background:linear-gradient(170deg,#eef5fc,#e4eff9);
+              color:#2b6cb0; border-color:#b9d5f0 }
+.tm-w-addr  { display:flex; align-items:center; gap:10px; height:42px;
+              padding:0 13px; border:1px dashed #d4d4ce; border-radius:9px;
+              background:#fafaf8; margin-bottom:12px;
+              font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+              font-size:13px; color:#14161a }
+.tm-w-addr i { width:13px; height:13px; margin-left:auto; border-radius:3px;
+              border:1.5px solid #9a9a93; box-shadow:3px -3px 0 -1.5px #fafaf8,
+              3px -3px 0 0 #9a9a93 }
+.tm-w-status { margin-top:auto; font-size:12px; color:#6a6f78;
+              display:flex; align-items:center; gap:8px }
+.tm-w-status::before { content:""; width:7px; height:7px; border-radius:50%;
+              background:#c9a227; flex-shrink:0;
+              animation:tmwWait 1.5s ease-out infinite }
+@keyframes tmwWait {
+  0%   { box-shadow:0 0 0 0 rgba(201,162,39,.55) }
+  70%  { box-shadow:0 0 0 7px rgba(201,162,39,0) }
+  100% { box-shadow:0 0 0 0 rgba(201,162,39,0) }
+}
+.tm-w-status.is-ok { color:#096e4a; font-weight:500 }
+.tm-w-status.is-ok::before { background:#096e4a; animation:none }
+
+/* ── 7 · executada: o pico emocional, com mola e clarão ───────────── */
+.tm-w-check { position:relative; width:40px; height:40px; border-radius:50%;
+              flex-shrink:0; display:flex; align-items:center;
+              justify-content:center; background:#e6f3ec; color:#096e4a;
+              margin-bottom:13px }
+.tm-w-check svg { width:20px; height:20px; position:relative; z-index:1 }
+.tm-w-check::after { content:""; position:absolute; inset:-6px; border-radius:50%;
+              background:radial-gradient(closest-side,rgba(9,110,74,.28),transparent 72%) }
+.tm-w-screen.is-on .tm-w-check { animation:tmwPop .6s cubic-bezier(.3,1.6,.45,1) both }
+@keyframes tmwPop { 0%   { transform:scale(.35); opacity:0 }
+                    62%  { transform:scale(1.14); opacity:1 }
+                    100% { transform:scale(1) } }
+.tm-w-screen.is-on .tm-w-check::after { animation:tmwBloom .85s ease-out both }
+@keyframes tmwBloom { 0% { transform:scale(.4); opacity:0 }
+                      45% { opacity:1 }
+                      100% { transform:scale(1.9); opacity:0 } }
+[data-screen="done"] { align-items:flex-start; justify-content:center }
+
+/* ── 8 · a posição ────────────────────────────────────────────────── */
+.tm-w-pos     { border:1px solid #eeeeea; border-radius:10px;
+                background:linear-gradient(180deg,#fff,#fafaf8); padding:13px;
+                box-shadow:0 3px 12px -8px rgba(20,22,26,.4) }
+.tm-w-pos-q   { font-size:13px; font-weight:600; line-height:1.3;
+                color:#14161a; margin-bottom:10px }
+.tm-w-pos-r   { display:flex; justify-content:space-between; align-items:baseline;
+                padding-top:8px; border-top:1px solid #eeeeea; font-size:12.5px }
+.tm-w-pos-r:first-of-type { border-top:0; padding-top:0 }
+.tm-w-pos-side{ color:#2b6cb0; font-weight:600 }
+.tm-w-pos-val { color:#14161a; font-weight:500;
+                font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
+.tm-w-pos-dim { color:#6a6f78 }
+.tm-w-pos-win { color:#096e4a; font-weight:600;
+                font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
+
+/* ── bolinhas ─────────────────────────────────────────────────────── */
+.tm-w-dots   { display:flex; align-items:center; justify-content:center;
+               gap:6px; padding-bottom:14px; transition:opacity .3s ease }
+.tm-w-dots i { width:5px; height:5px; border-radius:999px; background:#d8d8d2;
+               transition:width .35s cubic-bezier(.22,1,.28,1), background .3s ease }
+.tm-w-dots i.is-on { width:16px; background:#3a80c8 }
+.tm-w.is-flow .tm-w-dots { opacity:0 }
+
+/* ── cursor e a onda do clique ────────────────────────────────────── */
+.tm-w-cursor { position:absolute; top:0; left:0; width:13px; height:19px;
+               pointer-events:none; z-index:6; opacity:0;
+               filter:drop-shadow(0 3px 5px rgba(20,22,26,.3));
+               transition:transform .55s cubic-bezier(.32,1.06,.36,1),
+                          opacity .35s ease }
+.tm-w-cursor.is-on  { opacity:1 }
+.tm-w-cursor.is-tap { transform:var(--tmw-pos) scale(.78) }
+.tm-w-cursor svg    { width:100%; height:100% }
+
+.tm-w-ripple { position:absolute; top:0; left:0; width:0; height:0; z-index:5;
+               pointer-events:none }
+.tm-w-ripple::after { content:""; position:absolute; left:-3px; top:-3px;
+               width:6px; height:6px; border-radius:50%;
+               border:1.5px solid rgba(58,128,200,.75);
+               animation:tmwRipple .62s cubic-bezier(.22,1,.28,1) forwards }
+@keyframes tmwRipple {
+  0%   { transform:scale(1);  opacity:.9 }
+  100% { transform:scale(7.5); opacity:0 }
+}
+
+/* ── o cartão de fecho ────────────────────────────────────────────
+   A peça inteira prova que é fácil para o leitor; o cartão traduz isso
+   para quem decide. Vem escuro sobre a página clara e desfocada porque
+   o corte precisa ser sentido: até aqui era o site do cliente, daqui em
+   diante é a Tipmarket falando.
+
+   Os filhos entram escalonados — marca, frase, prova — para o fecho ter
+   cadência em vez de aparecer de bloco. O tempo aqui é mais largo que o
+   do resto da simulação de propósito: o filme corria porque estava
+   provando rapidez, e esta é a única parte que quer ser lida.        */
+.tm-w-outro { position:absolute; inset:0; z-index:6; display:flex;
+              flex-direction:column; align-items:center; justify-content:center;
+              gap:13px; padding:30px; text-align:center;
+              background:radial-gradient(120% 90% at 50% 0%,#141420,#07070a 70%);
+              opacity:0; visibility:hidden;
+              transition:opacity .9s ease, visibility .9s }
+.tm-w-outro.is-on { opacity:1; visibility:visible }
+.tm-w-outro > *   { opacity:0; transform:translateY(10px) }
+.tm-w-outro.is-on > * { animation:tmwRise .9s cubic-bezier(.22,1,.28,1) both }
+.tm-w-outro.is-on > :nth-child(1) { animation-delay:.20s }
+.tm-w-outro.is-on > :nth-child(2) { animation-delay:.55s }
+.tm-w-outro.is-on > :nth-child(3) { animation-delay:.90s }
+
+.tm-w-outro-mark { width:132px; height:auto; margin-bottom:4px; opacity:.95 }
+.tm-w-outro-h    { font-size:clamp(30px,3.4vw,44px); line-height:1.06;
+                   font-weight:300; letter-spacing:-.03em; color:#fff }
+.tm-w-outro-s    { font-size:14.5px; line-height:1.55; max-width:34ch;
+                   color:rgba(255,255,255,.66) }
+@media (max-width:639px) {
+  .tm-w-outro    { gap:11px; padding:24px }
+  .tm-w-outro-mark { width:112px }
+  .tm-w-outro-s  { font-size:13.5px }
+}
+@media (prefers-reduced-motion:reduce) {
+  .tm-w-outro, .tm-w-outro > * { transition:none; animation:none }
+  .tm-w-outro > * { opacity:1; transform:none }
+}
+
+/* ── o controle de pausa ──────────────────────────────────────────
+   Voltou a pedido, para permitir examinar a peça quadro a quadro. Ele
+   também devolve a conformidade com a WCAG 2.2.2, que pede mecanismo de
+   pausa para movimento automático acima de cinco segundos — ver a nota
+   em initWidgetDemo.                                                 */
+.tm-w-ctl { display:inline-flex; align-items:center; gap:7px; margin-top:14px;
+            padding:5px 11px 5px 9px; border-radius:999px;
+            border:1px solid #edf0f2; background:#fff;
+            font-size:11.5px; color:#5c6270; cursor:pointer;
+            transition:border-color .25s ease, color .25s ease,
+                       box-shadow .25s ease }
+.tm-w-ctl:hover { border-color:#c4c8d0; color:#14161a;
+            box-shadow:0 3px 10px -5px rgba(20,22,26,.35) }
+.tm-w-ctl::before { content:""; width:9px; height:10px; flex-shrink:0;
+            border-left:3px solid currentColor; border-right:3px solid currentColor }
+.tm-w-ctl.is-paused::before { border:0; width:0; height:0;
+            border-left:9px solid currentColor;
+            border-top:5.5px solid transparent; border-bottom:5.5px solid transparent }
+
+@media (max-width:639px) {
+  .tm-w-stage { min-height:620px }
+  .tm-p-grid  { grid-template-columns:minmax(0,1fr); gap:18px }
+  .tm-p-side  { order:-1 }
+  .tm-w { left:4%; width:92%; top:150px }
+  .tm-w.is-mini { left:16px; right:16px; width:auto; top:74px }
+  .tm-w-fold { max-height:450px }
+  .tm-w-body { height:262px }
+  .tm-w-tabs { gap:14px }
+  .tm-w-rules { display:none }
+  .tm-w-q    { font-size:15px }
+  .tm-w-steps span { font-size:8px; letter-spacing:.06em }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .tm-w, .tm-w-fold, .tm-w-page, .tm-w-chev { transition:none }
+  .tm-w-screen, .tm-w-cursor, .tm-w-side, .tm-w-btn, .tm-w-tab { transition:none }
+  .tm-w-screen.is-on > *, .tm-w-screen.is-on .tm-w-check,
+  .tm-w-screen.is-on .tm-w-check::after, .tm-w-code i.is-in,
+  .tm-w-live .ds-dot, .tm-w-status::before, .tm-w-side.is-picked { animation:none }
+  .tm-w-field.is-focus .tm-w-caret { animation:none; opacity:1 }
+}
+
+/* ── Numerals & rules ─────────────────────────────────────────────── */
+.tm-step-num { display:inline-block; width:60px; text-align:center; border-radius:18px;
+               padding:4px 8px; background:#f2f4f6; color:#0e0e14;
+               font-size:14px; line-height:1.57 }
+.tm-mono     { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+               font-variant-numeric:tabular-nums }
+.tm-eyebrow  { font-size:11.5px; letter-spacing:.16em; text-transform:uppercase }
+
+/* ── Painel de afiliados (Quebra 6) ────────────────────────────────
+   Contido em fundo claro, não sangrando: escura de ponta a ponta ela
+   grudaria na chamada final, que também é escura, e as duas virariam um
+   bloco só. Contida, ela lê como encarte — que é o que é.
+
+   Duas colunas com um fio entre elas: à esquerda o argumento, à direita
+   só o número. O fio existe para o olho não ler as duas como um
+   parágrafo contínuo.                                                */
+.tm-aff { position:relative; overflow:hidden; border-radius:28px;
+          padding:clamp(30px,4vw,54px);
+          background:radial-gradient(120% 120% at 88% 0%,#16161f,#07070a 62%);
+          box-shadow:0 40px 90px -50px rgba(7,7,10,.8) }
+/* Empilhado, a ordem é a do HTML: rótulo e promessa, o número, o como e
+   a ação. No desktop as duas colunas se formam por posição explícita —
+   cabeça e cauda uma sobre a outra na coluna 1, o número sozinho na 2.
+
+   O número atravessa as duas linhas mas não manda nelas: com as linhas
+   automáticas, um item que as cruza empurra a altura das duas, e a
+   cabeça ficava com 190px para um conteúdo de 113px — um vão de 70px
+   até a cauda. As linhas ganharam min-content, que as prende ao próprio
+   conteúdo e deixa o número apenas ocupar o espaço que sobra.       */
+.tm-aff-in { position:relative; z-index:2; display:grid; gap:26px;
+             grid-template-columns:1fr }
+@media (min-width:900px) {
+  .tm-aff-in   { grid-template-columns:1fr auto;
+                 grid-template-rows:min-content min-content;
+                 column-gap:clamp(36px,5vw,72px); row-gap:20px;
+                 align-items:start }
+  .tm-aff-head { grid-column:1; grid-row:1 }
+  .tm-aff-tail { grid-column:1; grid-row:2 }
+  .tm-aff-num  { grid-column:2; grid-row:1 / span 2; align-self:center }
+  /* o fio só existe onde há duas colunas para separar */
+  .tm-aff-num::before { content:""; position:absolute; left:calc(-1 * clamp(18px,2.5vw,36px));
+                        top:2px; bottom:2px; width:1px; background:var(--border) }
+}
+
+.tm-aff-head { display:flex; flex-direction:column; gap:14px; min-width:0 }
+.tm-aff-tail { display:flex; flex-direction:column; align-items:flex-start;
+               gap:20px; min-width:0 }
+.tm-aff-cta  { height:52px; padding:0 24px; font-size:16px;
+               line-height:1.62; white-space:nowrap }
+
+/* ── o número ───────────────────────────────────────────────────── */
+.tm-aff-num { position:relative; display:flex; flex-direction:column;
+              align-items:flex-start; gap:2px; min-width:0 }
+.tm-aff-upto { font-size:13px; letter-spacing:.02em; color:rgba(255,255,255,.5) }
+/* O padding não é espaçamento: .v2-gradient-text pinta por
+   background-clip:text, e com line-height .9 a caixa de fundo fica mais
+   baixa que os glifos — o topo do 40% e o pé do % ficavam sem gradiente
+   e liam como corte. O padding estica a caixa pintada; a margem
+   negativa devolve o espaço, então nada se move de lugar. O lado
+   direito entra na conta porque o letter-spacing negativo se aplica
+   também ao último caractere e encolhia a caixa por cima do %.      */
+.tm-aff-pct  { font-size:clamp(66px,8vw,104px); line-height:.9; font-weight:300;
+               letter-spacing:-.05em;
+               padding:.14em .09em; margin:-.14em -.09em }
+.tm-aff-lab  { margin-top:4px; font-size:15px; font-weight:500; color:#fff }
+.tm-aff-plus { margin-top:12px; padding:6px 13px; border-radius:999px;
+               font-size:12.5px; font-weight:600; color:#cfe6fb;
+               border:1px solid rgba(138,197,250,.32);
+               background:rgba(138,197,250,.09) }
+
+@media (max-width:899px) {
+  .tm-aff-pct { font-size:clamp(58px,15vw,84px) }
+}
+
+/* ── Header rail ───────────────────────────────────────────────────
+   Rente às bordas sobre o fundo abyss, não uma pílula de vidro
+   flutuante. A orientação corria nos numerais 01..05 ao lado de cada
+   rótulo; eles saíram, e sobrou um indicador de posição mais quieto e
+   igualmente legível: o rótulo da seção em que você está fica branco e
+   ganha um fio embaixo. A profundidade de rolagem segue na aresta de
+   baixo.                                                             */
+.tm-topbar {
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  background:rgba(7,7,10,.86);
+  backdrop-filter:blur(18px) saturate(120%); -webkit-backdrop-filter:blur(18px) saturate(120%);
+  border-bottom:1px solid var(--border)
+}
+.tm-topbar-inner { height:64px }
+@media (min-width:768px) { .tm-topbar-inner { height:72px } }
+
+.tm-navlink { position:relative; display:inline-flex; align-items:center; padding:8px 0 }
+.tm-navlink-label { font-size:14px; line-height:1.4; color:rgba(255,255,255,.7); transition:color .3s ease }
+.tm-navlink::after {
+  content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+  background:var(--accent); transform:scaleX(0); transform-origin:left;
+  transition:transform .38s cubic-bezier(.16,1,.3,1)
+}
+.tm-navlink:hover .tm-navlink-label,
+.tm-navlink.is-active .tm-navlink-label { color:#fff }
+.tm-navlink:hover::after, .tm-navlink.is-active::after { transform:scaleX(1) }
+.tm-navlink:focus-visible { outline:none }
+.tm-navlink:focus-visible .tm-navlink-label { color:#fff; text-decoration:underline; text-underline-offset:4px }
+
+.tm-progress {
+  position:absolute; left:0; bottom:-1px; height:1px; width:0;
+  background:var(--accent); box-shadow:0 0 10px 0 #8ac5fa73;
+  transition:width .12s linear
+}
+
+/* Rail CTA — hairline while the hero's own CTA is still on screen, then
+   it fills with beam once you scroll past it and becomes the only one.
+   Hover always resolves to that same beam fill, so pointing at it in
+   either state gives the identical answer. The bloom is tighter than
+   .v2-cta's so it stays inside the bar instead of bleeding onto the
+   hero below.                                                        */
+.tm-railcta {
+  display:inline-flex; align-items:center; gap:.5rem; white-space:nowrap;
+  border-radius:9999px; padding:9px 18px; font-size:14px; font-weight:600;
+  border:1px solid #ffffff2b; color:#fff; background:#ffffff08;
+  position:relative; overflow:hidden;
+  transition:background-color .35s ease, border-color .35s ease, color .35s ease,
+             box-shadow .35s ease, transform .2s cubic-bezier(.16,1,.3,1)
+}
+
+/* the beam state — reached by hover, or by scrolling past the hero */
+.tm-railcta:hover,
+.tm-topbar.is-past-hero .tm-railcta {
+  background:var(--accent); color:var(--bg); border-color:transparent;
+  box-shadow:0 4px 16px -6px #8ac5fa9e, 0 0 0 1px #8ac5fa40
+}
+/* already beam, so hover still has somewhere to go */
+.tm-topbar.is-past-hero .tm-railcta:hover {
+  background:#9fd2fc; box-shadow:0 6px 20px -6px #8ac5fabf, 0 0 0 1px #8ac5fa66
+}
+.tm-railcta:active { transform:translateY(1px) }
+.tm-railcta:focus-visible { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px #8ac5fa2e }
+
+.tm-railcta::after {
+  content:""; pointer-events:none; position:absolute; inset:0; transform:translate(-130%);
+  background:linear-gradient(115deg,#0000 32%,#ffffff8c 50%,#0000 68%)
+}
+.tm-railcta:hover::after { animation:v2Shine .9s cubic-bezier(.16,1,.3,1) }
+
+/* menu mobile — sangrando sobre o fundo abyss. Os numerais saíram
+   junto com os do rail: é a mesma navegação, e numerar uma e não a
+   outra seria o pior dos dois mundos.                               */
+#mobile-menu { background:#07070a }
+.tm-sheet-item {
+  display:flex; align-items:center; padding:22px 0;
+  border-bottom:1px solid var(--border)
+}
+.tm-sheet-label { font-family:'Multima',Georgia,serif; font-weight:300; font-size:30px;
+                  line-height:1.1; color:#fff }
+.tm-sheet-label.v2-shiny { color:var(--accent) }
+
+/* ── Logo ──────────────────────────────────────────────────────────
+   The lockup is now vector (assets/logo*.svg), rebuilt from the source
+   bitmap: the mark redrawn as geometry, the wordmark as real Poppins
+   Bold outlines. It used to be set in Plus Jakarta Sans, which was the
+   wrong typeface — see the note in the SVG header.                    */
+.tm-logo     { display:inline-flex; align-items:center; flex-shrink:0 }
+.tm-logo img { display:block; height:28px; width:auto }
+@media (min-width:768px) { .tm-logo img { height:30px } }
+
+/* ── a barra do topo no telefone ──────────────────────────────────────
+   O .tm-railcta tinha 165px fixos dentro de um grupo flex-shrink-0, e a
+   lockup ao lado tem 126px. Em 360px isso somava mais que a tela: o
+   grupo transbordava para a direita e o hambúrguer saía do viewport —
+   inteiro em 320px, onde o menu ficava literalmente inalcançável, já
+   que o body corta o excesso com overflow-x:hidden em vez de rolar.
+
+   A ordem do que cede é a mesma do resto da página: primeiro o supérfluo
+   (a seta), depois a escala (fonte e vão), e só então o próprio botão.
+   Abaixo de 340px ele sai — o Start operating continua no sheet do menu
+   e no herói logo abaixo, então nada se perde.
+
+   A especificidade é dupla de propósito: o gap vem de uma classe do
+   Tailwind, que é injetada depois desta folha e empataria em .tm-*. */
+@media (max-width:639px) {
+  .tm-topbar .tm-topbar-inner { gap:12px }
+  .tm-railcta { padding:7px 13px; font-size:12.5px; gap:.35rem }
+  .tm-railcta svg { display:none }
+}
+@media (max-width:389px) { .tm-logo img { height:24px } }
+@media (max-width:339px) { .tm-railcta { display:none } }
+
+/* ── Animated logo mark (Quebra 6) ────────────────────────────────── */
+.tm-logo-anim .tm-logo-line { stroke-dasharray:36; stroke-dashoffset:36;
+                              animation:tmDraw 4.6s cubic-bezier(.16,1,.3,1) infinite }
+.tm-logo-anim .tm-logo-head { transform-origin:center;
+                              animation:tmHead 4.6s cubic-bezier(.16,1,.3,1) infinite }
+.tm-logo-anim .tm-logo-glow { animation:tmGlow 4.6s ease-in-out infinite }
+@keyframes tmDraw { 0%{stroke-dashoffset:36} 40%,86%{stroke-dashoffset:0} 100%{stroke-dashoffset:36} }
+@keyframes tmHead { 0%,16%{opacity:0} 44%,86%{opacity:1} 100%{opacity:0} }
+@keyframes tmGlow { 0%,100%{opacity:.2} 50%{opacity:.7} }
+
+/* ── Os quatro passos (Quebra 5) ──────────────────────────────────
+   Mesmo objeto em três densidades que a prova da Quebra 2: fileira de
+   quatro no desktop, 2×2 no tablet e, no telefone, essa mesma fileira
+   arrastada de lado. As medidas do trilho são as de lá na íntegra —
+   80% de largura, 12px de gap, recuo de 24px — para que os dois
+   trilhos da página sejam o mesmo gesto e não dois parecidos.
+
+   O nome é .tm-step-rail, e não .tm-steps, porque .tm-steps já é a
+   lista de etapas do box "ciclo" da Quebra 3 — e aquela regra traz
+   flex-direction:column, que sobrevivia a este bloco e empilhava os
+   cartões no telefone. Colisão de classe não dá erro, dá layout
+   errado num breakpoint só.                                        */
+.tm-step-rail { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px }
+
+@media (max-width:1023px) {
+  .tm-step-rail { grid-template-columns:repeat(2,minmax(0,1fr)) }
+}
+
+@media (max-width:639px) {
+  .tm-step-rail {
+    display:flex; gap:12px;
+    margin-inline:calc(50% - 50vw);   /* a seção é px-6 aqui, −24px de cada lado */
+    padding-inline:24px;              /* o primeiro cartão fica na margem do texto */
+    overflow-x:auto; overscroll-behavior-x:contain;
+    scroll-snap-type:x mandatory; scroll-padding-inline:24px;
+    -webkit-overflow-scrolling:touch; scrollbar-width:none;
+  }
+  .tm-step-rail::-webkit-scrollbar { display:none }
+  .tm-step-rail > .tm-step-card { flex:0 0 80%; scroll-snap-align:start }
+  /* folga no fim, para o último cartão encostar à esquerda como os
+     outros em vez de travar no fim da pista */
+  .tm-step-rail::after { content:""; flex:0 0 calc(20% - 12px) }
+}
+
+/* Os quatro títulos não têm o mesmo comprimento, e numa fileira isso
+   empurra o corpo de uns 26px abaixo do corpo de outros. A reserva de
+   duas linhas alinha o início de todos os parágrafos sem obrigar o
+   texto a caber num tamanho que não é o dele.
+
+   Só a partir de sm: no trilho os cartões são lidos um por vez, e ali a
+   reserva viraria buraco embaixo dos títulos de uma linha.          */
+@media (min-width:640px) {
+  .tm-step-card h3 { min-height:2.6em }
+}
+
+/* ── Ticking numerals ─────────────────────────────────────────────── */
+.tm-tick { font-variant-numeric:tabular-nums; transition:color .35s ease }
+.tm-tick.is-up   { color:#2ebd85 }
+.tm-tick.is-down { color:#e5484d }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PÁGINA DE CONTATO (contato.html)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── campos ────────────────────────────────────────────────────────
+   .field-input é do design system e até agora só existia lá dentro,
+   porque o site não tinha formulário. Trazido na íntegra — foco, erro
+   e desabilitado — para o contrato do campo ser um só nos dois lugares
+   em vez de duas cópias que divergem na primeira mexida.            */
+.field-input:focus    { outline:none; border-color:#3a80c8;
+                        box-shadow:0 0 0 3px rgba(58,128,200,.10) }
+.field-error          { border-color:#e5484d !important }
+.field-error:focus    { border-color:#e5484d; box-shadow:0 0 0 3px rgba(229,72,77,.12) }
+.field-input:disabled { background:#f2f4f6; color:#c4c8d0; cursor:default;
+                        box-shadow:none; border-color:#edf0f2 }
+
+.tm-field       { display:flex; flex-direction:column; gap:6px; min-width:0; border:0; padding:0; margin:0 }
+.tm-field-label { font-size:12px; line-height:1.33; color:#5a6070; padding:0 }
+.tm-field-req   { color:#3a80c8; margin-left:2px }
+.tm-field-opt   { margin-left:6px; font-size:11px; letter-spacing:.02em; color:#c4c8d0 }
+
+/* a mensagem de erro entra no lugar em vez de empurrar o campo de
+   baixo: reserva a linha desde sempre e só troca a opacidade. Numa
+   grade de dois por dois, um campo que cresce desalinha a fileira
+   inteira no momento em que a pessoa mais precisa de estabilidade. */
+.tm-field-err   { min-height:16px; font-size:12px; line-height:1.33;
+                  color:#e5484d; opacity:0; transition:opacity .2s ease }
+.tm-field.is-invalid .tm-field-err { opacity:1 }
+
+/* ── a escolha de produto ──────────────────────────────────────────
+   Rádios de verdade por baixo: teclado, leitor de tela e o required do
+   grupo continuam sendo os nativos. O visual é o rótulo, e o estado
+   marcado chega por classe do JS em vez de :has(), como o resto do
+   site já faz.                                                      */
+/* Quatro opções desde que os afiliados entraram. Em três colunas a
+   quarta caía sozinha numa segunda fileira; 2×2 fecha o bloco.      */
+.tm-choice { display:grid; grid-template-columns:repeat(2,1fr); gap:8px }
+.tm-choice-opt {
+  position:relative; display:flex; align-items:center; justify-content:center;
+  min-height:52px; padding:8px 14px; text-align:center;
+  border:1px solid #edf0f2; border-radius:10px; background:#fff;
+  font-size:13.5px; line-height:1.35; color:#5a6070; cursor:pointer;
+  transition:border-color .2s ease, background-color .2s ease, color .2s ease
+}
+.tm-choice-opt input { position:absolute; inset:0; opacity:0; margin:0;
+                       width:100%; height:100%; cursor:pointer }
+.tm-choice-opt:hover { border-color:#c4c8d0; color:#1c1c26 }
+.tm-choice-opt.is-on { border-color:#3a80c8; background:#e8f2fa;
+                       color:#1a3a5c; font-weight:500 }
+.tm-choice-opt:focus-within { border-color:#3a80c8;
+                              box-shadow:0 0 0 3px rgba(58,128,200,.10) }
+.tm-field.is-invalid .tm-choice-opt:not(.is-on) { border-color:#e5484d }
+
+/* ── envio ─────────────────────────────────────────────────────────── */
+.tm-hp { position:absolute; width:1px; height:1px; overflow:hidden;
+         clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap }
+
+#tm-lead-submit[disabled] { opacity:.6; cursor:default }
+#tm-lead-submit[disabled]:hover { box-shadow:none }
+#tm-lead-submit[disabled]:hover::before { opacity:0 }
+
+.tm-lead-status         { display:none; color:#e5484d }
+.tm-lead-status.is-on   { display:block }
+
+/* ── o cartão de enviado ───────────────────────────────────────────
+   Vem escuro sobre a página clara pelo mesmo motivo que o cartão de
+   fecho do widget na Quebra 4: até aqui a página era um formulário,
+   daqui em diante é a Tipmarket falando. É o único instante em que a
+   marca conversa em primeira pessoa com alguém que acabou de virar
+   cliente, e um retângulo branco com um tique dentro desperdiça isso.
+
+   A coluna do "o que esperar" sai junto. Aquele texto existia para
+   convencer alguém a preencher o formulário; depois do envio não há
+   mais ninguém para convencer, e mantê-lo ao lado da confirmação só
+   divide a atenção do único recado que ainda importa.               */
+.tm-lead-ok { display:none; position:relative; overflow:hidden;
+              border-radius:24px; padding:56px 40px 52px; text-align:center;
+              scroll-margin-top:104px;
+              background:radial-gradient(120% 90% at 50% 0%,#151522,#07070a 68%);
+              box-shadow:0 30px 70px -40px rgba(7,7,10,.75) }
+.tm-lead.is-sent .tm-lead-form { display:none }
+.tm-lead.is-sent .tm-lead-ok   { display:block }
+.tm-lead-ok:focus { outline:none }
+.tm-lead-ok:focus-visible { outline:none;
+                            box-shadow:0 30px 70px -40px rgba(7,7,10,.75),
+                                       0 0 0 2px rgba(138,197,250,.55) }
+
+.tm-lead-ok-inner { position:relative; z-index:2; display:flex; flex-direction:column;
+                    align-items:center; gap:18px }
+
+.tm-lead-check { display:inline-flex; align-items:center; justify-content:center;
+                 width:56px; height:56px; border-radius:50%; color:#8ac5fa;
+                 background:rgba(138,197,250,.12);
+                 border:1px solid rgba(138,197,250,.28);
+                 box-shadow:0 0 0 8px rgba(138,197,250,.05),
+                            0 12px 34px -14px rgba(138,197,250,.7) }
+.tm-lead-check svg { width:26px; height:26px }
+
+.tm-lead-ok-h { font-size:clamp(30px,3.2vw,42px); line-height:1.06;
+                letter-spacing:-.03em; color:#fff; margin-top:2px }
+.tm-lead-ok-p { max-width:44ch; font-size:15.5px; line-height:1.6;
+                color:rgba(255,255,255,.68) }
+
+/* o e-mail devolvido no texto: destacado para ser conferido de relance,
+   sem virar link — clicar nele não deveria abrir nada */
+.tm-lead-ok-mail { font-weight:600; color:#fff; word-break:break-word }
+
+.tm-lead-ok-link { display:inline-flex; align-items:center; gap:8px; margin-top:6px;
+                   height:46px; padding:0 22px; border-radius:999px;
+                   font-size:14.5px; font-weight:500; color:#cfe6fb;
+                   border:1px solid rgba(255,255,255,.16);
+                   transition:color .25s ease, background-color .25s ease,
+                              border-color .25s ease, transform .2s cubic-bezier(.16,1,.3,1) }
+.tm-lead-ok-link svg { width:15px; height:15px;
+                       transition:transform .25s cubic-bezier(.16,1,.3,1) }
+.tm-lead-ok-link:hover { color:#fff; background:rgba(138,197,250,.10);
+                         border-color:rgba(138,197,250,.45) }
+.tm-lead-ok-link:hover svg { transform:translate(2px,-2px) }
+.tm-lead-ok-link:focus-visible { outline:none; border-color:#8ac5fa;
+                                 box-shadow:0 0 0 3px rgba(138,197,250,.22) }
+
+/* sem a coluna da direita, a confirmação assume a largura toda — e é
+   contida no centro, senão vira uma faixa de 1280px com três linhas */
+.tm-lead-shell.is-sent .tm-aside { display:none }
+.tm-lead-shell.is-sent .tm-lead  { width:100%; max-width:680px; margin:0 auto }
+@media (min-width:1024px) { .tm-lead-shell.is-sent { grid-template-columns:1fr } }
+
+/* A troca é instantânea no DOM, e instantânea ela lê como recarregamento
+   de página. Meio segundo de subida diz que a mesma coisa mudou de
+   estado — e o tique chega depois, escalonado com o texto, porque é ele
+   que responde à pergunta que a pessoa está fazendo.               */
+.tm-lead.is-sent .tm-lead-ok { animation:tmLeadOk .58s cubic-bezier(.16,1,.3,1) both }
+.tm-lead.is-sent .tm-lead-ok-inner > * { animation:tmLeadRise .55s cubic-bezier(.22,1,.28,1) both }
+.tm-lead.is-sent .tm-lead-check          { animation:tmLeadTick .55s cubic-bezier(.22,1,.28,1) .16s both }
+.tm-lead.is-sent .tm-lead-ok-inner > :nth-child(2) { animation-delay:.30s }
+.tm-lead.is-sent .tm-lead-ok-inner > :nth-child(3) { animation-delay:.40s }
+.tm-lead.is-sent .tm-lead-ok-inner > :nth-child(4) { animation-delay:.52s }
+@keyframes tmLeadOk   { from { opacity:0; transform:translateY(14px) }
+                        to   { opacity:1; transform:none } }
+@keyframes tmLeadRise { from { opacity:0; transform:translateY(9px) }
+                        to   { opacity:1; transform:none } }
+@keyframes tmLeadTick { 0%   { opacity:0; transform:scale(.55) }
+                        62%  { opacity:1; transform:scale(1.1) }
+                        100% { opacity:1; transform:scale(1) } }
+
+@media (max-width:639px) {
+  .tm-lead-ok   { padding:42px 24px 40px }
+  .tm-lead-ok-p { font-size:14.5px }
+}
+
+/* ── a coluna do que esperar ───────────────────────────────────────
+   Sem cartão, de propósito: dois cartões lado a lado dariam o mesmo
+   peso para o que a pessoa preenche e para o que ela lê. Aqui é só
+   texto separado por fio, e o formulário fica sendo o objeto.       */
+.tm-aside-block { display:flex; flex-direction:column; gap:12px; padding:26px 0 }
+.tm-aside-block:first-child { padding-top:0 }
+.tm-aside-block:last-child  { padding-bottom:0 }
+.tm-aside-block + .tm-aside-block { border-top:1px solid #edf0f2 }
+.tm-aside-h     { font-size:20px; line-height:1.3; color:#0e0e14 }
+
+.tm-aside-list        { display:flex; flex-direction:column; gap:11px; margin:0; padding:0; list-style:none }
+.tm-aside-list li     { position:relative; padding-left:18px;
+                        font-size:14px; line-height:1.57; color:#5a6070 }
+.tm-aside-list li::before { content:""; position:absolute; left:1px; top:.6em;
+                            width:5px; height:5px; border-radius:50%; background:#3a80c8 }
+
+/* ── o "voltar ao site" do rail ────────────────────────────────────
+   Ocupa o lugar do "Quero operar", que na página de contato apontaria
+   para ela mesma. É discreto de propósito: aqui a única coisa que deve
+   pedir clique é o submit.                                          */
+.tm-railback {
+  align-items:center; gap:.5rem; white-space:nowrap;
+  border-radius:9999px; padding:9px 16px; font-size:14px;
+  color:rgba(255,255,255,.7); border:1px solid transparent;
+  transition:color .25s ease, background-color .25s ease, border-color .25s ease
+}
+.tm-railback:hover { color:#fff; background:#ffffff0d; border-color:#ffffff2b }
+.tm-railback:focus-visible { outline:none; border-color:var(--accent);
+                             box-shadow:0 0 0 3px #8ac5fa2e }
+
+@media (max-width:639px) {
+  .tm-choice { grid-template-columns:1fr }
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width:767px) {
+  .tm-fan-card:not(:first-child) { margin-left:-16px }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-settle, .v2-gradient-text, .ds-dot, .ds-breathe, .tm-fan-card,
+  .tm-rail-track, .tm-pill-track, .tm-logo-anim *,
+  .tm-lead.is-sent .tm-lead-ok, .tm-lead.is-sent .tm-lead-check,
+  .tm-lead.is-sent .tm-lead-ok-inner > *,
+  .hiw-glow-1, .hiw-glow-2, .hiw-glow-3, .hiw-glow-4 { animation:none !important }
+  [data-reveal] { opacity:1; transform:none }
+  .reveal > * { opacity:1; transform:none; transition:none }
+}
