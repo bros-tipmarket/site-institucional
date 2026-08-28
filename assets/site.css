@@ -2231,12 +2231,14 @@
 }
 .tm-logo-anim.is-done       .tm-logo-particles { opacity:0 }
 
-/* a logo real espera apagada; o nome acende quando a fita o cruza e o
-   ícone só no fim, quando o laço termina de fechar */
-.tm-logo-anim > span,
-.tm-logo-anim > img { transition:opacity .42s ease }
-.tm-logo-anim.is-assembling > span,
-.tm-logo-anim.is-assembling > img { opacity:0 }
+/* O ícone espera apagado e só acende no fim, quando o laço fecha.
+
+   O NOME não entra aqui de propósito: ele fica em opacity 1 o tempo
+   todo e quem o esconde é uma máscara em gradiente que o JS vai abrindo
+   conforme a fita passa por cima. Com opacity ele acenderia inteiro de
+   uma vez; com máscara, acende a parte por onde a luz já passou. */
+.tm-logo-anim > span { transition:opacity .42s ease }
+.tm-logo-anim.is-assembling > span { opacity:0 }
 
 /* ── Responsive ───────────────────────────────────────────────────── */
 @media (max-width:767px) {

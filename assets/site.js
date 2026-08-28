@@ -900,18 +900,18 @@
     var TAU = 6.283185307179586;
 
     /* ── linha do tempo (ms) — é aqui que se calibra o ritmo ──────── */
-    var T_GHOST = 320;    /* o ícone fantasma sozinho em cena          */
-    var T_TRAVEL = 2050;  /* a fita cruzando a seção                   */
-    var T_WORD = 1180;    /* o nome acende sob a passagem da fita      */
-    var T_COIL = 1700;    /* o laço começa a fechar no ícone           */
-    var T_LAND = 2450;    /* partículas assentadas no contorno         */
-    var T_SPARK = 2560;   /* o gráfico acende                          */
-    var T_MARK = 2980;    /* o ícone real assume                       */
-    var T_END = 3420;
+    var T_GHOST = 420;    /* o ícone fantasma sozinho em cena          */
+    var T_TRAVEL = 5200;  /* a fita cruzando a seção                   */
+    var T_WORD = 0;    /* não usado: o nome agora é revelado pela passagem */    /* o nome acende sob a passagem da fita      */
+    var T_COIL = 3120;    /* o laço começa a fechar no ícone           */
+    var T_LAND = 4180;    /* partículas assentadas no contorno         */
+    var T_SPARK = 4330;   /* o gráfico acende                          */
+    var T_MARK = 4790;    /* o ícone real assume                       */
+    var T_END = 5340;
 
     var DPR = Math.min(window.devicePixelRatio || 1, 2);
     var W = 0, H = 0, parts = [], buckets = [], raf = 0, t0 = 0, done = false;
-    var mkBox = null, cy = 0, ampY = 0;
+    var mkBox = null, wdBox = null, cy = 0, ampY = 0;
 
     function ease(x) { return 1 - Math.pow(1 - x, 3); }
     function easeIO(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
@@ -984,11 +984,18 @@
     function pathAt(u, out) {
       if (u <= COIL_U) {
         var k = u / COIL_U;
-        /* atravessa da direita para a esquerda, descendo do alto */
-        out.x = W * 1.06 - k * (W * 1.06 - (mkBox ? mkBox.x + mkBox.w / 2 : W * 0.2));
-        var damp = 0.42 + 0.58 * Math.sin(Math.min(1, k * 1.18) * Math.PI);
-        out.y = cy + Math.sin(k * TAU * 2.05 + 0.35) * ampY * damp
-                   - (1 - Math.min(1, k * 2.2)) * ampY * 1.15;
+        /* O avanço não é uniforme: k^0.55 faz a cabeça vencer depressa o
+           trecho que ainda está fora da tela e chegar devagar à área do
+           nome. Linear, 70% do percurso era gasto antes do wordmark e a
+           fita o cruzava em ~0,5s — rápido demais para a revelação ser
+           lida. Assim ela leva ~0,8s só atravessando o nome.
+           A senoide usa o MESMO kx, senão o comprimento de onda variaria
+           junto com a velocidade e a onda sairia deformada. */
+        var kx = Math.pow(k, 0.55);
+        out.x = W * 1.06 - kx * (W * 1.06 - (mkBox ? mkBox.x + mkBox.w / 2 : W * 0.2));
+        var damp = 0.42 + 0.58 * Math.sin(Math.min(1, kx * 1.18) * Math.PI);
+        out.y = cy + Math.sin(kx * TAU * 2.05 + 0.35) * ampY * damp
+                   - (1 - Math.min(1, kx * 2.2)) * ampY * 1.15;
       } else {
         /* espiral: gira e encolhe até o raio do contorno do ícone */
         var c = (u - COIL_U) / (1 - COIL_U);
@@ -1014,6 +1021,8 @@
 
       var mk = { x: mr.left - cr.left, y: mr.top - cr.top, w: mr.width, h: mr.height };
       mkBox = mk;
+      var wr2 = wordEl.getBoundingClientRect();
+      wdBox = { x: wr2.left - cr.left, w: wr2.width };
       cy = mk.y + mk.h / 2;
       /* a amplitude também depende da LARGURA: presa só à altura do
          canvas ela dava o mesmo laço de 76px num telefone de 390,
@@ -1068,9 +1077,12 @@
           lands: lands,
           tx: lands ? hx[k] : 0, ty: lands ? hy[k] : 0,
           x: -999, y: 0, vx: 0, vy: 0, size: size,
-          r: Math.round(96 + t * 130),
-          g: Math.round(168 + t * 74),
-          b: Math.round(230 + t * 25),
+          /* o facho é do tom da seta, #8ac5fa. Sob composite 'lighter'
+             as sobreposições clareiam sozinhas, então a partícula tem de
+             nascer bem azul — senão a soma estoura em branco. */
+          r: Math.round(44 + t * 70),
+          g: Math.round(130 + t * 64),
+          b: Math.round(232 + t * 23),
           alpha: 0.40 + Math.random() * 0.55
         });
       }
@@ -1105,7 +1117,7 @@
       return true;
     }
 
-    var wordLit = false, markLit = false;
+    var wordDone = false, markLit = false;
     var pt = { x: 0, y: 0 };
 
     function frame(now) {
@@ -1116,8 +1128,13 @@
       var ghostA = clamp01((el - 60) / T_GHOST) *
                    (1 - clamp01((el - (T_SPARK - 300)) / 420));
 
-      /* a cabeça da fita percorre de 0 a 1 + o comprimento da cauda */
-      var head = ease(clamp01((el - T_GHOST) / T_TRAVEL)) * 1.62;
+      /* A cabeça da fita percorre de 0 a 1 + o comprimento da cauda, em
+         velocidade CONSTANTE. Com easing de saída ela disparava no início
+         e cruzava o nome inteiro em ~300ms: a máscara saltava de 0 a 100
+         sem passo intermediário e o nome acendia de uma vez, que é
+         justamente o que não se quer. Um facho atravessando não
+         desacelera — linear é o certo aqui. */
+      var head = clamp01((el - T_GHOST) / T_TRAVEL) * 1.62;
       var landMix = easeIO(clamp01((el - T_COIL) / (T_LAND - T_COIL)));
 
       for (i = 0; i < parts.length; i++) {
@@ -1172,7 +1189,31 @@
         if (sp > 0.004) paintSpark(ctx, mkBox, sp);
       }
 
-      if (!wordLit && el >= T_WORD) { wordLit = true; wordEl.style.opacity = '1'; }
+      /* ── o nome sendo revelado pela passagem do facho ──────────────
+         Não acende de uma vez: a parte por onde a fita JÁ passou fica
+         visível e o resto continua escondido. Como a fita corre da
+         direita para a esquerda, a revelação corre junto — daí a máscara
+         em gradiente ancorada em "to left", com a cabeça da fita
+         convertida em fração da largura do wordmark. A borda macia é o
+         que faz a luz parecer estar acendendo as letras, e não um
+         retângulo deslizando por cima delas. */
+      if (wdBox && !wordDone) {
+        pathAt(Math.min(head, 1), pt);
+        var frac = clamp01((wdBox.x + wdBox.w - pt.x) / wdBox.w);
+        var lit = Math.round(frac * 124);
+        if (lit >= 124) {
+          wordDone = true;
+          wordEl.style.webkitMaskImage = '';
+          wordEl.style.maskImage = '';
+          wordEl.style.opacity = '1';
+        } else {
+          var mask = 'linear-gradient(to left, rgba(0,0,0,1) ' + lit +
+                     '%, rgba(0,0,0,0) ' + (lit + 17) + '%)';
+          wordEl.style.webkitMaskImage = mask;
+          wordEl.style.maskImage = mask;
+          wordEl.style.opacity = '1';
+        }
+      }
       if (!markLit && el >= T_MARK) { markLit = true; markWrap.style.opacity = '1'; }
 
       if (!done && el >= T_END) {
@@ -1183,6 +1224,8 @@
         ctx.clearRect(0, 0, W, H);
         canvas.style.display = 'none';
         wordEl.style.opacity = '';
+        wordEl.style.webkitMaskImage = '';
+        wordEl.style.maskImage = '';
         markWrap.style.opacity = '';
         return;
       }
@@ -1205,6 +1248,11 @@
 
     function play() {
       if (done || raf) return;
+      /* a máscara nasce fechada: o nome está em opacity 1 desde já, e
+         quem o esconde é a máscara — é ela que a fita vai abrindo */
+      var m0 = 'linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 17%)';
+      wordEl.style.webkitMaskImage = m0;
+      wordEl.style.maskImage = m0;
       host.classList.add('is-assembling');
       whenMeasurable(function () {
         requestAnimationFrame(function () {
