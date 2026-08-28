@@ -1003,7 +1003,7 @@
         var cy0 = mkBox ? mkBox.y + mkBox.h / 2 : cy;
         var r0 = ampY * 1.05, r1 = mkBox ? mkBox.w * 0.46 : 26;
         var rr = r0 + (r1 - r0) * easeIO(clamp01(c));
-        var ang = -0.5 + c * TAU * 1.75;
+        var ang = -0.5 + c * TAU * 0.95;
         out.x = cx0 + Math.cos(ang) * rr;
         out.y = cy0 + Math.sin(ang) * rr * 0.92;
       }
