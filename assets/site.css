@@ -2204,31 +2204,37 @@
 }
 
 /* ── A logo se montando (Quebra 7) ────────────────────────────────────
-   As partículas chegam rodando e assentam no desenho da lockup; quando
-   ela está formada, o canvas apaga e a logo de verdade acende por baixo.
-   A troca é um crossfade curto: as duas camadas desenham a mesma coisa
-   no mesmo lugar, então o olho lê continuidade e não substituição.
+   Um rastro de luz atravessa a seção ondulando, revela o nome ao passar
+   por cima dele e, na ponta esquerda, enrola num laço que se aperta até
+   virar o contorno do ícone — que então acende.
 
-   A pista é generosa nas laterais porque o voo começa fora da lockup —
-   um canvas do tamanho dela cortaria a entrada. Não intercepta ponteiro
-   e sai de cena assim que termina.                                    */
+   A pista é a largura da viewport, não a da lockup: a fita cruza a
+   seção inteira, e um canvas do tamanho da logo cortaria a viagem. Daí
+   o left:50% + translateX(-50%), que centra uma faixa de 100vw sobre um
+   elemento que está no meio de uma coluna centralizada.
+
+   Não intercepta ponteiro e sai de cena quando termina.            */
 .tm-logo-anim { position:relative }
 .tm-logo-particles {
-  /* width/height explícitos, e não left+right: <canvas> é elemento
-     replaced — sem largura declarada ele ignora o par de offsets e fica
-     no tamanho intrínseco do buffer (300x150), que era menor que a
-     lockup e jogava as partículas para fora do lugar. Os percentuais são
-     da caixa do host, então a pista acompanha a logo em qualquer breakpoint. */
-  position:absolute; left:-100%; width:300%; top:-200%; height:500%;
+  /* width/height explícitos: <canvas> é elemento replaced — sem largura
+     declarada ele ignora left/right e fica no buffer intrínseco. */
+  position:absolute; left:50%; transform:translateX(-50%);
+  width:100vw; max-width:100vw; height:340px; top:50%; margin-top:-170px;
   pointer-events:none; z-index:2;
-  opacity:0; transition:opacity .34s ease;
+  opacity:0; transition:opacity .3s ease;
 }
 .tm-logo-anim.is-assembling .tm-logo-particles { opacity:1 }
+/* no telefone a faixa é mais baixa: a seção é estreita e uma pista alta
+   levaria a fita por cima do headline */
+@media (max-width:639px) {
+  .tm-logo-particles { height:210px; margin-top:-105px }
+}
 .tm-logo-anim.is-done       .tm-logo-particles { opacity:0 }
 
-/* a logo real espera apagada enquanto as partículas a montam */
+/* a logo real espera apagada; o nome acende quando a fita o cruza e o
+   ícone só no fim, quando o laço termina de fechar */
 .tm-logo-anim > span,
-.tm-logo-anim > img { transition:opacity .38s ease }
+.tm-logo-anim > img { transition:opacity .42s ease }
 .tm-logo-anim.is-assembling > span,
 .tm-logo-anim.is-assembling > img { opacity:0 }
 

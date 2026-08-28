@@ -858,25 +858,29 @@
      base.js binds the hamburger from a Promise chain, so it may land
      after this file. Nothing here depends on it.                       */
   /* ── A logo se montando (Quebra 7) ───────────────────────────────────
-     Seis tempos, na ordem do storyboard:
+     Um rastro de luz, não uma nuvem. As partículas não voam cada uma por
+     si: elas percorrem UM caminho comum — uma senoide que entra pelo alto
+     da direita e cruza a seção inteira — separadas por um atraso ao longo
+     dele. É isso que faz a fita ler como fita, com cabeça, corpo e cauda.
 
-       01  o ícone existe como fantasma — só o contorno, apagado.
-       02  as partículas entram PELA DIREITA, numa onda larga e curva.
-       03  a onda alcança o ícone e assenta primeiro no contorno dele.
-       04  só então o wordmark se monta, com a cauda ainda chegando.
-       05  o gráfico acende dentro do ícone e o nome já vira sólido.
-       06  o ícone acende por último e a logo fica inteira.
+     A ordem conta a história:
+       · a fita cruza o nome e o REVELA ao passar — o wordmark não é feito
+         de partícula, ele acende sob a passagem;
+       · na ponta esquerda o caminho deixa de ser onda e vira espiral, que
+         se aperta até o raio do contorno do ícone;
+       · as partículas que têm alvo assentam nesse contorno, o resto segue
+         em frente e se apaga;
+       · o gráfico acende dentro do ícone, com o nó em brasa, e a logo
+         real assume.
 
-     A ordem é o conteúdo: o símbolo se firma, o nome se escreve, e o
-     gráfico — que é o que a marca quer dizer — acende por último, como
-     remate. Por isso são dois grupos de partículas com tempos próprios,
-     e não uma nuvem só chegando de uma vez.
+     O brilho vem de composite 'lighter': onde a fita se dobra sobre si
+     mesma as partículas somam e estouram em bloom, que é o que dá o ar
+     de luz em vez de pontinho fosco.
 
-     Os alvos saem de um rasterizado da lockup redesenhada neste canvas e
-     medida sobre as caixas reais dos elementos, então cada partícula
-     carrega a cor do pixel de onde veio e assenta onde a logo acende.
-     Nada disso toca arquivo externo: carregar o .svg como <img> sujaria
-     o canvas e getImageData passaria a lançar sob file://.
+     Os alvos saem de um rasterizado do ícone redesenhado neste canvas e
+     medido sobre a caixa real do elemento. Nada toca arquivo externo:
+     carregar o .svg como <img> sujaria o canvas e getImageData passaria a
+     lançar sob file://.
 
      O estado escrito no HTML é o de repouso. Quem apaga a logo para
      montá-la é este código — sem JS, ou sob prefers-reduced-motion, ela
@@ -885,7 +889,6 @@
     var host = document.getElementById('tm-logo-anim');
     var canvas = document.getElementById('tm-logo-particles');
     if (!host || !canvas || !canvas.getContext || reduced) return;
-    if (typeof Path2D === 'undefined') return;
     var ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
@@ -894,33 +897,24 @@
     var wordEl = host.querySelector('img');
     if (!markWrap || !markEl || !wordEl) return;
 
-    /* contornos do wordmark + o translate do <g> que os acompanha */
-    var WM_D = [
-      "M10.296-4.785L12.309-4.785L12.309 0L9.438 0Q6.369 0 4.653-1.502Q2.937-3.003 2.937-6.402L2.937-13.728L0.693-13.728L0.693-18.414L2.937-18.414L2.937-22.902L8.580-22.902L8.580-18.414L12.276-18.414L12.276-13.728L8.580-13.728L8.580-6.336Q8.580-5.511 8.976-5.148Q9.372-4.785 10.296-4.785 M16.962-20.328Q15.477-20.328 14.537-21.203Q13.596-22.077 13.596-23.364Q13.596-24.684 14.537-25.559Q15.477-26.433 16.962-26.433Q18.414-26.433 19.355-25.559Q20.295-24.684 20.295-23.364Q20.295-22.077 19.355-21.203Q18.414-20.328 16.962-20.328M14.124-18.414L19.767-18.414L19.767 0L14.124 0 M28.182-15.807Q29.007-17.094 30.459-17.886Q31.911-18.678 33.858-18.678Q36.135-18.678 37.983-17.523Q39.831-16.368 40.904-14.223Q41.976-12.078 41.976-9.240Q41.976-6.402 40.904-4.240Q39.831-2.079 37.983-0.908Q36.135 0.264 33.858 0.264Q31.944 0.264 30.476-0.528Q29.007-1.320 28.182-2.574L28.182 8.778L22.539 8.778L22.539-18.414L28.182-18.414L28.182-15.807M36.234-9.240Q36.234-11.352 35.063-12.556Q33.891-13.761 32.175-13.761Q30.492-13.761 29.321-12.540Q28.149-11.319 28.149-9.207Q28.149-7.095 29.321-5.874Q30.492-4.653 32.175-4.653Q33.858-4.653 35.046-5.891Q36.234-7.128 36.234-9.240 M67.122-18.612Q70.554-18.612 72.584-16.533Q74.613-14.454 74.613-10.758L74.613 0L69.003 0L69.003-9.999Q69.003-11.781 68.063-12.755Q67.122-13.728 65.472-13.728Q63.822-13.728 62.882-12.755Q61.941-11.781 61.941-9.999L61.941 0L56.331 0L56.331-9.999Q56.331-11.781 55.391-12.755Q54.450-13.728 52.800-13.728Q51.150-13.728 50.209-12.755Q49.269-11.781 49.269-9.999L49.269 0L43.626 0L43.626-18.414L49.269-18.414L49.269-16.104Q50.127-17.259 51.513-17.936Q52.899-18.612 54.648-18.612Q56.727-18.612 58.361-17.721Q59.994-16.830 60.918-15.180Q61.875-16.698 63.525-17.655Q65.175-18.612 67.122-18.612 M76.131-9.240Q76.131-12.078 77.203-14.223Q78.276-16.368 80.124-17.523Q81.972-18.678 84.249-18.678Q86.196-18.678 87.664-17.886Q89.133-17.094 89.925-15.807L89.925-18.414L95.568-18.414L95.568 0L89.925 0L89.925-2.607Q89.100-1.320 87.631-0.528Q86.163 0.264 84.216 0.264Q81.972 0.264 80.124-0.908Q78.276-2.079 77.203-4.240Q76.131-6.402 76.131-9.240M89.925-9.207Q89.925-11.319 88.753-12.540Q87.582-13.761 85.899-13.761Q84.216-13.761 83.044-12.556Q81.873-11.352 81.873-9.240Q81.873-7.128 83.044-5.891Q84.216-4.653 85.899-4.653Q87.582-4.653 88.753-5.874Q89.925-7.095 89.925-9.207 M103.983-15.345Q104.973-16.863 106.458-17.738Q107.943-18.612 109.758-18.612L109.758-12.639L108.207-12.639Q106.095-12.639 105.039-11.732Q103.983-10.824 103.983-8.547L103.983 0L98.340 0L98.340-18.414L103.983-18.414 M129.393 0L122.397 0L116.787-7.722L116.787 0L111.144 0L111.144-24.420L116.787-24.420L116.787-10.923L122.364-18.414L129.327-18.414L121.671-9.174 M147.576-9.504Q147.576-8.712 147.477-7.854L134.706-7.854Q134.838-6.138 135.811-5.231Q136.785-4.323 138.204-4.323Q140.316-4.323 141.141-6.105L147.147-6.105Q146.685-4.290 145.481-2.838Q144.276-1.386 142.461-0.561Q140.646 0.264 138.402 0.264Q135.696 0.264 133.584-0.891Q131.472-2.046 130.284-4.191Q129.096-6.336 129.096-9.207Q129.096-12.078 130.267-14.223Q131.439-16.368 133.551-17.523Q135.663-18.678 138.402-18.678Q141.075-18.678 143.154-17.556Q145.233-16.434 146.404-14.355Q147.576-12.276 147.576-9.504M134.739-10.989L141.801-10.989Q141.801-12.441 140.811-13.299Q139.821-14.157 138.336-14.157Q136.917-14.157 135.944-13.332Q134.970-12.507 134.739-10.989 M157.476-4.785L159.489-4.785L159.489 0L156.618 0Q153.549 0 151.833-1.502Q150.117-3.003 150.117-6.402L150.117-13.728L147.873-13.728L147.873-18.414L150.117-18.414L150.117-22.902L155.760-22.902L155.760-18.414L159.456-18.414L159.456-13.728L155.760-13.728L155.760-6.336Q155.760-5.511 156.156-5.148Q156.552-4.785 157.476-4.785",
-      "M163.944 0.264Q162.459 0.264 161.519-0.611Q160.578-1.485 160.578-2.772Q160.578-4.092 161.519-4.983Q162.459-5.874 163.944-5.874Q165.396-5.874 166.337-4.983Q167.277-4.092 167.277-2.772Q167.277-1.485 166.337-0.611Q165.396 0.264 163.944 0.264"
-    ];
-    var WM_TR = [-0.69, 26.43];
-    var WM_VB = { w: 166.58, h: 35.21 };
     var TAU = 6.283185307179586;
 
-    /* ── a linha do tempo, em ms ────────────────────────────────────
-       Cada marco é o começo de um quadro do storyboard. Mexer aqui é a
-       maneira de calibrar o ritmo sem tocar no resto.               */
-    var T_GHOST = 300;    /* 01 · o fantasma sozinho                 */
-    var T_ICON  = 300;    /* 02/03 · a onda entra e forma o ícone    */
-    var I_SWEEP = 400;    /*        defasagem entre as partículas    */
-    var T_WORD  = 950;    /* 04 · o wordmark começa a se montar      */
-    var W_SWEEP = 460;
-    var T_FLY   = 800;    /* voo de cada partícula                   */
-    var T_SPARK = 2380;   /* 05 · o gráfico acende, o nome vira sólido */
-    var T_MARK  = 2900;   /* 06 · o ícone acende                     */
-    var T_END   = 3320;   /* o canvas sai de cena                    */
+    /* ── linha do tempo (ms) — é aqui que se calibra o ritmo ──────── */
+    var T_GHOST = 320;    /* o ícone fantasma sozinho em cena          */
+    var T_TRAVEL = 2050;  /* a fita cruzando a seção                   */
+    var T_WORD = 1180;    /* o nome acende sob a passagem da fita      */
+    var T_COIL = 1700;    /* o laço começa a fechar no ícone           */
+    var T_LAND = 2450;    /* partículas assentadas no contorno         */
+    var T_SPARK = 2560;   /* o gráfico acende                          */
+    var T_MARK = 2980;    /* o ícone real assume                       */
+    var T_END = 3420;
 
     var DPR = Math.min(window.devicePixelRatio || 1, 2);
     var W = 0, H = 0, parts = [], buckets = [], raf = 0, t0 = 0, done = false;
-    var mkBox = null, ghostA = 0;
+    var mkBox = null, cy = 0, ampY = 0;
 
     function ease(x) { return 1 - Math.pow(1 - x, 3); }
+    function easeIO(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
     function clamp01(x) { return x < 0 ? 0 : (x > 1 ? 1 : x); }
 
     function roundRect(o, x, y, w, h, r) {
@@ -933,7 +927,6 @@
       o.closePath();
     }
 
-    /* o mark desenhado no espaço do viewBox 51x52, já escalado e posto */
     function markSpace(o, mk) {
       var s = Math.min(mk.w / 51, mk.h / 52);
       o.translate(mk.x + (mk.w - 51 * s) / 2, mk.y + (mk.h - 52 * s) / 2);
@@ -941,16 +934,14 @@
       return s;
     }
 
-    /* 01 · o fantasma: só a silhueta, apagada. É o que o storyboard tem
-       em cena antes de qualquer partícula chegar. */
+    /* o fantasma: só a silhueta, apagada, antes de a fita chegar */
     function paintGhost(o, mk, a) {
-      o.save();
-      markSpace(o, mk);
+      o.save(); markSpace(o, mk);
       o.lineJoin = 'round'; o.lineCap = 'round';
-      o.strokeStyle = 'rgba(138,197,250,' + (0.13 * a).toFixed(3) + ')';
+      o.strokeStyle = 'rgba(138,197,250,' + (0.14 * a).toFixed(3) + ')';
       o.lineWidth = 2;
       roundRect(o, 1.5, 1, 48, 49, 14); o.stroke();
-      o.strokeStyle = 'rgba(138,197,250,' + (0.10 * a).toFixed(3) + ')';
+      o.strokeStyle = 'rgba(138,197,250,' + (0.11 * a).toFixed(3) + ')';
       o.lineWidth = 3.6;
       o.beginPath();
       o.moveTo(12, 34); o.lineTo(22, 24.5); o.lineTo(28, 30); o.lineTo(36.5, 19.5);
@@ -958,64 +949,63 @@
       o.restore();
     }
 
-    /* 05 · o gráfico acendendo dentro do ícone, com o nó em brasa */
+    /* o gráfico acendendo, com o nó em brasa */
     function paintSpark(o, mk, a) {
-      o.save();
-      markSpace(o, mk);
+      o.save(); markSpace(o, mk);
       o.lineJoin = 'round'; o.lineCap = 'round';
       o.globalCompositeOperation = 'lighter';
-      o.strokeStyle = 'rgba(138,197,250,' + (0.95 * a).toFixed(3) + ')';
+      o.strokeStyle = 'rgba(150,205,255,' + (0.92 * a).toFixed(3) + ')';
       o.lineWidth = 3.6;
       o.beginPath();
       o.moveTo(12, 34); o.lineTo(22, 24.5); o.lineTo(28, 30); o.lineTo(36.5, 19.5);
       o.stroke();
-      var g = o.createRadialGradient(36.5, 19.5, 0, 36.5, 19.5, 13);
-      g.addColorStop(0, 'rgba(190,225,255,' + (0.85 * a).toFixed(3) + ')');
-      g.addColorStop(0.35, 'rgba(138,197,250,' + (0.42 * a).toFixed(3) + ')');
+      var g = o.createRadialGradient(36.5, 19.5, 0, 36.5, 19.5, 15);
+      g.addColorStop(0, 'rgba(210,236,255,' + (0.85 * a).toFixed(3) + ')');
+      g.addColorStop(0.32, 'rgba(138,197,250,' + (0.40 * a).toFixed(3) + ')');
       g.addColorStop(1, 'rgba(138,197,250,0)');
       o.fillStyle = g;
-      o.beginPath(); o.arc(36.5, 19.5, 13, 0, TAU); o.fill();
-      o.fillStyle = 'rgba(214,238,255,' + (0.95 * a).toFixed(3) + ')';
+      o.beginPath(); o.arc(36.5, 19.5, 15, 0, TAU); o.fill();
+      o.fillStyle = 'rgba(224,242,255,' + (0.95 * a).toFixed(3) + ')';
       o.beginPath(); o.arc(36.5, 19.5, 4, 0, TAU); o.fill();
+      /* halo geral do ícone no momento em que ele fecha */
+      var h2 = o.createRadialGradient(25.5, 25.5, 4, 25.5, 25.5, 34);
+      h2.addColorStop(0, 'rgba(138,197,250,' + (0.20 * a).toFixed(3) + ')');
+      h2.addColorStop(1, 'rgba(138,197,250,0)');
+      o.fillStyle = h2;
+      o.beginPath(); o.arc(25.5, 25.5, 34, 0, TAU); o.fill();
       o.restore();
     }
 
-    /* a lockup rasterizada: é dela que saem os alvos e as cores. O miolo
-       do mark não é pintado — preencher #07070a geraria partículas da cor
-       do fundo, invisíveis. O que vira ponto é o contorno. */
-    function paintTargets(o, mk, wd) {
-      o.save();
-      markSpace(o, mk);
-      o.lineJoin = 'round'; o.lineCap = 'round';
-      o.strokeStyle = '#5b86b4'; o.lineWidth = 2;
-      roundRect(o, 1.5, 1, 48, 49, 14); o.stroke();
-      o.strokeStyle = '#8ac5fa'; o.lineWidth = 3.6;
-      o.beginPath();
-      o.moveTo(12, 34); o.lineTo(22, 24.5); o.lineTo(28, 30); o.lineTo(36.5, 19.5);
-      o.stroke();
-      o.fillStyle = '#8ac5fa';
-      o.beginPath(); o.arc(36.5, 19.5, 4, 0, TAU); o.fill();
-      o.restore();
-      var iconPixels = o.getImageData(0, 0, o.canvas.width, o.canvas.height);
-
-      o.save();
-      o.translate(wd.x, wd.y);
-      var ws = wd.w / WM_VB.w;
-      o.scale(ws, ws);
-      o.translate(WM_TR[0], WM_TR[1]);
-      o.fillStyle = '#ffffff';
-      for (var i = 0; i < WM_D.length; i++) {
-        try { o.fill(new Path2D(WM_D[i])); } catch (e) { return null; }
+    /* ── o caminho da fita ────────────────────────────────────────────
+       u=0 é a entrada, no alto da direita, fora da tela; u=1 é o centro
+       do ícone. Até COIL_U é onda; dali em diante vira espiral que se
+       fecha no raio do contorno, que é como o laço do vídeo se aperta. */
+    var COIL_U = 0.76;
+    function pathAt(u, out) {
+      if (u <= COIL_U) {
+        var k = u / COIL_U;
+        /* atravessa da direita para a esquerda, descendo do alto */
+        out.x = W * 1.06 - k * (W * 1.06 - (mkBox ? mkBox.x + mkBox.w / 2 : W * 0.2));
+        var damp = 0.42 + 0.58 * Math.sin(Math.min(1, k * 1.18) * Math.PI);
+        out.y = cy + Math.sin(k * TAU * 2.05 + 0.35) * ampY * damp
+                   - (1 - Math.min(1, k * 2.2)) * ampY * 1.15;
+      } else {
+        /* espiral: gira e encolhe até o raio do contorno do ícone */
+        var c = (u - COIL_U) / (1 - COIL_U);
+        var cx0 = mkBox ? mkBox.x + mkBox.w / 2 : W * 0.2;
+        var cy0 = mkBox ? mkBox.y + mkBox.h / 2 : cy;
+        var r0 = ampY * 1.05, r1 = mkBox ? mkBox.w * 0.46 : 26;
+        var rr = r0 + (r1 - r0) * easeIO(clamp01(c));
+        var ang = -0.5 + c * TAU * 1.75;
+        out.x = cx0 + Math.cos(ang) * rr;
+        out.y = cy0 + Math.sin(ang) * rr * 0.92;
       }
-      o.restore();
-      return iconPixels;
     }
 
     function build() {
       var cr = canvas.getBoundingClientRect();
       var mr = markEl.getBoundingClientRect();
-      var wr = wordEl.getBoundingClientRect();
-      if (!cr.width || !cr.height || !mr.width || !wr.width) return false;
+      if (!cr.width || !cr.height || !mr.width) return false;
 
       W = cr.width; H = cr.height;
       canvas.width = Math.round(W * DPR);
@@ -1023,82 +1013,78 @@
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
       var mk = { x: mr.left - cr.left, y: mr.top - cr.top, w: mr.width, h: mr.height };
-      var wd = { x: wr.left - cr.left, y: wr.top - cr.top, w: wr.width, h: wr.height };
       mkBox = mk;
+      cy = mk.y + mk.h / 2;
+      /* a amplitude também depende da LARGURA: presa só à altura do
+         canvas ela dava o mesmo laço de 76px num telefone de 390,
+         onde ele cobria o headline inteiro. */
+      ampY = Math.min(H * 0.22, W * 0.085, 76);
 
+      /* alvos: o contorno do ícone, rasterizado */
       var oc = document.createElement('canvas');
       oc.width = Math.max(2, Math.round(W));
       oc.height = Math.max(2, Math.round(H));
       var oct = oc.getContext('2d');
       if (!oct) return false;
-      var iconOnly = paintTargets(oct, mk, wd);
-      if (!iconOnly) return false;
-
-      var all;
-      try { all = oct.getImageData(0, 0, oc.width, oc.height).data; }
+      oct.save(); markSpace(oct, mk);
+      oct.lineJoin = 'round'; oct.lineCap = 'round';
+      oct.strokeStyle = '#7fb4e8'; oct.lineWidth = 2.4;
+      roundRect(oct, 1.5, 1, 48, 49, 14); oct.stroke();
+      oct.restore();
+      var img;
+      try { img = oct.getImageData(0, 0, oc.width, oc.height).data; }
       catch (e) { return false; }
-      var ico = iconOnly.data;
 
-      /* dois grupos: o que já existia antes do wordmark ser pintado é o
-         ícone; o resto é o nome. Cada um ganha o seu tempo de chegada. */
-      var G = [[], []];
+      var hx = [], hy = [];
       for (var y = 0; y < oc.height; y++) {
         for (var x = 0; x < oc.width; x++) {
-          var i4 = (y * oc.width + x) * 4;
-          if (all[i4 + 3] > 110) {
-            G[ico[i4 + 3] > 110 ? 0 : 1].push(x, y, all[i4], all[i4 + 1], all[i4 + 2]);
-          }
+          if (img[(y * oc.width + x) * 4 + 3] > 110) { hx.push(x); hy.push(y); }
         }
       }
-      if (!G[0].length && !G[1].length) return false;
+
+      var narrow = W < 760;
+      var N = narrow ? 2100 : 3400;
+      var LANDERS = Math.min(hx.length ? Math.round(N * 0.42) : 0, 1100);
 
       parts = [];
-      var CAP = [1500, 1700];
-      for (var g = 0; g < 2; g++) {
-        var src = G[g], n = src.length / 5;
-        if (!n) continue;
-        var minX = Infinity, maxX = -Infinity, j;
-        for (j = 0; j < n; j++) {
-          if (src[j * 5] < minX) minX = src[j * 5];
-          if (src[j * 5] > maxX) maxX = src[j * 5];
-        }
-        var span = (maxX - minX) || 1;
-        var N = Math.min(CAP[g], n);
-        for (j = 0; j < N; j++) {
-          var k = (Math.random() * n) | 0;
-          var tx = src[k * 5], ty = src[k * 5 + 1];
-          var s2 = Math.random(), size;
-          if (s2 < 0.58)      size = 0.34 + Math.random() * 0.46;
-          else if (s2 < 0.87) size = 0.80 + Math.random() * 0.54;
-          else                size = 1.34 + Math.random() * 0.86;
-          parts.push({
-            g: g, tx: tx, ty: ty,
-            r: src[k * 5 + 2], gr: src[k * 5 + 3], b: src[k * 5 + 4],
-            x: 0, y: 0, vx: 0, vy: 0, size: size,
-            alpha: 0.42 + Math.random() * 0.55,
-            /* entram pela direita, então quem está MAIS À DIREITA chega
-               primeiro — é o que faz a onda varrer para a esquerda */
-            dly: (g === 0 ? T_ICON : T_WORD) +
-                 (1 - (tx - minX) / span) * (g === 0 ? I_SWEEP : W_SWEEP),
-            /* de onde vem e como ondula: a faixa curva do quadro 02 */
-            far: 0.55 + Math.random() * 0.85,
-            arc: (Math.random() - 0.5) * H * 0.42,
-            amp: (Math.random() - 0.5) * H * 0.30,
-            sp: Math.random() * TAU
-          });
-        }
+      for (var i = 0; i < N; i++) {
+        /* lag = posição da partícula ao longo da fita. A cauda é mais
+           rala que a cabeça, daí a potência: concentra perto de 0. */
+        var lag = Math.pow(Math.random(), 0.78) * 0.92;
+        var lands = i < LANDERS && hx.length;
+        var k = lands ? (Math.random() * hx.length) | 0 : 0;
+        var s2 = Math.random(), size;
+        if (s2 < 0.54)      size = 0.48 + Math.random() * 0.62;
+        else if (s2 < 0.85) size = 1.05 + Math.random() * 0.75;
+        else                size = 1.75 + Math.random() * 1.25;
+        /* azul da marca, do aço ao quase branco nas mais brilhantes */
+        var t = Math.random();
+        parts.push({
+          lag: lag,
+          off: (Math.random() - 0.5) * (narrow ? 22 : 30),
+          jx: (Math.random() - 0.5) * 16,
+          jy: (Math.random() - 0.5) * 16,
+          ph: Math.random() * TAU,
+          lands: lands,
+          tx: lands ? hx[k] : 0, ty: lands ? hy[k] : 0,
+          x: -999, y: 0, vx: 0, vy: 0, size: size,
+          r: Math.round(96 + t * 130),
+          g: Math.round(168 + t * 74),
+          b: Math.round(230 + t * 25),
+          alpha: 0.40 + Math.random() * 0.55
+        });
       }
 
-      /* agrupamento: um beginPath/arc/fill por partícula custaria
+      /* agrupamento por cor: um beginPath/arc/fill por partícula custaria
          milhares de chamadas por quadro. Cor e alpha são fixos, então dá
          para quantizá-los, ordenar uma vez e desenhar cada faixa num só
-         path — a posição muda a cada quadro, a ordem não. O grupo entra
-         na chave para que ícone e nome possam apagar em tempos
+         path. A posição muda a cada quadro, a ordem não. O flag "lands"
+         entra na chave porque os dois grupos apagam em tempos
          diferentes, via globalAlpha por faixa. */
       parts.forEach(function (q) {
-        q.ab = Math.min(4, Math.floor((q.alpha - 0.42) / 0.55 * 5));
-        q.key = (q.g << 20) | ((q.r >> 5) << 13) | ((q.gr >> 5) << 8) |
-                ((q.b >> 5) << 3) | q.ab;
+        q.ab = Math.min(4, Math.floor((q.alpha - 0.40) / 0.55 * 5));
+        q.key = ((q.lands ? 1 : 0) << 18) | ((q.r >> 5) << 11) |
+                ((q.g >> 5) << 6) | ((q.b >> 5) << 3) | q.ab;
       });
       parts.sort(function (a, c) { return a.key - c.key; });
 
@@ -1109,9 +1095,9 @@
           cur = parts[bi].key;
           var p0 = parts[bi];
           buckets.push({
-            start: bi, end: bi, g: p0.g,
-            style: 'rgba(' + p0.r + ',' + p0.gr + ',' + p0.b + ',' +
-                   (0.42 + ((p0.ab + 0.5) / 5) * 0.55).toFixed(3) + ')'
+            start: bi, end: bi, lands: p0.lands,
+            style: 'rgba(' + p0.r + ',' + p0.g + ',' + p0.b + ',' +
+                   (0.40 + ((p0.ab + 0.5) / 5) * 0.55).toFixed(3) + ')'
           });
         }
         buckets[buckets.length - 1].end = bi;
@@ -1119,72 +1105,75 @@
       return true;
     }
 
-    /* o handoff é em dois tempos, como nos quadros 05 e 06: o nome fica
-       sólido antes do ícone, que acende por último com o gráfico. */
     var wordLit = false, markLit = false;
+    var pt = { x: 0, y: 0 };
 
     function frame(now) {
       if (!t0) t0 = now;
       var el = now - t0;
       var i, p;
 
-      /* o fantasma entra, segura, e recua quando as partículas assumem */
-      ghostA = clamp01(el / T_GHOST) *
-               (1 - clamp01((el - (T_SPARK - 260)) / 420));
+      var ghostA = clamp01((el - 60) / T_GHOST) *
+                   (1 - clamp01((el - (T_SPARK - 300)) / 420));
+
+      /* a cabeça da fita percorre de 0 a 1 + o comprimento da cauda */
+      var head = ease(clamp01((el - T_GHOST) / T_TRAVEL)) * 1.62;
+      var landMix = easeIO(clamp01((el - T_COIL) / (T_LAND - T_COIL)));
 
       for (i = 0; i < parts.length; i++) {
         p = parts[i];
-        var lt = (el - p.dly) / T_FLY;
-        if (lt <= 0) { p.x = W * 2; p.y = p.ty; continue; }
-        if (lt < 1) {
-          /* 02 · o voo: vem da direita, ondulando, e a onda se fecha */
-          var e = ease(lt);
-          var sx = p.tx + W * 0.60 * p.far;
-          var sy = p.ty + p.arc;
-          var wv = Math.sin(lt * Math.PI) * p.amp;
-          var sc = (1 - e) * Math.sin(lt * Math.PI * 2.6 + p.sp) * H * 0.05;
-          p.x = sx + (p.tx - sx) * e;
-          p.y = sy + (p.ty - sy) * e + wv + sc;
-          p.vx = p.vy = 0;
-          continue;
+        var u = head - p.lag;
+        if (u <= 0) { p.x = -999; continue; }
+
+        pathAt(Math.min(u, 1.06), pt);
+        /* a fita tem espessura: deslocamento perpendicular ao avanço,
+           mais um bater lento que a faz respirar em vez de virar fio */
+        var br = Math.sin(now * 0.0022 + p.ph) * 0.5 + 0.5;
+        var px = pt.x + p.jx * br;
+        var py = pt.y + p.off * (0.55 + br * 0.65) + p.jy * br;
+
+        if (p.lands && landMix > 0) {
+          p.x = px + (p.tx - px) * landMix;
+          p.y = py + (p.ty - py) * landMix;
+        } else {
+          p.x = px; p.y = py;
         }
-        p.vx += (p.tx - p.x) * 0.26;
-        p.vy += (p.ty - p.y) * 0.26;
-        p.vx *= 0.62; p.vy *= 0.62;
-        p.x += p.vx; p.y += p.vy;
       }
 
       ctx.clearRect(0, 0, W, H);
       if (mkBox && ghostA > 0.004) paintGhost(ctx, mkBox, ghostA);
 
-      /* as partículas de cada grupo apagam quando a camada real acende */
-      var aW = 1 - clamp01((el - T_SPARK) / 420);
-      var aM = 1 - clamp01((el - T_MARK) / 380);
+      /* 'lighter' é o que dá o bloom: onde a fita se dobra, as
+         partículas somam e a luz estoura */
+      ctx.globalCompositeOperation = 'lighter';
+      var aStray = 1 - clamp01((el - (T_COIL - 120)) / 620);
+      var aLand = 1 - clamp01((el - T_MARK) / 380);
       for (var kk = 0; kk < buckets.length; kk++) {
         var bk = buckets[kk];
-        var ga = bk.g === 0 ? aM : aW;
+        var ga = bk.lands ? aLand : aStray;
         if (ga <= 0.004) continue;
         ctx.globalAlpha = ga;
         ctx.fillStyle = bk.style;
         ctx.beginPath();
         for (i = bk.start; i <= bk.end; i++) {
           p = parts[i];
+          if (p.x < -900) continue;
           ctx.moveTo(p.x + p.size, p.y);
           ctx.arc(p.x, p.y, p.size, 0, TAU);
         }
         ctx.fill();
       }
       ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
 
-      /* 05 · o gráfico acende: sobe rápido e entrega ao ícone real */
-      if (mkBox && el > T_SPARK - 120) {
-        var sp = clamp01((el - (T_SPARK - 120)) / 360) *
-                 (1 - clamp01((el - T_MARK) / 380));
+      if (mkBox && el > T_SPARK - 200) {
+        var sp = clamp01((el - (T_SPARK - 200)) / 380) *
+                 (1 - clamp01((el - T_MARK) / 400));
         if (sp > 0.004) paintSpark(ctx, mkBox, sp);
       }
 
-      if (!wordLit && el >= T_SPARK) { wordLit = true; wordEl.style.opacity = '1'; }
-      if (!markLit && el >= T_MARK)  { markLit = true; markWrap.style.opacity = '1'; }
+      if (!wordLit && el >= T_WORD) { wordLit = true; wordEl.style.opacity = '1'; }
+      if (!markLit && el >= T_MARK) { markLit = true; markWrap.style.opacity = '1'; }
 
       if (!done && el >= T_END) {
         done = true;
@@ -1202,9 +1191,8 @@
 
     /* Medir cedo demais é o erro que custa caro aqui: a <img> do wordmark
        tem width:auto, então antes de carregar ela mede zero e a lockup
-       inteira — e o canvas, que se dimensiona por ela — nasce menor do
-       que vai ficar. Os alvos sairiam desse espaço encolhido e as
-       partículas montariam a logo fora do lugar. */
+       inteira nasce menor do que vai ficar — e os alvos sairiam desse
+       espaço encolhido. */
     function whenMeasurable(cb) {
       var fire = function () {
         if (wordEl.complete && wordEl.naturalWidth) { cb(); }
