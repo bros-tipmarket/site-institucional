@@ -2401,3 +2401,29 @@
   [data-reveal] { opacity:1; transform:none }
   .reveal > * { opacity:1; transform:none; transition:none }
 }
+
+/* ── HERO · tipografia 1:1 com o artefato v2 ───────────────────────────
+   O artefato compoe o hero em Poppins 600 (titulo, com a segunda frase
+   em azul) e Inter 19px (lede). Escopo fechado no hero: o resto da
+   pagina continua em Multima / Plus Jakarta.
+   ═══════════════════════════════════════════════════════════════════ */
+.tm-hero-h1 {
+  font-family: Poppins, Inter, Arial, sans-serif;
+  font-weight: 600;
+  font-size: clamp(40px, 6vw, 68px);
+  line-height: 1.14;
+  letter-spacing: -.015em;
+  color: #14171D;
+  max-width: 17ch;
+}
+.tm-hero-h1 .hl { color: #4F7DF0 }
+
+.tm-hero-lede {
+  font-family: Inter, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.65;
+  color: #5B6069;
+  max-width: 56ch;
+}
+.tm-hero-lede b { color: #14171D; font-weight: 600 }
