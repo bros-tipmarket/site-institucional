@@ -2410,19 +2410,18 @@
 .tm-hero-h1 {
   font-family: Poppins, Inter, Arial, sans-serif;
   font-weight: 600;
-  font-size: clamp(40px, 6vw, 68px);
+  font-size: clamp(32px, 3.5vw, 50px);
   line-height: 1.14;
   letter-spacing: -.015em;
   color: #14171D;
-  max-width: 17ch;
 }
 .tm-hero-h1 .hl { color: #4F7DF0 }
 
 .tm-hero-lede {
   font-family: Inter, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   font-weight: 400;
-  font-size: 19px;
-  line-height: 1.65;
+  font-size: 17px;
+  line-height: 1.62;
   color: #5B6069;
   max-width: 56ch;
 }
