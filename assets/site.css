@@ -404,7 +404,7 @@
    O produto trocou a marca-d'água por este bloco: uma rosca com a
    probabilidade dentro, o multiplicador ao lado e a legenda do que a
    porcentagem quer dizer — que muda por tipo de evento ("Yes chance"
-   num sim/não, "Flamengo leads" num jogo).
+   num sim/não, "Larson leads" numa disputa de vários concorrentes).
 
    Ele ocupa espaço real (margin-top:auto), não position:absolute. Preso
    à base por absolute ele não empurrava nada: quando o card encolheu no
@@ -945,6 +945,46 @@
 @media (max-width:1023px) { .tm-under { padding-top:120px } }
 @media (max-width:639px)  { .tm-under { padding-top:104px } }
 
+/* ── e a seção de cima precisa estar acima ─────────────────────
+   Abrir o topo da Quebra 3 não basta: ela é .tm-under, ou seja
+   position:relative, e vem depois no DOM. Sem z-index de nenhum lado,
+   a ordem de pintura é a do documento e a seção escura passa por cima
+   da base do painel — a imagem deixa de sair da seção e vira imagem
+   comida pela seguinte.
+
+   Não resolve pelo .tm-bo-tilt: o .tm-bo-stage tem perspective, que
+   abre contexto de empilhamento próprio, então o z-index:1 de lá só
+   vale dentro do palco. Quem tem de subir é a seção.
+
+   Isto vinha de graça enquanto o painel morava na Quebra 2, que já era
+   .tm-overlap (z-index:3) por causa do corte do herói. Ao passar o
+   .tm-overlap para a Quebra 1.5, o z-index foi junto e o painel ficou
+   sem cobertura. Agora é explícito e mora ao lado do vazamento que ele
+   protege, em vez de ser efeito colateral de outro gesto.
+
+   Mesmo 3 do .tm-overlap: as duas disputam com vizinhos em auto, e um
+   valor diferente sugeriria uma hierarquia entre elas que não existe. */
+.tm-bo-over { position:relative; z-index:3 }
+
+/* ── a faixa da Quebra 2.5 ─────────────────────────────────────
+   Três blocos claros seguidos — 1.5, 2 e 2.5 — no mesmo #f2f4f6, e o
+   rótulo da 2.5 não tinha moldura a que pertencer: ele abria uma seção
+   nova dentro de um campo cinza que não havia terminado. Pior, o
+   veredito da Quebra 2 (.tm-close, com o fio azul) ficava parado logo
+   acima dele, então a seção lia como reprise e não como movimento novo.
+
+   A faixa é o que o próprio artefato usa neste lugar: um tom abaixo do
+   resto e um fio no topo. O fio é quem faz o trabalho — entre #f2f4f6 e
+   #edf0f2 há cinco pontos, que sozinhos não marcam nada.
+
+   Fio só no topo: embaixo a seção encontra a Quebra 3, escura, e é por
+   ali que o painel do BackOffice sai. Um fio ali cruzaria a imagem no
+   meio do vazamento.
+
+   O tom mais fundo ainda rende de graça para o painel: sobre #edf0f2 a
+   moldura branca do BackOffice separa mais do que sobre #f2f4f6.    */
+.tm-band { background:#edf0f2; border-top:1px solid #e0e5e9 }
+
 /* ── O palco do BackOffice (Quebra 2) ─────────────────────────
    Duas ideias foram testadas e descartadas aqui, e vale registrar por
    quê. A primeira foi cortar o painel com a Quebra 3, como o herói faz
@@ -1214,6 +1254,79 @@
   .tm-bx-curvewrap { margin:auto -31px -1px }
   .tm-bx-curve { height:140px }
   .tm-bx-cap   { right:31px }
+}
+
+/* ── o tile da API ─────────────────────────────────────────────
+   Único do bento que fecha o próprio padding-bottom: os outros quatro
+   abrem a base para a arte sangrar, e aqui não há arte para sangrar —
+   o bloco de rotas é texto, e texto cortado pela borda lê como bug.
+
+   O min-height:0 é obrigatório e vem depois dos dois blocos de
+   breakpoint do bento de propósito: .tm-bx sobe para 300px no tablet e
+   326px no desktop, e quatro linhas de mono num tile de largura cheia
+   deixariam 200px de vazio embaixo. Mesma especificidade, então quem
+   vem depois na folha ganha.
+
+   A cor do verbo é a única roxa da página. Verde e vermelho estão
+   reservados a bid/ask, e azul é a marca — num bloco de código o
+   método precisa se separar da rota sem sequestrar nenhum dos dois
+   significados que a página já ensinou.                            */
+.tm-bx--api { padding-bottom:24px }
+
+.tm-api      { display:flex; flex-direction:column; gap:7px;
+               padding:16px; border-radius:14px;
+               border:1px solid rgba(255,255,255,.09); background:#0e0e16;
+               font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+               font-size:12.5px; line-height:1.45; color:#8a909b;
+               overflow-x:auto; scrollbar-width:none }
+.tm-api::-webkit-scrollbar { display:none }
+.tm-api-row  { display:flex; align-items:baseline; gap:10px; white-space:nowrap }
+.tm-api-row b { color:#8ac5fa; font-weight:500 }
+.tm-api-verb, .tm-api-ok { flex-shrink:0; min-width:36px; font-style:normal;
+                           font-weight:600; letter-spacing:.02em }
+.tm-api-verb { color:#c3a2e8 }
+.tm-api-ok   { color:#2ebd85 }
+/* a resposta não é mais uma rota: a régua separa o que você pede do que
+   volta, e é ela que faz o "4ms" ser um resultado e não mais um dado */
+.tm-api-row.is-ok { margin-top:3px; padding-top:11px;
+                    border-top:1px solid rgba(255,255,255,.07) }
+
+@media (min-width:700px) {
+  .tm-bx--api { grid-column:1 / 3; grid-row:4; min-height:0;
+                flex-direction:row; align-items:center; gap:28px;
+                padding-bottom:26px }
+  /* 54/46 e não 44/52: em 700px exatos o bloco de rotas ficava com
+     227px de área útil para 262px de rota e comia o padding da direita.
+     O texto cede porque ele quebra de graça; a rota não quebra.     */
+  .tm-bx--api .tm-bx-txt { flex:1 1 46%; max-width:46ch }
+  .tm-bx--api .tm-api    { flex:1 1 54%; min-width:0 }
+}
+@media (min-width:1024px) {
+  .tm-bx--api { grid-column:1 / -1; grid-row:3; min-height:0;
+                gap:40px; padding-bottom:30px }
+}
+
+/* No telefone o bloco encolhe um passo e a linha da resposta deixa de
+   ser flex: ela é frase, não rota, e em 360px o "4ms" era cortado pela
+   borda. Com a barra de rolagem escondida (é o que o overflow-x:auto
+   aqui é: rede de segurança, não afordância) um corte no meio de um
+   token lê como bug, não como "continua para o lado".
+
+   As três rotas seguem em nowrap de propósito: quebrar um endpoint no
+   meio é o que faria o bloco parar de ler como endpoint.            */
+@media (max-width:479px) {
+  .tm-api      { font-size:11.5px; padding:14px 13px; gap:6px }
+  .tm-api-verb { min-width:32px }
+  .tm-api-row.is-ok { display:block; white-space:normal }
+  .tm-api-row.is-ok .tm-api-ok { min-width:0; margin-right:9px }
+}
+/* 320px: em 11,5px a rota mais longa comia o padding da direita inteiro
+   e o `}` encostava na borda. Mesma escada do .tm-railcta, que já cede
+   escala nesta faixa antes de ceder o próprio botão.               */
+@media (max-width:359px) {
+  .tm-api      { font-size:10px; padding:12px 11px; gap:5px }
+  .tm-api-row  { gap:7px }
+  .tm-api-verb { min-width:27px }
 }
 
 /* ── fragmento: livro de ofertas ───────────────────────────── */
@@ -1777,6 +1890,22 @@
 .tm-step-num { display:inline-block; width:60px; text-align:center; border-radius:18px;
                padding:4px 8px; background:#f2f4f6; color:#0e0e14;
                font-size:14px; line-height:1.57 }
+
+/* ── o selo no pé do cartão de etapa (Quebra 5) ─────────────────
+   O slot dizia "Step 1", que o numeral grande no topo do mesmo cartão
+   já diz — dois rótulos para a mesma informação, e o de baixo era o
+   inútil. Agora carrega o que a etapa entrega, que é a única coisa que
+   um cartão de processo tem para prometer.
+
+   Verde, e é a exceção deliberada à regra de que verde é bid/ask: um
+   tique é literalmente "aprovado", que é o outro significado que a
+   página já dá à cor. O tom é o #0d7a55 que o BackOffice usa em --bo-up
+   e não o --yes #2ebd85: sobre branco o token do produto cai para
+   2,2:1 e não serve para texto.                                    */
+.tm-tick     { display:inline-flex; align-items:center; gap:8px;
+               font-size:13.5px; line-height:1.4; font-weight:500;
+               color:#0d7a55 }
+.tm-tick svg { width:15px; height:15px; flex-shrink:0 }
 .tm-mono     { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
                font-variant-numeric:tabular-nums }
 .tm-eyebrow  { font-size:11.5px; letter-spacing:.16em; text-transform:uppercase }
@@ -1927,6 +2056,24 @@
 .tm-sheet-label { font-family:'Multima',Georgia,serif; font-weight:300; font-size:30px;
                   line-height:1.1; color:#fff }
 .tm-sheet-label.v2-shiny { color:var(--accent) }
+
+/* Com a Revenue o sheet passou de seis linhas para sete: 658px contra os
+   640px de um Android comum. Ele rola (overflow-y:auto no HTML), mas o
+   item que ficava fora da dobra era justamente o CTA — o único que
+   alguém abre o menu para procurar. Numa lista de navegação, rolar para
+   achar a ação é o mesmo que esconder a ação.
+
+   Então em tela baixa as linhas encolhem em vez de sair de cena: sete
+   linhas de 62px mais 88px de topo dão 522px, que cabe até em 568px. A
+   escada é a mesma do rail no topo — primeiro cede a escala, e só
+   depois o conteúdo. O gatilho é max-height e não max-width porque o
+   problema é de altura: um telefone deitado tem 360px de altura e
+   largura de tablet.                                                 */
+@media (max-height:700px) {
+  #mobile-menu    { padding-top:88px }
+  .tm-sheet-item  { padding:16px 0 }
+  .tm-sheet-label { font-size:26px }
+}
 
 /* ── Logo ──────────────────────────────────────────────────────────
    The lockup is now vector (assets/logo*.svg), rebuilt from the source

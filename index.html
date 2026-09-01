@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tipmarket — Every market your customer wants, under your brand</title>
-<meta name="description" content="Tipmarket is white-label prediction market infrastructure. Platform, liquidity, payments, KYC and BackOffice ready for you to launch your own markets under your brand.">
+<title>Tipmarket — Turn your audience into a market, under your brand</title>
+<meta name="description" content="Tipmarket is white-label, API-first prediction market infrastructure. Platform, liquidity, payments, KYC and BackOffice ready for you to launch your own markets under your brand.">
 <meta name="theme-color" content="#07070a">
 <link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml">
 <link rel="alternate icon" href="assets/logo-mark.png">
@@ -68,8 +68,13 @@
     <img src="assets/logo-white.svg" alt="Tipmarket" width="234" height="52">
   </a>
 
-  <nav class="hidden lg:flex items-center gap-8 xl:gap-10 font-body" aria-label="Sections">
+  <!-- o vão caiu de 8/10 para 6/9: com seis itens a fileira somava mais
+       que os 960px úteis em 1024px exatos e o último saía por baixo da
+       CTA. O scroll-spy monta os alvos a partir dos próprios hrefs
+       (initTopbar em site.js), então o item novo se acende sozinho. -->
+  <nav class="hidden lg:flex items-center gap-6 xl:gap-9 font-body" aria-label="Sections">
     <a class="tm-navlink" href="#opportunity"><span class="tm-navlink-label">Opportunity</span></a>
+    <a class="tm-navlink" href="#revenue"><span class="tm-navlink-label">Revenue</span></a>
     <a class="tm-navlink" href="#b2b"><span class="tm-navlink-label">White-Label</span></a>
     <a class="tm-navlink" href="#widget"><span class="tm-navlink-label">Widget</span></a>
     <a class="tm-navlink" href="#integration"><span class="tm-navlink-label">Integration</span></a>
@@ -78,7 +83,7 @@
 
   <div class="flex items-center gap-3 flex-shrink-0">
     <a class="tm-railcta font-body group" href="contact.html">
-      Start operating
+      Launch your market
       <svg class="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M7 7h10v10"></path></svg>
     </a>
     <button id="hamburger" aria-label="Menu" class="lg:hidden flex items-center justify-center w-10 h-10 -mr-2">
@@ -90,13 +95,17 @@
 <span class="tm-progress" id="tm-progress" aria-hidden="true"></span>
 </header>
 
-<div id="mobile-menu" class="fixed inset-0 z-40 flex-col pt-28 px-6 gap-0">
+<!-- overflow-y-auto porque o sheet passou a ter sete linhas: sete × 78px
+     mais os 112px de pt não cabem em telefone curto, e sem rolagem quem
+     ficava para fora era justamente o CTA no pé. -->
+<div id="mobile-menu" class="fixed inset-0 z-40 flex-col pt-28 px-6 gap-0 overflow-y-auto">
   <a class="tm-sheet-item" href="#opportunity" onclick="closeMobileMenu()"><span class="tm-sheet-label">Opportunity</span></a>
+  <a class="tm-sheet-item" href="#revenue" onclick="closeMobileMenu()"><span class="tm-sheet-label">Revenue</span></a>
   <a class="tm-sheet-item" href="#b2b" onclick="closeMobileMenu()"><span class="tm-sheet-label">White-Label</span></a>
   <a class="tm-sheet-item" href="#widget" onclick="closeMobileMenu()"><span class="tm-sheet-label">Widget</span></a>
   <a class="tm-sheet-item" href="#integration" onclick="closeMobileMenu()"><span class="tm-sheet-label">Integration</span></a>
   <a class="tm-sheet-item" href="#affiliates" onclick="closeMobileMenu()"><span class="tm-sheet-label">Affiliates</span></a>
-  <a class="tm-sheet-item" href="contact.html"><span class="tm-sheet-label v2-shiny">Start operating</span></a>
+  <a class="tm-sheet-item" href="contact.html"><span class="tm-sheet-label v2-shiny">Launch your market</span></a>
 </div>
 
 
@@ -119,19 +128,19 @@
            O trecho some inteiro em telas pequenas.
            text-wrap:balance já resolve a quebra sozinho, sem viúva. -->
       <h1 class="font-display font-light text-ink ds-h1" style="text-wrap:balance;">
-        Every market your customer wants, under your brand.
+        Turn your audience into a market. Under your brand, live in weeks.
       </h1>
     </div>
 
     <div class="flex-1 flex flex-col gap-4">
       <p class="font-body text-[14px] md:text-[16px] leading-[1.62] text-slate">
-        Tipmarket delivers a prediction market operation ready to run, under your brand.
-        Engineering, liquidity, payments and compliance come already solved —
+        Tipmarket delivers a prediction market operation ready to run.
+        Engineering, liquidity, payments and compliance arrive already solved —
         <span class="text-ink font-medium">you bring the audience.</span>
       </p>
       <div class="flex flex-col md:flex-row gap-3 md:gap-[15px]">
         <a class="cta-btn flex items-center justify-center gap-3 bg-void text-white font-body text-[16px] leading-[1.62] pl-6 pr-2 h-[52px] rounded-full w-full md:w-auto" href="contact.html">
-          Start operating
+          Launch your market
           <span class="cta-icon"><img src="assets/icon-arrow-up-right.svg" alt="" class="w-[18px] h-[18px]"></span>
         </a>
         <a class="btn-outline flex items-center justify-center border border-stone text-void font-body text-[16px] leading-[1.62] px-6 h-[52px] rounded-full w-full md:w-auto" href="#integration">
@@ -175,7 +184,7 @@
       </span>
     </div>
 
-    <span class="sr-only">Preview of the Tipmarket platform in the light theme, carrying Tipmarket’s own brand: a sidebar with Home, Saved, Portfolio, New, Profile and Dark mode, a row of featured markets, and an Explore markets section split between Sports and News. Prices and percentages update on their own; Yes is always green and No is always red.</span>
+    <span class="sr-only">Preview of the Tipmarket platform in the light theme, carrying Tipmarket’s own brand: a sidebar with Home, Saved, Portfolio, New, Profile and Dark mode, a row of featured markets, and an Explore markets section split between Crypto and Technology. Prices and percentages update on their own; Yes is always green and No is always red.</span>
 
     <div class="tm-screen">
       <div class="tm-surface" aria-hidden="true">
@@ -233,7 +242,7 @@
         <div class="tm-search-row">
           <div class="tm-search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg>
-            Search events… e.g. Bitcoin, Brasileirão
+            Search events… e.g. Bitcoin, NASCAR
           </div>
           <span class="tm-icon-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h10M4 17h6"/></svg>
@@ -272,24 +281,39 @@
         <div class="tm-feat">
 
           <article class="tm-fcard tm-fcard--dark">
+            <!-- rede de nós com um aceso: o mercado pergunta quem estreia
+                 em #1, e o desenho mostra um ponto destacado no meio dos
+                 outros. Abstrato de propósito — a marca citada no título
+                 não entra como logo aqui pela mesma razão que escudo de
+                 clube não entrava: reproduzir marca alheia no material
+                 de venda sugere licenciamento que não existe. -->
             <svg class="tm-fcard-art" viewBox="0 0 340 158" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <defs><linearGradient id="tmArtA" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#1f6b52"/><stop offset="1" stop-color="#0b1a16"/>
-              </linearGradient></defs>
+              <defs>
+                <linearGradient id="tmArtA" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#3a3782"/><stop offset="1" stop-color="#101020"/>
+                </linearGradient>
+                <radialGradient id="tmArtAg" cx="88%" cy="24%" r="54%">
+                  <stop offset="0" stop-color="#b9c2ff" stop-opacity=".32"/>
+                  <stop offset="1" stop-color="#b9c2ff" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
               <rect width="340" height="158" fill="url(#tmArtA)"/>
-              <g fill="#0a2b22" opacity=".8">
-                <ellipse cx="34" cy="118" rx="46" ry="30"/><ellipse cx="96" cy="126" rx="52" ry="26"/>
-                <ellipse cx="168" cy="116" rx="44" ry="30"/><ellipse cx="236" cy="128" rx="56" ry="26"/>
-                <ellipse cx="308" cy="118" rx="46" ry="30"/>
+              <rect width="340" height="158" fill="url(#tmArtAg)"/>
+              <g stroke="#aeb8ff" stroke-width="1" opacity=".14" fill="none">
+                <path d="M0 128h340"/><path d="M0 96h340"/>
               </g>
-              <g fill="#08201a" opacity=".92">
-                <ellipse cx="10" cy="150" rx="52" ry="26"/><ellipse cx="80" cy="156" rx="58" ry="24"/>
-                <ellipse cx="158" cy="150" rx="50" ry="26"/><ellipse cx="240" cy="156" rx="60" ry="24"/>
-                <ellipse cx="322" cy="150" rx="52" ry="26"/>
+              <g stroke="#aeb8ff" stroke-width="1" opacity=".3" fill="none">
+                <path d="M44 118 96 74 152 110 206 58 258 96 306 48"/>
+                <path d="M44 118 152 110 258 96"/>
+                <path d="M96 74 206 58 306 48"/>
               </g>
-              <g stroke="#8fe3c2" stroke-width="1.1" opacity=".3" fill="none">
-                <path d="M0 92h340"/><path d="M0 78h340"/>
+              <g fill="#7d88e8" opacity=".92">
+                <circle cx="44" cy="118" r="3.4"/><circle cx="96" cy="74" r="3.4"/>
+                <circle cx="152" cy="110" r="3.4"/><circle cx="206" cy="58" r="3.4"/>
+                <circle cx="258" cy="96" r="3.4"/>
               </g>
+              <circle cx="306" cy="48" r="11" fill="none" stroke="#dfe4ff" stroke-width="1.2" opacity=".45"/>
+              <circle cx="306" cy="48" r="5.6" fill="#dfe4ff"/>
             </svg>
             <span class="tm-feat-pill">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/></svg>Featured · $10.84 vol.
@@ -297,13 +321,13 @@
             <span class="tm-feat-save">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
             </span>
-            <h3 class="tm-fcard-q">Amazon deforestation drops again in 2026?</h3>
+            <h3 class="tm-fcard-q">Will OpenAI’s Astra model debut as #1?</h3>
             <div class="tm-fcard-foot">
               <span class="tm-gauge" id="tm-gauge-1">
-                <i class="tm-mono" data-tick="45" data-pair="f1" data-arc="tm-gauge-1" data-suffix="%">45%</i>
+                <i class="tm-mono" data-tick="26" data-pair="f1" data-arc="tm-gauge-1" data-suffix="%">26%</i>
               </span>
               <span class="tm-fcard-meta">
-                <span class="tm-mult tm-mono">2.22x</span>
+                <span class="tm-mult tm-mono">3.85x</span>
                 <span class="tm-fcard-cap">Yes chance</span>
               </span>
               <span class="tm-fcard-cta">Trade</span>
@@ -342,7 +366,7 @@
             <span class="tm-feat-save">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
             </span>
-            <h3 class="tm-fcard-q">USD/BRL above 6.00 on Dec 31?</h3>
+            <h3 class="tm-fcard-q">Bitcoin volatility above 40 on Sep 30?</h3>
             <div class="tm-fcard-foot">
               <span class="tm-gauge" id="tm-gauge-2">
                 <i class="tm-mono" data-tick="41" data-pair="f2" data-arc="tm-gauge-2" data-suffix="%">41%</i>
@@ -368,11 +392,19 @@
               </defs>
               <rect width="340" height="158" fill="url(#tmArtB)"/>
               <rect width="340" height="158" fill="url(#tmArtBl)"/>
-              <g fill="none" stroke="#c9ecd6" stroke-width="1.4" opacity=".42">
+              <!-- o campo virou oval de autódromo, e é quase a mesma
+                   geometria: a elipse de fora continua sendo a borda, a
+                   do meio deixou de ser o círculo central e virou o
+                   miolo da pista, e a linha de meio-campo virou a linha
+                   de chegada, cruzando a faixa no topo. Arquibancada e
+                   refletores servem aos dois. -->
+              <g fill="none" stroke="#d5e4f5" stroke-width="1.4" opacity=".42">
                 <ellipse cx="170" cy="150" rx="150" ry="52"/>
-                <ellipse cx="170" cy="150" rx="34" ry="12"/>
-                <path d="M20 150h300"/>
+                <ellipse cx="170" cy="150" rx="112" ry="32"/>
+                <path d="M170 98v20"/>
               </g>
+              <ellipse cx="170" cy="150" rx="131" ry="42" fill="none" stroke="#d5e4f5"
+                       stroke-width="1.2" stroke-dasharray="6 8" opacity=".22"/>
               <g fill="#0c2038" opacity=".75">
                 <path d="M0 74h340v14H0z"/><path d="M0 92h340v10H0z"/>
               </g>
@@ -387,14 +419,14 @@
             <span class="tm-feat-save">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
             </span>
-            <h3 class="tm-fcard-q">Flamengo × Palmeiras — match winner</h3>
+            <h3 class="tm-fcard-q">NASCAR: Cook Out Southern 500 Winner</h3>
             <div class="tm-fcard-foot">
               <span class="tm-gauge" id="tm-gauge-3">
                 <i class="tm-mono" data-tick="47" data-pair="f3" data-arc="tm-gauge-3" data-suffix="%">47%</i>
               </span>
               <span class="tm-fcard-meta">
                 <span class="tm-mult tm-mono">2.13x</span>
-                <span class="tm-fcard-cap">Flamengo leads</span>
+                <span class="tm-fcard-cap">Larson leads</span>
               </span>
               <span class="tm-fcard-cta">Trade</span>
             </div>
@@ -439,15 +471,31 @@
                material de venda da Tipmarket sugere um licenciamento
                que não existe.
 
-               Os times tiveram uma passagem pintados nas cores do clube;
+               Os concorrentes tiveram uma passagem pintados nas cores do time;
                em avatar de 17px a cor virou bolinha berrante e roubava a
                linha inteira do resultado, que é o dado que importa. A
                inicial em cinza diz o mesmo sem competir.
 
-               ── coluna: esportes — evento agrupado ─────────────────── -->
+               ── coluna: cripto — evento agrupado ───────────────────
+               Era Esportes, e mudou por uma restrição de contagem: a
+               regra é que mercado em destaque não se repete no Explore,
+               e o painel tem três vagas de esporte (um Featured e duas
+               aqui) para as duas corridas que a fonte traz. Duas não
+               enchem três sem repetir uma.
+
+               Então Esportes fica na vaga maior — o card Featured, que é
+               onde ele vende mais — e a coluna passa a Cripto, que a
+               fonte abastece de sobra e que lê igual em qualquer país.
+
+               O tipo de card não muda de trabalho: continua sendo o
+               evento agrupado, com uma linha por resultado. Só que os
+               resultados agora são faixas de preço em vez de nomes, o
+               que é como o próprio produto lista mercado de preço — e
+               continua provando o que a seção precisa provar, que é a
+               diferença entre "várias saídas" e "sim/não". -->
           <section class="tm-col">
             <header class="tm-col-head">
-              <span class="tm-col-t" style="--cat:#0e6a63;">Sports<i></i></span>
+              <span class="tm-col-t" style="--cat:#a06a12;">Crypto<i></i></span>
               <span class="tm-col-all">view all (14)
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
               </span>
@@ -455,22 +503,22 @@
 
             <article class="tm-ev">
               <header class="tm-ev-head">
-                <span class="tm-card-icon" style="--cat:#0e6a63">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="m12 7 4 2.9-1.5 4.7h-5L8 9.9z"/><path d="M12 3v4M3.2 9.6 8 9.9M20.8 9.6 16 9.9M6.6 19.4 9.5 14.6M17.4 19.4 14.5 14.6"/></svg>
+                <span class="tm-card-icon" style="--cat:#a06a12">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="7" rx="8" ry="3.2"/><path d="M4 7v10c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V7"/><path d="M4 12c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2"/></svg>
                 </span>
-                <h3 class="tm-ev-q">Flamengo × Palmeiras — match winner</h3>
+                <h3 class="tm-ev-q">What price will BNB hit in September?</h3>
                 <span class="tm-ev-n">3 markets</span>
                 <svg class="tm-ev-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg>
               </header>
               <div class="tm-ev-rows">
                 <span class="tm-ev-row">
-                  <i class="tm-ev-av">F</i><b>Flamengo</b>
+                  <i class="tm-ev-av">↑</i><b>$700</b>
                   <span class="tm-ev-mult tm-mono">1.85x</span>
                   <span class="tm-ev-y tm-mono" data-tick="47" data-pair="s1" data-suffix="%">47%</span>
                   <span class="tm-ev-n2">No</span>
                 </span>
                 <span class="tm-ev-row">
-                  <i class="tm-ev-av">D</i><b>Draw</b>
+                  <i class="tm-ev-av">↓</i><b>$600</b>
                   <span class="tm-ev-mult tm-mono">2.78x</span>
                   <span class="tm-ev-y tm-mono" data-tick="32" data-pair="s2" data-suffix="%">32%</span>
                   <span class="tm-ev-n2">No</span>
@@ -478,28 +526,28 @@
               </div>
               <footer class="tm-ev-foot">
                 <span class="tm-ev-more">+ 1 more</span>
-                <span>$6.45 vol. · closes Sep 25, 2026</span>
+                <span>$6.45 vol. · closes Sep 30, 2026</span>
               </footer>
             </article>
 
             <article class="tm-ev">
               <header class="tm-ev-head">
-                <span class="tm-card-icon" style="--cat:#1c6ea4">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4.1" ry="9"/><path d="M3.2 9.2h17.6M3.2 14.8h17.6"/></svg>
+                <span class="tm-card-icon" style="--cat:#2b6fb0">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9.6 14.4 14.4 9.6"/><path d="M7.9 12.1 6 14a3.6 3.6 0 0 0 5.1 5.1l1.9-1.9"/><path d="M16.1 11.9 18 10a3.6 3.6 0 0 0-5.1-5.1L11 6.8"/></svg>
                 </span>
-                <h3 class="tm-ev-q">Brazil × Argentina: World Cup qualifier</h3>
+                <h3 class="tm-ev-q">What price will Chainlink hit in September?</h3>
                 <span class="tm-ev-n">3 markets</span>
                 <svg class="tm-ev-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg>
               </header>
               <div class="tm-ev-rows">
                 <span class="tm-ev-row">
-                  <i class="tm-ev-av">B</i><b>Brazil</b>
+                  <i class="tm-ev-av">↑</i><b>$12</b>
                   <span class="tm-ev-mult tm-mono">2.33x</span>
                   <span class="tm-ev-y tm-mono" data-tick="41" data-pair="s3" data-suffix="%">41%</span>
                   <span class="tm-ev-n2">No</span>
                 </span>
                 <span class="tm-ev-row">
-                  <i class="tm-ev-av">A</i><b>Argentina</b>
+                  <i class="tm-ev-av">↓</i><b>$10</b>
                   <span class="tm-ev-mult tm-mono">2.61x</span>
                   <span class="tm-ev-y tm-mono" data-tick="36" data-pair="s4" data-suffix="%">36%</span>
                   <span class="tm-ev-n2">No</span>
@@ -507,15 +555,28 @@
               </div>
               <footer class="tm-ev-foot">
                 <span class="tm-ev-more">+ 1 more</span>
-                <span>$4.03 vol. · closes Sep 23, 2026</span>
+                <span>$4.03 vol. · closes Sep 30, 2026</span>
               </footer>
             </article>
           </section>
 
-          <!-- ── coluna: notícias — mercado binário ─────────────────── -->
+          <!-- ── coluna: tecnologia — mercado binário ───────────────
+               Era Notícias, com desmatamento na Amazônia e Oscar de
+               filme brasileiro. Virou Tecnologia porque é onde a fonte
+               internacional é densa e onde o mercado é legível em
+               qualquer país — "estreia em #1" não depende de saber quem
+               joga nem que prêmio é. A coluna ao lado virou Cripto pelo
+               motivo explicado lá; o argumento da seção é a diferença
+               entre evento agrupado e binário, e isso continua de pé.
+
+               Os dois cards aqui compartilham a moldura "estreia em #1"
+               porque a fonte lista essa família de mercados assim mesmo,
+               um por modelo. São mercados diferentes, com preços
+               diferentes — o que a regra proíbe é o mesmo mercado
+               aparecer em destaque e no Explore. -->
           <section class="tm-col">
             <header class="tm-col-head">
-              <span class="tm-col-t" style="--cat:#ae2368;">News<i></i></span>
+              <span class="tm-col-t" style="--cat:#4f46b8;">Technology<i></i></span>
               <span class="tm-col-all">view all (5)
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
               </span>
@@ -523,25 +584,25 @@
 
             <article class="tm-bin">
               <header class="tm-bin-head">
-                <!-- floresta, não a empresa homônima: o mercado é sobre
-                     desmatamento na Amazônia -->
-                <span class="tm-card-icon" style="--cat:#0f7a52">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4.5 20.5c-1.5-7 3-13.5 15-14.5.5 9.5-5 15-12 14.5"/><path d="M4.5 20.5C7 15.5 11 12 16 9.8"/></svg>
+                <!-- chip, e não o logo de quem o mercado cita: o ícone
+                     nomeia a categoria do evento, não a empresa -->
+                <span class="tm-card-icon" style="--cat:#4f46b8">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>
                 </span>
-                <h3 class="tm-bin-q">Amazon deforestation drops again in 2026?</h3>
+                <h3 class="tm-bin-q">Will the next Mythos-Class model debut as #1?</h3>
                 <span class="tm-bin-pct">
-                  <b class="tm-mono" data-tick="45" data-pair="n1" data-suffix="%">45%</b>
-                  <i class="tm-mono">2.22x</i>
+                  <b class="tm-mono" data-tick="26" data-pair="n1" data-suffix="%">26%</b>
+                  <i class="tm-mono">3.85x</i>
                 </span>
               </header>
               <div class="tm-bin-bars">
                 <span class="tm-bin-bar tm-bin-y">
                   <i class="tm-bin-fill" id="tm-fill-1"></i>
-                  <b>Yes</b><span class="tm-mono" data-tick="0.45" data-format="cents" data-prefix="$" data-pair="b1" data-prob="tm-fill-1">$0.45</span>
+                  <b>Yes</b><span class="tm-mono" data-tick="0.26" data-format="cents" data-prefix="$" data-pair="b1" data-prob="tm-fill-1">$0.26</span>
                 </span>
                 <span class="tm-bin-bar tm-bin-n">
                   <i class="tm-bin-fill" id="tm-fill-2"></i>
-                  <b>No</b><span class="tm-mono" data-mirror="b1" data-prefix="$">$0.55</span>
+                  <b>No</b><span class="tm-mono" data-mirror="b1" data-prefix="$">$0.74</span>
                 </span>
               </div>
               <footer class="tm-ev-foot">
@@ -551,23 +612,23 @@
 
             <article class="tm-bin">
               <header class="tm-bin-head">
-                <span class="tm-card-icon" style="--cat:#954b0b">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="7.5" width="18" height="13" rx="2"/><path d="M3 12.2h18"/><path d="M7.6 7.5 5.9 12.2M12.2 7.5l-1.7 4.7M16.8 7.5l-1.7 4.7"/></svg>
+                <span class="tm-card-icon" style="--cat:#1c8fa8">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 3 7.5 12 12l9-4.5z"/><path d="M3 12.2 12 16.7l9-4.5"/><path d="M3 16.8 12 21.3l9-4.5"/></svg>
                 </span>
-                <h3 class="tm-bin-q">Brazilian film nominated for the 2027 Oscars?</h3>
+                <h3 class="tm-bin-q">Will the next Gemini Flash model debut as #1?</h3>
                 <span class="tm-bin-pct">
-                  <b class="tm-mono" data-tick="35" data-pair="n2" data-suffix="%">35%</b>
-                  <i class="tm-mono">2.86x</i>
+                  <b class="tm-mono" data-tick="50" data-pair="n2" data-suffix="%">50%</b>
+                  <i class="tm-mono">2.00x</i>
                 </span>
               </header>
               <div class="tm-bin-bars">
                 <span class="tm-bin-bar tm-bin-y">
                   <i class="tm-bin-fill" id="tm-fill-3"></i>
-                  <b>Yes</b><span class="tm-mono" data-tick="0.35" data-format="cents" data-prefix="$" data-pair="b2" data-prob="tm-fill-3">$0.35</span>
+                  <b>Yes</b><span class="tm-mono" data-tick="0.50" data-format="cents" data-prefix="$" data-pair="b2" data-prob="tm-fill-3">$0.50</span>
                 </span>
                 <span class="tm-bin-bar tm-bin-n">
                   <i class="tm-bin-fill" id="tm-fill-4"></i>
-                  <b>No</b><span class="tm-mono" data-mirror="b2" data-prefix="$">$0.65</span>
+                  <b>No</b><span class="tm-mono" data-mirror="b2" data-prefix="$">$0.50</span>
                 </span>
               </div>
               <footer class="tm-ev-foot">
@@ -587,24 +648,123 @@
 
 
 <!-- ═══════════════════════════════════════════════════════════════════
-     QUEBRA 2 · OPORTUNIDADE
+     QUEBRA 1.5 · AS TRÊS PORTAS
+
+     Vem antes da tese de propósito. Quem chega sabendo o que quer não
+     deveria ter de atravessar cinco seções para descobrir por qual
+     porta entra; quem não sabe segue rolando, e a Quebra 2 continua o
+     argumento sem ter perdido nada. Três cartões, um por produto, cada
+     um apontando para a seção que o detalha.
+
+     Ela herdou o .tm-overlap da Quebra 2: é esta seção que agora sobe
+     por cima do corte da tela do herói, e a Quebra 2 virou uma seção
+     comum. O gesto é o mesmo, só trocou de dono — as duas são bg-haze,
+     então a emenda entre elas não aparece.
+
+     O cabeçalho tinha as duas partes presas numa só: "Three products."
+     é rótulo, "Choose the best way to start." é título. Fundidos num
+     h2, esta era a única seção da página sem rótulo — não porque não
+     tivesse um, e sim porque o dela estava trancado dentro do título.
+     Separados, o cabeçalho vira o mesmo par de duas partes que todas as
+     outras seções têm, e o h2 volta a caber numa linha.
+
+     O rótulo é .label e não tm-eyebrow: a caixa alta mono é a mesma
+     pele dos rótulos de público dentro dos cartões, e um rótulo de
+     seção vestido igual aos rótulos dos filhos deixa de ser hierarquia.
+     O .label azul em caixa baixa é o que a Quebra 2, a 2.5 e a 5 usam.
+
+     O h2 segue em ds-h3 e não ds-h2: menor que o das outras de
+     propósito. Isto é um menu, não um movimento — competir com a tese
+     da Quebra 2, que começa 120px abaixo, seria dar a ela um rival que
+     ela não tem.
    ═══════════════════════════════════════════════════════════════════ -->
-<section id="opportunity" class="tm-overlap bg-haze px-6 md:px-8 pb-0" style="scroll-margin-top:88px;">
+<section id="products" class="tm-overlap bg-haze px-6 md:px-8 pb-[120px]" style="scroll-margin-top:88px;">
+<div class="max-w-[1280px] mx-auto flex flex-col gap-10" data-reveal>
+
+  <div class="max-w-[749px] flex flex-col gap-4">
+    <p class="label">Three products</p>
+    <h2 class="font-display font-light text-ink ds-h3" style="text-wrap:balance;">
+      Choose the best way to start.
+    </h2>
+  </div>
+
+  <!-- Cartões-link, não cartões com link dentro: a área toda é
+       clicável, e o "→" no pé é afordância, não o alvo. mt-auto o
+       ancora no fundo para os três terminarem na mesma linha, o que só
+       funciona porque a grade estica os itens. -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+    <a class="ds-lift bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-4" href="#b2b">
+      <span class="tm-mono tm-eyebrow text-signal" style="font-size:10px;">For operators</span>
+      <div class="flex flex-col gap-2">
+        <h3 class="font-display font-light text-void ds-h4">White-Label</h3>
+        <p class="font-body ds-regular-l text-slate">The full platform — markets, liquidity, payments and BackOffice — running under your brand.</p>
+      </div>
+      <span class="font-body ds-bold-s text-signal mt-auto inline-flex items-center gap-1.5">
+        See the platform
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </span>
+    </a>
+
+    <a class="ds-lift bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-4" href="#widget">
+      <span class="tm-mono tm-eyebrow text-signal" style="font-size:10px;">For publishers &amp; platforms</span>
+      <div class="flex flex-col gap-2">
+        <h3 class="font-display font-light text-void ds-h4">Market Widget</h3>
+        <p class="font-body ds-regular-l text-slate">Markets embedded right inside your content, with one line of code and zero changes to your CMS.</p>
+      </div>
+      <span class="font-body ds-bold-s text-signal mt-auto inline-flex items-center gap-1.5">
+        See the widget
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </span>
+    </a>
+
+    <a class="ds-lift bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-4" href="#affiliates">
+      <span class="tm-mono tm-eyebrow text-signal" style="font-size:10px;">For creators &amp; communities</span>
+      <div class="flex flex-col gap-2">
+        <h3 class="font-display font-light text-void ds-h4">Affiliate Program</h3>
+        <p class="font-body ds-regular-l text-slate">No integration at all. Share your link and earn on every trade your audience makes.</p>
+      </div>
+      <span class="font-body ds-bold-s text-signal mt-auto inline-flex items-center gap-1.5">
+        See the program
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </span>
+    </a>
+  </div>
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     QUEBRA 2 · OPORTUNIDADE
+
+     O .tm-overlap saiu daqui e passou para a Quebra 1.5, que agora é a
+     que sobe sobre o corte do herói. Sem padding-top próprio de
+     propósito: os 120px de ar vêm do pb da seção acima, e as duas são
+     bg-haze — somar os dois lados daria 240px de cinza vazio.
+
+     Embaixo é o contrário, e por isso o pb existe: a Quebra 2.5 é faixa
+     (.tm-band), com fio no topo. Sem esses 120px o veredito ficaria
+     sentado em cima do fio. Com eles o fio cai no meio dos 240px — a
+     mesma medida que a página já usa em toda troca de fundo, como entre
+     a Quebra 4 e a 5.
+   ═══════════════════════════════════════════════════════════════════ -->
+<section id="opportunity" class="bg-haze px-6 md:px-8 pb-[120px]" style="scroll-margin-top:88px;">
 <div class="max-w-[1280px] mx-auto flex flex-col gap-10" data-reveal>
 
   <div class="flex flex-col items-center gap-10">
 
     <!-- 2.1 — a tese sozinha na largura: nada compete com ela.
-         A seção sobe por cima do print do herói (.tm-overlap); centrar
-         aqui transforma essa emenda numa pausa, não numa continuação. -->
+         Centrada porque a Quebra 1.5 acima é alinhada à esquerda e a
+         2.5 abaixo também: entre duas seções de texto à esquerda, a
+         tese centrada é a pausa que separa o menu do argumento. -->
     <div class="max-w-[749px] text-center flex flex-col gap-4">
       <p class="label">Opportunity</p>
       <h2 class="font-display font-light text-ink ds-h2" style="text-wrap:balance;">
-        Prediction markets are ready. Whoever moves now defines the category.
+        Prediction markets are leaving the niche. The first brands in will own them.
       </h2>
       <p class="font-body ds-paragraph text-slate">
         The window is open. Regulation is taking shape, public appetite has been proven, and the category
-        is leaving the niche faster than almost anyone predicted. Five years from now the reference brands
+        is moving faster than almost anyone predicted. Five years from now the reference brands
         of this market will already be set —
         <span class="text-ink font-medium">and they will be the ones that built the operation now.</span>
       </p>
@@ -627,7 +787,7 @@
           <svg class="w-5 h-5 text-signal" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM16.5 16.5h3.75M18.375 14.625v3.75"/></svg>
           <div class="flex flex-col gap-1.5">
             <p class="font-body ds-bold-m text-ink" style="letter-spacing:-.01em;">The content is infinite</p>
-            <p class="font-body ds-regular-l text-slate">Every match, election, exchange rate or premiere becomes a market. The calendar produces for you.</p>
+            <p class="font-body ds-regular-l text-slate">Every match, election, exchange rate or premiere becomes a market. The calendar does the work for you.</p>
           </div>
         </div>
         <div class="tm-proof ds-lift">
@@ -657,12 +817,110 @@
       </div>
     </div>
   </div>
+</div>
+</section>
 
-  <!-- 2.3 — o BackOffice, sem introdução.
-       A linha acima ("a infraestrutura já está construída — falta a decisão
-       de usá-la") fecha a seção. Um título aqui a reabria, e ela terminava
-       duas vezes. Sem ele, o frame vira a aterrissagem do veredito: está
-       construída, e é isto. Sobra uma legenda: orientação, não argumento.
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     QUEBRA 2.5 · O NEGÓCIO — de onde a receita sai
+
+     A Quebra 2 prova que o mercado existe; esta diz o que ele rende.
+     Era o buraco da página: ela pulava do porquê do mundo ("a categoria
+     está pronta") direto para o como do produto ("olha a plataforma")
+     sem nunca dizer de onde vem o dinheiro.
+
+     O BackOffice mudou de seção junto, e não por arrumação: o painel é
+     o extrato dessa receita — volume, liquidez, usuários — e aqui ele é
+     a evidência do argumento em vez de um apêndice do anterior.
+
+     A geometria da emenda não mudou: a seção segue com pb-0 e o palco
+     segue vazando 56px para dentro da Quebra 3, que abre o topo para
+     recebê-lo (.tm-under). Quem herdou o corte do herói foi a Quebra
+     1.5; este vazamento continua sendo desta.
+   ═══════════════════════════════════════════════════════════════════ -->
+<section id="revenue" class="tm-bo-over tm-band px-6 md:px-8 pt-[120px] pb-0" style="scroll-margin-top:88px;">
+<div class="max-w-[1280px] mx-auto flex flex-col gap-10" data-reveal>
+
+  <!-- Só rótulo e título aqui. A lede desceu para depois dos tiles, e a
+       razão está na nota lá embaixo.
+
+       Pilha à esquerda, e não título-à-esquerda/lede-à-direita: aquela
+       composição é a da Quebra 3, que vem imediatamente depois, e duas
+       seguidas com o mesmo desenho de cabeçalho — a segunda no escuro —
+       faziam a primeira ler como rascunho da segunda.
+
+       O rótulo é "Revenue" e não "The business": a nav é o índice da
+       página, e era a única das seis em que o rótulo não repetia o item
+       de nav que leva até ele. Também é o padrão da família .label, em
+       que "Opportunity" e "Integration" são substantivos nus. -->
+  <div class="max-w-[749px] flex flex-col gap-4">
+    <p class="label">Revenue</p>
+    <h2 class="font-display font-light text-ink ds-h2" style="text-wrap:balance;">
+      New revenue from the audience you already have.
+    </h2>
+  </div>
+
+  <!-- Mesma pele de cartão da prova da Quebra 2 (.tm-proof), em grade
+       fixa de três: aqui são três e não quatro, então não precisam do
+       trilho arrastável — no telefone empilham e cabe. -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="tm-proof ds-lift">
+      <svg class="w-5 h-5 text-signal" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+      <div class="flex flex-col gap-1.5">
+        <p class="font-body ds-bold-m text-ink" style="letter-spacing:-.01em;">Revenue on every trade</p>
+        <p class="font-body ds-regular-l text-slate">Every order pays a trading fee — and the fee accrues to your operation from the first market you open.</p>
+      </div>
+    </div>
+    <div class="tm-proof ds-lift">
+      <svg class="w-5 h-5 text-signal" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.023 9.348h4.992V4.356m0 4.992-3.181-3.183a8.25 8.25 0 0 0-13.803 3.7M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7"/></svg>
+      <div class="flex flex-col gap-1.5">
+        <p class="font-body ds-bold-m text-ink" style="letter-spacing:-.01em;">Recurring by design</p>
+        <p class="font-body ds-regular-l text-slate">Every market closes and a new one opens. Users come back on their own — and so does the revenue.</p>
+      </div>
+    </div>
+    <div class="tm-proof ds-lift">
+      <svg class="w-5 h-5 text-signal" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg>
+      <div class="flex flex-col gap-1.5">
+        <p class="font-body ds-bold-m text-ink" style="letter-spacing:-.01em;">The asset stays yours</p>
+        <p class="font-body ds-regular-l text-slate">The brand, the users and the relationship belong to you. Tipmarket runs the machine behind them.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- A lede, aqui e não sob o h2 — mesmo texto, outro lugar, e o lugar
+       é o argumento.
+
+       Encostada no título ela lia como eco: "the audience you already
+       have" e, dezesseis pixels abaixo, "on top of traffic you already
+       own". A mesma afirmação duas vezes, e a segunda em corpo miúdo.
+       Nada disso está errado na frase; está errado na distância. Depois
+       dos três tiles, a mesma oração deixa de ser eco e passa a ser
+       retomada, que é o que uma linha de fecho faz.
+
+       E o melhor trecho dela — "compounds with the calendar, not with
+       your ad inventory" — antes chegava antes do tile que explica o
+       ciclo, então adiantava um dos três apoios. Agora chega depois dos
+       três e lê como a conclusão tirada deles.
+
+       Fica também onde faltava uma ponte: a linha promete uma receita
+       que se compõe, e a legenda do BackOffice vem logo abaixo com o
+       painel que a conta. Antes os tiles terminavam e o painel começava
+       sem nada entre os dois.
+
+       Medida de 760px, a mesma do .tm-close da Quebra 2. É a rima que
+       diz "isto é uma linha de fecho" sem tomar emprestado o fio azul e
+       o realce, que são daquele veredito e enfraqueceriam se
+       aparecessem duas vezes na mesma rolagem. -->
+  <p class="font-body ds-paragraph text-slate max-w-[760px]">
+    You are not adding a feature. You are opening a revenue line on top of traffic you
+    already own — <span class="text-ink font-medium">and it compounds with the calendar,
+    not with your ad inventory.</span>
+  </p>
+
+  <!-- 2.6 — o BackOffice.
+       Sem título próprio: a linha acima é que o apresenta, e um segundo
+       título aqui reabriria a seção no meio dela. Sobra uma legenda —
+       orientação, não argumento.
 
        O seletor de cores saiu daqui. A história do white-label já é contada
        pelo herói, que cicla marcas sozinho — repeti-la com amostras clicáveis
@@ -788,14 +1046,14 @@
                   <span>Market</span><span>Category</span><span>Volume</span><span>Yes price</span><span>Status</span>
                 </div>
                 <div class="tm-bo-tr font-body">
-                  <span class="min-w-0"><span class="block truncate">Brasileirão champion</span><span class="tm-bo-bar"><i style="width:54%;"></i></span></span>
+                  <span class="min-w-0"><span class="block truncate">Southern 500 winner</span><span class="tm-bo-bar"><i style="width:54%;"></i></span></span>
                   <span class="tm-bo-tag"><i style="background:#3f8f63;"></i>Sports</span>
                   <span class="tm-mono tm-bo-vol">$88.4k</span>
                   <span class="tm-mono tm-bo-price" data-tick="0.54" data-format="cents">0.54</span>
                   <span class="tm-bo-status is-open"><i></i>open</span>
                 </div>
                 <div class="tm-bo-tr font-body">
-                  <span class="min-w-0"><span class="block truncate">USD/BRL below 5.00</span><span class="tm-bo-bar"><i style="width:29%;"></i></span></span>
+                  <span class="min-w-0"><span class="block truncate">EUR/USD below 1.05</span><span class="tm-bo-bar"><i style="width:29%;"></i></span></span>
                   <span class="tm-bo-tag"><i style="background:#4a7fc4;"></i>Economy</span>
                   <span class="tm-mono tm-bo-vol">$61.2k</span>
                   <span class="tm-mono tm-bo-price" data-tick="0.29" data-format="cents">0.29</span>
@@ -853,12 +1111,12 @@
            market já está pronto". Traduzi-lo só aqui criaria dois nomes
            para a mesma coisa. -->
       <h2 class="font-display font-light text-white ds-h2" style="text-wrap:balance;">
-        Prediction markets. Without building&nbsp;one.
+        Earn with prediction markets. Without building&nbsp;one.
       </h2>
     </div>
     <p class="font-body ds-paragraph max-w-[360px]" style="color:rgba(255,255,255,.7);">
       You do not get a box of parts to assemble. You get the whole set
-      running, tested and wired end to end.
+      running, tested and wired end to end — <span class="text-white font-medium">under your brand.</span>
     </p>
   </div>
 
@@ -893,7 +1151,14 @@
 
       <div class="tm-bx-bleed" aria-hidden="true">
         <div class="tm-glass">
-          <span class="tm-glass-bar tm-mono">Live market · Flamengo to win the title?</span>
+          <!-- curto de propósito: a barra é nowrap dentro de um vidro que
+               mede min(48%,568px), e entre 700 e 1023px ela dispõe de
+               312–352px. "Larson to win the Southern 500?" pedia 365 e
+               cortava no meio da palavra; esta pede 285 e cabe em toda
+               largura — inclusive nos 700px, onde a legenda anterior já
+               cortava. A corrida fica dita na linha de liquidação
+               abaixo, em "official source: NASCAR". -->
+          <span class="tm-glass-bar tm-mono">Live market · Kyle Larson to win?</span>
           <div class="tm-glass-in tm-ob">
             <span class="tm-ob-row is-ask"><i style="width:14%;"></i><b>58¢</b><em>5,910</em></span>
             <span class="tm-ob-row is-ask"><i style="width:20%;"></i><b>57¢</b><em>8,240</em></span>
@@ -913,11 +1178,12 @@
     <article class="tm-bx tm-bx--accent">
       <div class="tm-bx-txt">
         <h3 class="font-display font-light text-white tm-bx-title">
-          Payments and compliance
+          Payments and compliance, wired up.
         </h3>
         <p class="font-body ds-paragraph tm-bx-lead">
           Every provider your operation depends on, connected and kept
-          current — through a single integration.
+          current — through a single integration. Deposits, withdrawals, KYC
+          and reporting arrive as one working piece, not a to-do list.
         </p>
       </div>
 
@@ -942,7 +1208,7 @@
       <div class="tm-bx-art tm-bx-art--steps" aria-hidden="true">
         <div class="tm-steps">
           <span class="tm-step is-done"><i></i>market open</span>
-          <span class="tm-step is-done"><i></i>official source: CBF</span>
+          <span class="tm-step is-done"><i></i>official source: NASCAR</span>
           <span class="tm-step is-done"><i></i>result published</span>
           <span class="tm-step"><i></i>paying out the winners…</span>
         </div>
@@ -960,8 +1226,9 @@
           Your site does not go down when everyone shows up.
         </h3>
         <p class="font-body ds-paragraph tm-bx-lead">
-          Title decider, election night, a result landing live: traffic
-          spikes and there is still headroom to spare. Nothing for you to prepare.
+          The engine underneath is built for <span class="text-white font-medium">more than a
+          million orders per second</span>. Title decider, election night, a result landing live:
+          traffic spikes and there is still headroom to spare. Nothing you need to prepare.
         </p>
       </div>
 
@@ -980,6 +1247,38 @@
       </svg>
       </div>
     </article>
+
+    <!-- API · o único tile do bento sem imagem de produto, e de propósito.
+         Os outros quatro mostram um pedaço da tela; este mostra a
+         superfície por onde a tela é chamada, que para quem vai integrar
+         é o produto. Largura cheia no fim da fileira porque é o tile que
+         fala com o time técnico e não com quem assina: quem decide já
+         parou de ler no "live in weeks" logo abaixo.
+
+         As quatro linhas não são um exemplo de código para copiar — são
+         a forma da API. Criar mercado, ler o livro, mandar ordem, e o
+         tempo de casamento na resposta. É o mínimo que prova que existe
+         uma API de verdade atrás da promessa. -->
+    <article class="tm-bx tm-bx--api">
+      <div class="tm-bx-txt">
+        <h3 class="font-display font-light text-white tm-bx-title">
+          API-first under the hood.
+        </h3>
+        <p class="font-body ds-paragraph tm-bx-lead">
+          Everything the platform does is exposed through the same APIs we use
+          ourselves. Take the full white-label front end, embed the widget, or build
+          your own product on top — <span class="text-white font-medium">how deep you
+          integrate is your call, not a constraint.</span>
+        </p>
+      </div>
+
+      <div class="tm-api" aria-hidden="true">
+        <span class="tm-api-row"><i class="tm-api-verb">POST</i>/v1/markets</span>
+        <span class="tm-api-row"><i class="tm-api-verb">GET</i>/v1/orderbook/<b>{market_id}</b></span>
+        <span class="tm-api-row"><i class="tm-api-verb">POST</i>/v1/orders</span>
+        <span class="tm-api-row is-ok"><i class="tm-api-ok">201</i>order accepted · matched in <b>4ms</b></span>
+      </div>
+    </article>
   </div>
 
   <!-- 3.4 — a barra é o argumento, não a moldura dele: a frase carrega o
@@ -990,9 +1289,9 @@
        nenhum, e entrega a Quebra 5, que detalha as tais semanas.     -->
   <div class="tm-b2b-close">
     <p class="font-body ds-bold-l text-white" style="letter-spacing:-.01em;">
-      Building all of this from scratch is a project of months.
+      Building all of this from scratch takes months.
     </p>
-    <span class="tm-mono tm-eyebrow" style="color:#8ac5fa;font-size:12px;">Live in weeks</span>
+    <span class="tm-mono tm-eyebrow" style="color:#8ac5fa;font-size:12px;">You go live in weeks</span>
   </div>
 </div>
 </section>
@@ -1008,7 +1307,7 @@
     <div class="flex flex-col gap-4">
       <p class="tm-mono tm-eyebrow text-signal">Widget for your site</p>
       <h2 class="font-display font-light text-ink ds-h2" style="text-wrap:balance;">
-        Every story on your site becomes a market.
+        Give your readers a side to take — on every story.
       </h2>
       <p class="font-body ds-paragraph text-slate">
         Right inside the page you get the market tied to the story, plus the fast ones
@@ -1151,7 +1450,7 @@
 
           <div class="tm-w-screen" data-screen="code">
             <p class="tm-w-t">Enter the code</p>
-            <p class="tm-w-s">We sent it to ana.souza@email.com</p>
+            <p class="tm-w-s">We sent it to you@example.com</p>
             <div class="tm-w-code" id="tm-w-code">
               <i></i><i></i><i></i><i></i><i></i><i></i>
             </div>
@@ -1289,9 +1588,9 @@
 <div class="max-w-[1280px] mx-auto flex flex-col items-center gap-10" data-reveal>
 
   <div class="max-w-[749px] text-center flex flex-col gap-4">
-    <p class="label">How the integration works</p>
+    <p class="label">Integration</p>
     <h2 class="font-display font-light text-ink ds-h2" style="text-wrap:balance;">
-      From first contact to a live market, in four steps.
+      Four steps between you and a live market.
     </h2>
     <p class="font-body ds-paragraph text-slate">
       You approve, we install. Engineering, providers and operations stay on our side —
@@ -1311,9 +1610,12 @@
       <span class="tm-step-num font-body">01</span>
       <div class="flex flex-col gap-4">
         <h3 class="font-display font-light text-void ds-h4">Connect your identity</h3>
-        <p class="font-body ds-regular-l text-slate">The platform ships looking like you.</p>
+        <p class="font-body ds-regular-l text-slate">The platform ships looking like you: your domain, your logo, your colors and your language.</p>
       </div>
-      <span class="tm-mono tm-eyebrow mt-auto text-signal" style="font-size:10px;">Step 1</span>
+      <span class="tm-tick font-body mt-auto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.8 9.4 17.7 19.5 6.6"/></svg>
+        Nothing to design from zero
+      </span>
     </div>
 
     <div class="tm-step-card hiw-glow-2 bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-5 min-h-[240px] md:min-h-[268px]">
@@ -1322,25 +1624,34 @@
         <h3 class="font-display font-light text-void ds-h4">Payments and compliance wired up</h3>
         <p class="font-body ds-regular-l text-slate">Payment providers, KYC and compliance connected through our layer.</p>
       </div>
-      <span class="tm-mono tm-eyebrow mt-auto text-signal" style="font-size:10px;">Step 2</span>
+      <span class="tm-tick font-body mt-auto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.8 9.4 17.7 19.5 6.6"/></svg>
+        One integration, every provider
+      </span>
     </div>
 
     <div class="tm-step-card hiw-glow-3 bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-5 min-h-[240px] md:min-h-[268px]">
       <span class="tm-step-num font-body">03</span>
       <div class="flex flex-col gap-4">
         <h3 class="font-display font-light text-void ds-h4">The market running</h3>
-        <p class="font-body ds-regular-l text-slate">Real-time market data, settlement and end-to-end management.</p>
+        <p class="font-body ds-regular-l text-slate">Real-time market data, liquidity, settlement and end-to-end management.</p>
       </div>
-      <span class="tm-mono tm-eyebrow mt-auto text-signal" style="font-size:10px;">Step 3</span>
+      <span class="tm-tick font-body mt-auto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.8 9.4 17.7 19.5 6.6"/></svg>
+        Live and trading
+      </span>
     </div>
 
     <div class="tm-step-card hiw-glow-4 bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-5 min-h-[240px] md:min-h-[268px]">
       <span class="tm-step-num font-body">04</span>
       <div class="flex flex-col gap-4">
         <h3 class="font-display font-light text-void ds-h4">The controls are yours</h3>
-        <p class="font-body ds-regular-l text-slate">Volume, revenue and users in real time in the BackOffice. And our team alongside you after go-live.</p>
+        <p class="font-body ds-regular-l text-slate">Volume, revenue and users in real time in the BackOffice — and our team alongside you after go-live.</p>
       </div>
-      <span class="tm-mono tm-eyebrow mt-auto text-signal" style="font-size:10px;">Step 4 · Go-live</span>
+      <span class="tm-tick font-body mt-auto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.8 9.4 17.7 19.5 6.6"/></svg>
+        You operate, we maintain
+      </span>
     </div>
     </div>
 
@@ -1386,7 +1697,7 @@
       <div class="tm-aff-head">
         <p class="tm-mono tm-eyebrow" style="color:#8ac5fa;">Affiliate program</p>
         <h2 class="font-display font-light text-white ds-h3" style="text-wrap:balance;">
-          Your audience trades. You earn on every&nbsp;trade.
+          Share a link. Earn up to 40% on every&nbsp;trade.
         </h2>
       </div>
 
@@ -1477,7 +1788,7 @@
   </div>
 
   <h2 class="font-display font-light text-white ds-h2" style="text-wrap:balance;">
-    This market will have owners. There is still time to be&nbsp;one&nbsp;of them.
+    This market will have owners. Be one&nbsp;of&nbsp;them.
   </h2>
 
   <p class="font-body ds-paragraph max-w-[600px]" style="color:rgba(255,255,255,.7);">
@@ -1486,7 +1797,7 @@
   </p>
 
   <a class="cta-btn cta-btn-light flex items-center justify-center gap-3 bg-white text-void font-body text-[16px] leading-[1.62] pl-6 pr-2 h-[52px] rounded-full whitespace-nowrap" href="contact.html">
-    Start operating
+    Launch your market
     <span class="cta-icon"><img src="assets/icon-arrow-up-right.svg" alt="" class="w-[18px] h-[18px]"></span>
   </a>
 </div>
@@ -1505,7 +1816,7 @@
         <img src="assets/logo-white.svg" alt="Tipmarket" width="234" height="52">
       </span>
       <p class="font-body ds-regular-l max-w-[460px]" style="color:rgba(255,255,255,.6);">
-        Tipmarket is white-label prediction market infrastructure. We provide the platform,
+        Tipmarket is white-label, API-first prediction market infrastructure. We provide the platform,
         liquidity, payment rails, KYC and BackOffice so companies can launch their own markets
         under their own brand, without building anything from scratch.
       </p>

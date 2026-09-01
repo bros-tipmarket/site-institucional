@@ -378,7 +378,7 @@
     });
     var tabs = Array.prototype.slice.call(root.querySelectorAll('.tm-w-tab'));
 
-    var EMAIL = 'ana.souza@email.com';
+    var EMAIL = 'you@example.com';
     var CODE  = '482193';
 
     /* a tela que sai vai para a esquerda e a que entra vem da direita:
@@ -778,7 +778,7 @@
 
     function busy(on) {
       submit.disabled = on;
-      label.textContent = on ? 'Sending…' : 'Start operating';
+      label.textContent = on ? 'Sending…' : 'Launch your market';
     }
 
     function payload() {
