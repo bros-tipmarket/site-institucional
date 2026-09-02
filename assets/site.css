@@ -1197,15 +1197,11 @@
                 letter-spacing:.14em; text-transform:uppercase;
                 color:#5c6472; white-space:nowrap }
 
-/* ── a linha de fecho ─────────────────────────────────────── */
-.tm-b2b-close { display:flex; flex-direction:column; gap:10px;
-                padding:20px 24px; border:1px solid var(--border);
-                border-radius:20px; background:rgba(255,255,255,.02) }
-@media (min-width:768px) {
-  .tm-b2b-close   { flex-direction:row; align-items:center; gap:24px;
-                    padding:18px 28px }
-  .tm-b2b-close p { flex:1 }
-}
+/* ── a linha de fecho · 1:1 com o .wl-close do artefato v2 ──── */
+.tm-wl-close   { margin-top:44px; text-align:center;
+                 font-size:clamp(20px,2.6vw,26px); line-height:1.4;
+                 color:rgba(255,255,255,.7) }
+.tm-wl-close b { color:#fff; font-weight:600 }
 
 /* ── tablet: duas colunas, o largo por cima ───────────────── */
 @media (min-width:700px) {
