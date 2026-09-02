@@ -2191,8 +2191,18 @@
    sozinha um trabalho que o contraste de fundo faz de graça.       */
 .tm-paper { background:#f7f7f4 }
 
+/* ── o cabeçalho ───────────────────────────────────────────────────
+   Números do artefato, não os do design system da home: aqui o
+   cabeçalho divide a tela com um formulário, e o ds-h1 (que foi
+   dimensionado para um herói de página inteira) empurrava tudo para
+   baixo antes de a pessoa ver o primeiro campo.                   */
+.tm-lead-h1   { font-size:clamp(38px,5.5vw,58px); line-height:1.14;
+                letter-spacing:-.015em; color:#14171d }
+.tm-lead-lede { font-size:18.5px; line-height:1.6; color:#5b6069 }
+.tm-lead-lede .text-ink { color:#14171d }
+
 /* ── o cartão do formulário ─────────────────────────────────────── */
-.tm-lead-form { display:flex; flex-direction:column; gap:20px;
+.tm-lead-form { display:flex; flex-direction:column; gap:22px;
                 background:#fff; border:1px solid #e4e4de; border-radius:28px;
                 padding:34px }
 @media (max-width:639px) { .tm-lead-form { padding:24px; border-radius:22px } }
@@ -2223,13 +2233,14 @@
 .tm-field-opt   { margin-left:6px; font-size:13px; font-weight:400;
                   letter-spacing:0; color:#9aa0a8 }
 
-/* a mensagem de erro entra no lugar em vez de empurrar o campo de
-   baixo: reserva a linha desde sempre e só troca a opacidade. Numa
-   grade de dois por dois, um campo que cresce desalinha a fileira
-   inteira no momento em que a pessoa mais precisa de estabilidade. */
-.tm-field-err   { min-height:16px; font-size:12px; line-height:1.33;
-                  color:#e5484d; opacity:0; transition:opacity .2s ease }
-.tm-field.is-invalid .tm-field-err { opacity:1 }
+/* A linha de erro já não reserva espaço. Ela reservava porque os campos
+   vinham em grade 2×2, onde um campo que cresce desalinha a fileira
+   inteira. Em coluna única não existe fileira para desalinhar — e a
+   linha vazia debaixo de cada campo somava 16px em cada um dos cinco,
+   que era o que fazia o formulário ler esparramado ao lado do
+   artefato. Quem cresce agora empurra só o que vem abaixo.        */
+.tm-field-err   { display:none; font-size:12px; line-height:1.33; color:#e5484d }
+.tm-field.is-invalid .tm-field-err { display:block }
 
 /* ── a escolha de produto ──────────────────────────────────────────
    Rádios de verdade por baixo: teclado, leitor de tela e o required do

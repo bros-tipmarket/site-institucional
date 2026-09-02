@@ -111,8 +111,8 @@
      tom também muda — a home argumenta, esta página só quer o
      formulário preenchido.
    ═══════════════════════════════════════════════════════════════════ -->
-<section class="tm-paper px-6 md:px-8" style="padding-top:132px;">
-<div class="max-w-[1280px] mx-auto flex flex-col gap-5" data-reveal>
+<section class="tm-paper px-6 md:px-8 pb-[44px]" style="padding-top:132px;">
+<div class="max-w-[1072px] mx-auto flex flex-col gap-5" data-reveal>
   <span class="inline-flex items-center gap-2.5 self-start px-4 py-1.5 rounded-full border border-cloud bg-haze">
     <span class="ds-dot" style="background:#3a80c8;"></span>
     <span class="label">Talk to us</span>
@@ -121,10 +121,10 @@
        reescritos pelo produto que a pessoa escolhe no formulário (ou pelo
        ?i= com que ela chegou) — ver INTENTS em site.js. O que está no HTML
        é o estado padrão, o de quem chega sem dizer nada. -->
-  <h1 class="font-display font-semibold text-ink ds-h1 max-w-[16ch]" style="text-wrap:balance;" id="tm-lead-hd">
+  <h1 class="font-display font-semibold tm-lead-h1 max-w-[16ch]" style="text-wrap:balance;" id="tm-lead-hd">
     Let’s put your market live.
   </h1>
-  <p class="font-body ds-paragraph text-slate max-w-[62ch]" id="tm-lead-sub">
+  <p class="font-body tm-lead-lede max-w-[56ch]" id="tm-lead-sub">
     The infrastructure is ready. The rest is your call:
     <span class="text-ink font-medium">which markets you open, how they look, and when you go live.</span>
   </p>
@@ -139,8 +139,8 @@
      resposta para a pergunta que trava todo mundo antes de digitar o
      e-mail — o que acontece depois que eu apertar isso.
    ═══════════════════════════════════════════════════════════════════ -->
-<section id="form" class="tm-paper px-6 md:px-8 pt-[56px] pb-[120px]" style="scroll-margin-top:88px;">
-<div class="tm-lead-shell max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-[1.08fr_.92fr] gap-10 lg:gap-[72px] items-start" id="tm-lead-shell" data-reveal>
+<section id="form" class="tm-paper px-6 md:px-8 pb-[96px]" style="scroll-margin-top:88px;">
+<div class="tm-lead-shell max-w-[1072px] mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_.95fr] gap-7 items-start" id="tm-lead-shell" data-reveal>
 
   <!-- ── a coluna do formulário ─────────────────────────────────── -->
   <div class="tm-lead min-w-0" id="tm-lead">
@@ -166,41 +166,41 @@
 
       <!-- coluna única, como no artefato: quatro campos curtos empilhados
            leem mais calmos do que dois pares lado a lado, e a pergunta do
-           produto — que é a que decide a conversa — não disputa a linha. -->
-      <div class="grid grid-cols-1 gap-y-3">
-        <div class="tm-field" data-field="name">
-          <label class="tm-field-label font-body" for="tm-lead-name">Full name<span class="tm-field-req">*</span></label>
-          <input class="field-input font-body"
-                 id="tm-lead-name" name="name" type="text" autocomplete="name"
-                 placeholder="Your name" aria-describedby="tm-err-name">
-          <span class="tm-field-err font-body" id="tm-err-name"></span>
-        </div>
+           produto — que é a que decide a conversa — não disputa a linha.
+           Sem grade em volta: o gap do próprio form dá o ritmo, e ele é
+           um só do primeiro campo ao botão. -->
+      <div class="tm-field" data-field="name">
+        <label class="tm-field-label font-body" for="tm-lead-name">Full name<span class="tm-field-req">*</span></label>
+        <input class="field-input font-body"
+               id="tm-lead-name" name="name" type="text" autocomplete="name"
+               placeholder="Your name" aria-describedby="tm-err-name">
+        <span class="tm-field-err font-body" id="tm-err-name"></span>
+      </div>
 
-        <div class="tm-field" data-field="email">
-          <label class="tm-field-label font-body" for="tm-lead-email">Work email<span class="tm-field-req">*</span></label>
-          <input class="field-input font-body"
-                 id="tm-lead-email" name="email" type="email" autocomplete="email" inputmode="email"
-                 placeholder="you@company.com" aria-describedby="tm-err-email">
-          <span class="tm-field-err font-body" id="tm-err-email"></span>
-        </div>
+      <div class="tm-field" data-field="email">
+        <label class="tm-field-label font-body" for="tm-lead-email">Work email<span class="tm-field-req">*</span></label>
+        <input class="field-input font-body"
+               id="tm-lead-email" name="email" type="email" autocomplete="email" inputmode="email"
+               placeholder="you@company.com" aria-describedby="tm-err-email">
+        <span class="tm-field-err font-body" id="tm-err-email"></span>
+      </div>
 
-        <div class="tm-field" data-field="company">
-          <!-- afiliado e quem só está avaliando não precisam ter empresa:
-               o rótulo e a obrigatoriedade acompanham o produto escolhido -->
-          <label class="tm-field-label font-body" for="tm-lead-company"><span id="tm-lead-company-label">Company</span><span class="tm-field-req" id="tm-lead-company-req">*</span><span class="tm-field-opt" id="tm-lead-company-opt" hidden>optional</span></label>
-          <input class="field-input font-body"
-                 id="tm-lead-company" name="company" type="text" autocomplete="organization"
-                 placeholder="Your company" aria-describedby="tm-err-company">
-          <span class="tm-field-err font-body" id="tm-err-company"></span>
-        </div>
+      <div class="tm-field" data-field="company">
+        <!-- afiliado e quem só está avaliando não precisam ter empresa:
+             o rótulo e a obrigatoriedade acompanham o produto escolhido -->
+        <label class="tm-field-label font-body" for="tm-lead-company"><span id="tm-lead-company-label">Company</span><span class="tm-field-req" id="tm-lead-company-req">*</span><span class="tm-field-opt" id="tm-lead-company-opt" hidden>optional</span></label>
+        <input class="field-input font-body"
+               id="tm-lead-company" name="company" type="text" autocomplete="organization"
+               placeholder="Your company" aria-describedby="tm-err-company">
+        <span class="tm-field-err font-body" id="tm-err-company"></span>
+      </div>
 
-        <div class="tm-field" data-field="phone">
-          <label class="tm-field-label font-body" for="tm-lead-phone">Phone or WhatsApp<span class="tm-field-opt">optional</span></label>
-          <input class="field-input font-body"
-                 id="tm-lead-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"
-                 placeholder="+55 11 90000-0000" aria-describedby="tm-err-phone">
-          <span class="tm-field-err font-body" id="tm-err-phone"></span>
-        </div>
+      <div class="tm-field" data-field="phone">
+        <label class="tm-field-label font-body" for="tm-lead-phone">Phone or WhatsApp<span class="tm-field-opt">optional</span></label>
+        <input class="field-input font-body"
+               id="tm-lead-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"
+               placeholder="+55 11 90000-0000" aria-describedby="tm-err-phone">
+        <span class="tm-field-err font-body" id="tm-err-phone"></span>
       </div>
 
       <!-- o site vende dois produtos e eles caem em conversas
@@ -236,7 +236,7 @@
                   placeholder="Who is your audience, what do you run today, and what would you like to launch first?"></textarea>
       </div>
 
-      <div class="flex flex-col gap-3.5 pt-1">
+      <div class="flex flex-col gap-3.5">
         <button class="tm-lead-submit font-body" id="tm-lead-submit" type="submit">
           <span data-label>Book my walkthrough</span>
           <span class="tm-lead-arrow" aria-hidden="true">↗</span>
