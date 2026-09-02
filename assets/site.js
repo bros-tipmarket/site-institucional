@@ -290,7 +290,6 @@
      see the note on .tm-close. A sentence that only appears if a script
      runs is a sentence that sometimes does not appear.                */
   function initEnterAnimations() {
-    armOnEnter('tm-close', 0.6);
     armOnEnter('tm-bo-stage', 0.25);
   }
 
