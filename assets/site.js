@@ -332,6 +332,460 @@
     setTimeout(function () { Array.prototype.forEach.call(els, show); }, 3000);
   }
 
+  /* ── A jornada no app (Quebra 1) ──────────────────────────────
+     O herói mostrava uma tela do produto. Tela prova que ele existe;
+     não prova que a operação fecha. Aqui o quadro encena o caminho
+     inteiro — entrar sem senha, depositar, opinar pelo atalho, abrir o
+     evento, mandar a ordem, e achar a posição na carteira — porque é
+     essa sequência que o operador está comprando.
+
+     A regra que segura a peça: a MOLDURA é uma só. Barra lateral,
+     título do cabeçalho e saldo não pertencem a nenhuma cena — eles
+     ficam de pé e mudam de estado. Sem isso o corte entre cenas lê
+     como slideshow; com isso lê como alguém navegando.
+
+     Duas consequências práticas:
+
+     · o alvo do cursor é escolhido em tempo de execução entre a barra
+       lateral e a barra de baixo do telefone (ver pick), porque as duas
+       existem no mesmo HTML e quem decide é a largura da tela;
+     · os números são um só orçamento, fechado: deposita 50, gasta 5 no
+       atalho e 10 na ordem, sobra 35, e a posição soma 57 cotas a
+       $0,26. Se um deles mudar aqui, muda em todas as cenas.       */
+  function initAppDemo() {
+    var cursor = document.getElementById('tm-app-cursor');
+    if (!cursor) return;
+    var root = cursor.closest('.tm-screen');
+    if (!root) return;
+
+    var surface = root.querySelector('.tm-surface');
+    var gate    = document.getElementById('tm-app-gate');
+    var head    = document.getElementById('tm-app-head');
+    var title   = document.getElementById('tm-app-title');
+    var sheet   = document.getElementById('tm-app-sheet');
+    var qt      = document.getElementById('tm-app-qt');
+    var toast   = document.getElementById('tm-app-toast');
+    var balPill = document.getElementById('tm-app-bal');
+
+    var EMAIL = 'gabriel.bros@tipmarket.com';
+    var CODE  = '482193';
+
+    /* ── a moldura ──────────────────────────────────────────────── */
+    var SCENES = {
+      home:      { title: 'Markets',       back: false },
+      event:     { title: 'Binary market', back: true  },
+      profile:   { title: 'Profile',       back: true  },
+      portfolio: { title: 'Portfolio',     back: true  }
+    };
+    var scenes = {};
+    Array.prototype.forEach.call(root.querySelectorAll('[data-scene]'), function (el) {
+      scenes[el.getAttribute('data-scene')] = el;
+    });
+    var navs = Array.prototype.slice.call(root.querySelectorAll('[data-nav]'));
+    /* a cena que sai vai para a esquerda e a que entra vem da direita,
+       na mesma gramática da Quebra 4 */
+    var leaving = null;
+    function show(name) {
+      var cur = root.querySelector('.tm-app-scene.is-on');
+      if (cur && cur !== scenes[name]) {
+        cur.classList.remove('is-on');
+        cur.classList.add('is-out');
+        clearTimeout(leaving);
+        (function (el) {
+          leaving = setTimeout(function () { el.classList.remove('is-out'); }, 500);
+        }(cur));
+      }
+      Object.keys(scenes).forEach(function (k) {
+        if (k === name) scenes[k].classList.add('is-on');
+        else if (scenes[k] !== cur) scenes[k].classList.remove('is-on');
+      });
+      var meta = SCENES[name] || SCENES.home;
+      if (title) title.textContent = meta.title;
+      if (head)  head.classList.toggle('has-back', meta.back);
+      /* Home e a carteira/perfil acendem o item da barra; o evento é
+         filho da Home, então a Home continua acesa nele */
+      var lit = name === 'event' ? 'home' : name;
+      navs.forEach(function (n) {
+        n.classList.toggle('is-on', n.getAttribute('data-nav') === lit);
+      });
+    }
+
+    /* ── o dinheiro: um número, quatro lugares ─────────────────── */
+    var balOuts = ['tm-app-bal-v', 'tm-app-side-bal', 'tm-app-pf-bal']
+      .map(function (id) { return document.getElementById(id); });
+    var cashOut = document.getElementById('tm-app-ord-cash');
+    function money(v) { return '$' + v.toFixed(2); }
+    function bal(v, bump) {
+      balOuts.forEach(function (el) { if (el) el.textContent = money(v); });
+      if (cashOut) cashOut.textContent = money(v);
+      if (bump && balPill) {
+        balPill.classList.remove('is-bump');
+        void balPill.offsetWidth;
+        balPill.classList.add('is-bump');
+      }
+    }
+
+    /* ── o cursor ───────────────────────────────────────────────
+       Mira o centro do alvo medido na hora: o quadro tem três larguras
+       e pixel fixo só serviria para uma delas. A duração cresce com a
+       distância, que é o que separa uma mão de um teleporte.       */
+    var cx = 0, cy = 0;
+    function at(x, y) {
+      var t = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)';
+      cursor.style.setProperty('--tma-pos', t);
+      cursor.style.transform = t;
+    }
+    /* entre a barra lateral e a barra do telefone, quem estiver em cena */
+    function pick() {
+      for (var i = 0; i < arguments.length; i++) {
+        var el = typeof arguments[i] === 'string'
+          ? root.querySelector(arguments[i]) : arguments[i];
+        if (el && el.getClientRects().length) return el;
+      }
+      return null;
+    }
+    function moveTo(target) {
+      var el = typeof target === 'string' ? root.querySelector(target) : target;
+      if (!el || !el.getClientRects().length) { cursor.classList.remove('is-on'); return; }
+      var r = el.getBoundingClientRect(), b = root.getBoundingClientRect();
+      var x = r.left - b.left + r.width * 0.5;
+      var y = r.top  - b.top  + r.height * 0.55;
+      var d = Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy));
+      cursor.style.transitionDuration =
+        Math.min(780, Math.max(300, 250 + d * 1.25)) + 'ms';
+      cursor.classList.add('is-on');
+      at(x, y);
+      cx = x; cy = y;
+    }
+    function ripple() {
+      var r = document.createElement('span');
+      r.className = 'tm-app-ripple';
+      r.style.setProperty('--tma-pos',
+        'translate(' + Math.round(cx) + 'px,' + Math.round(cy) + 'px)');
+      root.appendChild(r);
+      setTimeout(function () { if (r.parentNode) r.parentNode.removeChild(r); }, 700);
+    }
+    function tap(target) {
+      var el = typeof target === 'string' ? root.querySelector(target) : target;
+      ripple();
+      cursor.classList.add('is-tap');
+      if (el) el.classList.add('is-press');
+      setTimeout(function () {
+        cursor.classList.remove('is-tap');
+        if (el) el.classList.remove('is-press');
+      }, 190);
+    }
+
+    /* ── digitação e código ─────────────────────────────────────── */
+    var typing = null;
+    function type(host, text, cps, done) {
+      var out = host.querySelector('.tm-typed');
+      var ph  = host.querySelector('.tm-ph');
+      host.classList.add('is-focus');
+      if (ph) ph.hidden = true;
+      out.textContent = '';
+      var i = 0, base = 1000 / cps;
+      clearTimeout(typing);
+      (function step() {
+        out.textContent = text.slice(0, ++i);
+        if (i >= text.length) { if (done) done(); return; }
+        var ch = text.charAt(i - 1);
+        var d  = base * (0.6 + Math.random() * 0.8);
+        if (ch === '@' || ch === '.') d *= 2.1;
+        typing = setTimeout(step, d);
+      }());
+    }
+    var codeCells = Array.prototype.slice.call(
+      root.querySelectorAll('#tm-app-code i'));
+    function fillCode(done) {
+      var i = 0;
+      clearTimeout(typing);
+      (function step() {
+        codeCells[i].textContent = CODE.charAt(i);
+        codeCells[i].classList.add('is-in');
+        if (++i >= codeCells.length) { if (done) done(); return; }
+        typing = setTimeout(step, 100 + Math.random() * 80);
+      }());
+    }
+
+    /* ── o portão e a folha ─────────────────────────────────────── */
+    function gateScreen(name) {
+      Array.prototype.forEach.call(gate.querySelectorAll('[data-gate]'), function (el) {
+        el.hidden = el.getAttribute('data-gate') !== name;
+      });
+    }
+    function sheetBody(name) {
+      Array.prototype.forEach.call(sheet.querySelectorAll('[data-sheet]'), function (el) {
+        el.hidden = el.getAttribute('data-sheet') !== name;
+      });
+    }
+    function openSheet(name) { sheetBody(name); sheet.classList.add('is-on'); }
+    function closeSheet()    { sheet.classList.remove('is-on'); }
+
+    function setAmount(id, v) {
+      var host = document.getElementById(id);
+      if (!host) return;
+      host.classList.add('is-focus');
+      host.querySelector('.tm-typed').textContent = v;
+    }
+    function btn(id, on, text) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.classList.toggle('is-off', !on);
+      if (text) el.textContent = text;
+    }
+    function chip(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      Array.prototype.forEach.call(el.parentNode.children, function (c) {
+        c.classList.toggle('is-on', c === el);
+      });
+    }
+    function ev2view(name) {
+      Array.prototype.forEach.call(root.querySelectorAll('[data-ev2view]'), function (el) {
+        el.classList.toggle('is-on', el.getAttribute('data-ev2view') === name);
+      });
+      Array.prototype.forEach.call(root.querySelectorAll('[data-ev2tab]'), function (el) {
+        el.classList.toggle('is-on', el.getAttribute('data-ev2tab') === name);
+      });
+    }
+    function drawn(id, on) {
+      var el = document.getElementById(id);
+      if (el) el.classList.toggle('is-drawn', !!on);
+    }
+
+    /* ── o estado de partida ────────────────────────────────────── */
+    function reset() {
+      clearTimeout(typing);
+      gate.classList.remove('is-off');
+      gateScreen('email');
+      surface.classList.remove('is-authed');
+      closeSheet(); sheetBody('deposit');
+      qt.classList.remove('is-on', 'is-done');
+      qt.classList.add('is-empty');
+      toast.classList.remove('is-on');
+      show('home'); ev2view('chart');
+      drawn('tm-app-chart', false); drawn('tm-app-pfchart', false);
+      bal(0);
+
+      var mail = document.getElementById('tm-app-mail');
+      mail.classList.remove('is-focus');
+      mail.querySelector('.tm-typed').textContent = '';
+      var ph = document.getElementById('tm-app-mail-ph');
+      if (ph) ph.hidden = false;
+      codeCells.forEach(function (c) { c.textContent = ''; c.classList.remove('is-in'); });
+      btn('tm-app-login', false, 'Log in');
+
+      ['tm-app-dep-inp', 'tm-app-ord-inp', 'tm-app-qt-inp'].forEach(function (id) {
+        var h = document.getElementById(id);
+        if (!h) return;
+        h.classList.remove('is-focus');
+        h.querySelector('.tm-typed').textContent = '0.00';
+      });
+      btn('tm-app-dep-ok', false, 'Choose an amount');
+      btn('tm-app-ord-ok', false, 'Amount too low');
+      ['tm-app-dep-chips', 'tm-app-ord-chips'].forEach(function (id) {
+        var g = document.getElementById(id);
+        if (g) Array.prototype.forEach.call(g.children, function (c) {
+          c.classList.remove('is-on');
+        });
+      });
+      qtSlider(12);
+      cursor.classList.remove('is-on', 'is-tap');
+      cx = 0; cy = 0; at(0, 0);
+      Array.prototype.forEach.call(root.querySelectorAll('.tm-app-ripple'), function (r) {
+        if (r.parentNode) r.parentNode.removeChild(r);
+      });
+    }
+    /* O atalho abre ancorado no card que a pessoa tocou, medido na hora.
+       Um top fixo no CSS servia a uma largura só — e nas outras o painel
+       flutuava longe do card, que é justamente o que ele não pode fazer:
+       o argumento dele é "opinar sem sair da lista". */
+    function qtAnchor() {
+      var card = root.querySelector('.tm-col:last-child .tm-bin:first-of-type');
+      if (!card || !card.getClientRects().length) return;
+      if (window.matchMedia('(max-width:767px)').matches) { qt.style.top = ''; return; }
+      var r = card.getBoundingClientRect(), b = root.getBoundingClientRect();
+      var top = r.top - b.top - 8;
+      /* preso dentro do corte: metade do painel para fora do bezel não
+         é um painel, é um erro de layout */
+      var max = b.height - qt.offsetHeight - 14;
+      qt.style.top = Math.max(12, Math.min(top, max)) + 'px';
+    }
+
+    function qtSlider(pct) {
+      var f = document.getElementById('tm-app-qt-fill');
+      var k = document.getElementById('tm-app-qt-knob');
+      if (f) f.style.width = pct + '%';
+      if (k) k.style.left  = pct + '%';
+    }
+
+    /* ── o roteiro ──────────────────────────────────────────────
+       Sete paradas em ~31s. Cada uma ganha o tempo do que precisa ser
+       lido: o login corre porque ninguém precisa ler um e-mail sendo
+       digitado, e a carteira no fim respira porque é onde a jornada
+       chega e a única cena que o olho tem motivo para examinar.    */
+    var script = [
+      /* 1 · entrar sem senha */
+      { at: 700,   run: function () { moveTo('#tm-app-mail'); } },
+      { at: 1150,  run: function () {
+          type(document.getElementById('tm-app-mail'), EMAIL, 52); } },
+      { at: 2250,  run: function () { moveTo('#tm-app-send'); } },
+      { at: 2700,  run: function () { tap('#tm-app-send'); } },
+      { at: 3050,  run: function () { gateScreen('code'); cursor.classList.remove('is-on'); } },
+      { at: 3350,  run: function () { fillCode(function () { btn('tm-app-login', true); }); } },
+      { at: 4250,  run: function () { moveTo('#tm-app-login'); } },
+      { at: 4700,  run: function () { tap('#tm-app-login'); } },
+      { at: 5050,  run: function () {
+          gate.classList.add('is-off');
+          surface.classList.add('is-authed');
+          show('home');
+          toast.classList.add('is-on'); } },
+      { at: 6500,  run: function () { toast.classList.remove('is-on'); } },
+
+      /* 2 · depositar */
+      { at: 6700,  run: function () { moveTo(pick('#tm-app-dep-m', '#tm-app-dep')); } },
+      { at: 7250,  run: function () { tap(pick('#tm-app-dep-m', '#tm-app-dep')); } },
+      { at: 7600,  run: function () { openSheet('deposit'); } },
+      { at: 8250,  run: function () { moveTo('#tm-app-dep-50'); } },
+      { at: 8750,  run: function () {
+          tap('#tm-app-dep-50');
+          chip('tm-app-dep-50');
+          setAmount('tm-app-dep-inp', '50.00');
+          btn('tm-app-dep-ok', true, 'Deposit $50.00'); } },
+      { at: 9500,  run: function () { moveTo('#tm-app-dep-ok'); } },
+      { at: 10000, run: function () { tap('#tm-app-dep-ok'); } },
+      { at: 10350, run: function () {
+          sheetBody('filled');
+          document.getElementById('tm-app-ok-h').textContent = 'Deposit confirmed';
+          document.getElementById('tm-app-ok-p').textContent = '$50.00 · USDC on Polygon';
+          cursor.classList.remove('is-on'); } },
+      { at: 11300, run: function () { closeSheet(); bal(50, true); } },
+
+      /* 3 · opinar pelo atalho, sem sair da lista */
+      { at: 12100, run: function () { moveTo('.tm-col:last-child .tm-bin:first-of-type .tm-bin-y'); } },
+      { at: 12650, run: function () {
+          tap('.tm-col:last-child .tm-bin:first-of-type .tm-bin-y');
+          qtAnchor();
+          qt.classList.add('is-on'); } },
+      { at: 13350, run: function () { moveTo('#tm-app-qt-5'); } },
+      { at: 13850, run: function () {
+          tap('#tm-app-qt-5');
+          document.getElementById('tm-app-qt-5').classList.add('is-press');
+          setAmount('tm-app-qt-inp', '5.00');
+          qtSlider(28);
+          qt.classList.remove('is-empty'); } },
+      { at: 14100, run: function () {
+          document.getElementById('tm-app-qt-5').classList.remove('is-press'); } },
+      { at: 14600, run: function () { moveTo('#tm-app-qt-ok'); } },
+      { at: 15100, run: function () { tap('#tm-app-qt-ok'); } },
+      { at: 15450, run: function () { qt.classList.add('is-done'); bal(45, true); } },
+      { at: 16600, run: function () { qt.classList.remove('is-on'); } },
+
+      /* 4 · o evento inteiro */
+      { at: 16900, run: function () { moveTo('.tm-col:last-child .tm-bin:first-of-type .tm-bin-q'); } },
+      { at: 17400, run: function () { tap('.tm-col:last-child .tm-bin:first-of-type .tm-bin-q'); } },
+      { at: 17750, run: function () {
+          show('event');
+          cursor.classList.remove('is-on');
+          drawn('tm-app-chart', true); } },
+      { at: 19600, run: function () { moveTo('#tm-app-book-tab'); } },
+      { at: 20100, run: function () { tap('#tm-app-book-tab'); ev2view('book'); } },
+
+      /* 5 · a ordem */
+      { at: 21300, run: function () { moveTo('#tm-app-ev2-yes'); } },
+      { at: 21800, run: function () { tap('#tm-app-ev2-yes'); } },
+      { at: 22150, run: function () { openSheet('order'); } },
+      { at: 22800, run: function () { moveTo('#tm-app-ord-10'); } },
+      { at: 23300, run: function () {
+          tap('#tm-app-ord-10');
+          chip('tm-app-ord-10');
+          setAmount('tm-app-ord-inp', '10.00');
+          btn('tm-app-ord-ok', true, 'Buy Yes · $10.00'); } },
+      { at: 24000, run: function () { moveTo('#tm-app-ord-ok'); } },
+      { at: 24500, run: function () { tap('#tm-app-ord-ok'); } },
+      { at: 24850, run: function () {
+          sheetBody('filled');
+          document.getElementById('tm-app-ok-h').textContent = 'Order filled';
+          document.getElementById('tm-app-ok-p').textContent = 'Buy Yes · $10.00 · 38 shares';
+          cursor.classList.remove('is-on'); } },
+      { at: 25800, run: function () { closeSheet(); bal(35, true); } },
+
+      /* 6 · o perfil: a conta existe e já tem histórico */
+      { at: 26500, run: function () { moveTo(pick('.tm-appbar [data-nav="profile"]', '.tm-side [data-nav="profile"]')); } },
+      { at: 27000, run: function () {
+          tap(pick('.tm-appbar [data-nav="profile"]', '.tm-side [data-nav="profile"]'));
+          show('profile'); } },
+
+      /* 7 · a carteira: a posição aberta, que é onde isto chega */
+      { at: 28800, run: function () { moveTo(pick('.tm-appbar [data-nav="portfolio"]', '.tm-side [data-nav="portfolio"]')); } },
+      { at: 29300, run: function () {
+          tap(pick('.tm-appbar [data-nav="portfolio"]', '.tm-side [data-nav="portfolio"]'));
+          show('portfolio');
+          drawn('tm-app-pfchart', true); } },
+      { at: 29900, run: function () { cursor.classList.remove('is-on'); } },
+      { at: 33600, run: function () { reset(); } }
+    ];
+
+    /* O relógio é guardado para a pausa devolver de onde parou. Sair de
+       cena é diferente de pausar: ali o ponto zera, porque quem rola até
+       o quadro de novo quer a jornada do começo. */
+    var timers = [], playing = false, startAt = 0, offset = 0;
+    function play() {
+      if (playing) return;
+      playing = true;
+      if (!offset) reset();
+      startAt = Date.now() - offset;
+      script.forEach(function (s) {
+        if (s.at < offset) return;
+        timers.push(setTimeout(function () {
+          s.run();
+          if (s.at === 33600) { playing = false; offset = 0; play(); }
+        }, s.at - offset));
+      });
+    }
+    function stop(keep) {
+      if (playing && keep) offset = Date.now() - startAt;
+      else if (!keep) offset = 0;
+      playing = false;
+      timers.forEach(clearTimeout);
+      timers = [];
+      clearTimeout(typing);
+    }
+
+    var ctl = document.getElementById('tm-app-ctl');
+    var paused = false;
+    if (ctl) {
+      ctl.addEventListener('click', function () {
+        paused = !paused;
+        ctl.classList.toggle('is-paused', paused);
+        ctl.querySelector('span').textContent = paused ? 'Resume' : 'Pause';
+        ctl.setAttribute('aria-label',
+          paused ? 'Resume the walkthrough' : 'Pause the walkthrough');
+        if (paused) stop(true); else play();
+      });
+    }
+
+    /* quem pediu menos movimento recebe o destino, não a viagem */
+    if (reduced) {
+      gate.classList.add('is-off');
+      surface.classList.add('is-authed');
+      show('portfolio');
+      drawn('tm-app-chart', true); drawn('tm-app-pfchart', true);
+      bal(35);
+      if (ctl) ctl.style.display = 'none';
+      return;
+    }
+
+    if (typeof IntersectionObserver === 'undefined') { play(); return; }
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && !paused) play();
+        else if (!e.isIntersecting) stop();
+      });
+    }, { threshold: 0.2 }).observe(root);
+  }
+
   /* ── A simulação do widget (Quebra 4) ─────────────────────────
      A seção vende uma sequência, não um objeto: o leitor escolhe um
      lado, escolhe quanto, descobre que precisa depositar, deposita em
@@ -578,7 +1032,7 @@
 
     /* quem pediu menos movimento recebe o final, não o filme */
     if (reduced) {
-      open(); show('positions'); tab('positions'); step(4); endCard(true);
+      open(); show('positions'); tab('positions'); step(3); endCard(true);
       if (ctl) ctl.style.display = 'none';
       return;
     }
@@ -1402,6 +1856,7 @@
       card: '.tm-step-card', dotClass: 'tm-step-dot',
       label: 'The four integration steps; swipe sideways'
     });
+    initAppDemo();
     initWidgetDemo();
     initLeadForm();
     initEnterAnimations();

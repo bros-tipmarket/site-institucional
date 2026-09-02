@@ -28,6 +28,18 @@ body {
 }
 .font-display { font-family: 'Poppins', Inter, Arial, sans-serif; }
 
+/* ── Texto só para leitor de tela ─────────────────────────────
+   O Tailwind gera .sr-only, mas ele é um JIT: até a classe existir o
+   span fica no fluxo e ocupa uma linha de ~22px. No herói isso mudava a
+   altura do palco depois do primeiro layout — e a barra do telefone,
+   posicionada a partir dela, assentava 22px fora de lugar. Declarado
+   aqui, o contrato não depende de quando o runtime roda. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%);
+  white-space: nowrap; border: 0;
+}
+
 /* ── Label tag ────────────────────────────── */
 .label {
   font-family: 'Inter', -apple-system, "Segoe UI", Roboto, Arial, sans-serif;

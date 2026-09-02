@@ -227,6 +227,12 @@
 }
 /* the crop itself: fixed height, square-bottomed, contents overflow past it */
 .tm-screen {
+  /* --brand mora aqui, e não em .tm-surface, porque o portão de login, a
+     folha, o atalho e a barra do telefone são IRMÃOS da superfície — não
+     filhos. Declarada lá embaixo, a cor não chegava neles e os botões
+     azuis saíam brancos. No palco ela alcança o app inteiro, que é o que
+     "a tela é do operador" quer dizer de qualquer forma. */
+  --brand:#3a80c8;
   position:relative; z-index:1;
   /* praticamente fixa de propósito: escalar a altura com vw fazia o corte
      passear pelo conteúdo, e entre ~1100 e ~1250px ele caía em cima da
@@ -259,7 +265,6 @@
      então trocá-la aqui repinta a barra, o Sign up, o Trade, o "view
      all" e a rosca dos Featured de uma vez. Yes/No e os --cat-* não
      dependem dela de propósito: a marca é sua, ler um mercado não é. */
-  --brand:#3a80c8;
   width:100%; min-height:100%;
   background:var(--tm-canvas); color:var(--tm-ink);
   display:flex; align-items:stretch;
@@ -577,6 +582,19 @@
      não pode sumir da tela junto. Ele fica no cabeçalho, ao lado do
      Sign up, que é onde o produto o mostra quando não há barra. */
   .tm-side-burger, .tm-side-auth { display:none }
+  /* em 50px não cabe cartão: o rodapé de dinheiro vira o disco do
+     depósito, que é o único alvo que o filme precisa ter aqui */
+  .tm-surface.is-authed .tm-side-money {
+    border:0; box-shadow:none; padding:0; background:none;
+    display:flex; justify-content:center;
+  }
+  .tm-side-money em, .tm-side-money b, .tm-money-wd { display:none }
+  .tm-side-money .tm-money-btns { margin-top:0 }
+  .tm-money-dep {
+    width:34px; height:34px; flex:none; border-radius:50%; padding:0;
+    display:grid; place-items:center; font-size:0;
+  }
+  .tm-money-dep::before { content:'+'; font-size:19px; line-height:1; font-weight:400 }
   .tm-btn-ghost { padding:7px 13px }
 }
 
@@ -648,6 +666,705 @@
   .tm-card-icon { width:26px; height:26px; border-radius:8px }
   .tm-bin-bars { gap:7px }
   .tm-bin-bar { padding:7px 9px; font-size:11px }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   A JORNADA (Quebra 1) — o mock do herói virou filme
+   ═══════════════════════════════════════════════════════════════════
+   O quadro mostrava uma tela. Uma tela prova que o produto existe; ela
+   não prova que a operação fecha. O que o herói precisa provar é o
+   caminho inteiro — entrar, pôr dinheiro, opinar, operar, e ver a
+   posição na carteira — porque é isso que o operador está comprando.
+
+   A peça é a mesma ideia da Quebra 4, com uma diferença que muda tudo:
+   lá o widget é o objeto e a página é cenário; aqui o APP é o objeto, e
+   o que segura a leitura é a moldura ficar de pé entre as cenas. A barra
+   lateral, o título do cabeçalho e o saldo não são desenho de cada
+   tela: são um só, e mudam de estado conforme o filme anda. É isso que
+   faz o olho ler "a pessoa navegou" em vez de "passou um slideshow".
+
+   As telas são as do produto (demo.372.one), no tema claro, incluindo o
+   par de assinaturas que ele repete: uma linha azul em itálico por cima
+   do título ("Welcome back.", "Your call.", "Your money.") e o rodapé
+   de saldo com Deposit/Withdraw. Vetor e tipo, como o resto do mock —
+   nenhuma captura de tela.                                          */
+
+/* ── as cenas ──────────────────────────────────────────────────────
+   Empilhadas em absoluto e sem `bottom`: a cena mais alta continua
+   passando pelo corte do bezel, que é o comportamento que o quadro já
+   tinha. Com `inset:0` ela seria cortada na altura do palco e o corte
+   deixaria de acontecer na moldura.                                */
+.tm-app-scenes { position:relative; flex:1; min-width:0 }
+.tm-app-scene {
+  position:absolute; top:0; left:0; right:0;
+  opacity:0; transform:translateX(14px);
+  pointer-events:none;
+  transition:opacity .34s ease, transform .44s cubic-bezier(.22,1,.28,1);
+}
+.tm-app-scene.is-on  { opacity:1; transform:none; position:relative }
+.tm-app-scene.is-out { opacity:0; transform:translateX(-14px) }
+
+/* ── o cabeçalho, agora com estado ────────────────────────────────
+   O título troca por cena e ganha uma seta quando a cena é filha de
+   outra — é o que o produto faz em "‹ Binary market" e "‹ Profile". */
+.tm-main-head .tm-app-back {
+  width:26px; height:26px; flex-shrink:0; display:none;
+  align-items:center; justify-content:center;
+  border:1px solid var(--tm-line); border-radius:50%;
+  color:var(--tm-soft); background:var(--tm-surf);
+}
+.tm-main-head .tm-app-back svg { width:13px; height:13px }
+.tm-main-head.has-back .tm-app-back { display:flex }
+
+/* O par Log in/Sign up é de quem não entrou. Depois do login o lugar
+   dele é o saldo — e a troca em si é meia prova: a mesma tela serve
+   visitante e cliente. */
+.tm-app-anon { display:flex; align-items:center; gap:8px }
+.tm-surface.is-authed .tm-app-anon { display:none }
+.tm-app-bal {
+  display:none; align-items:center; gap:8px; flex-shrink:0;
+  padding:5px 6px 5px 13px; border-radius:999px;
+  background:color-mix(in srgb, var(--brand) 12%, #fff);
+  border:1px solid color-mix(in srgb, var(--brand) 26%, #fff);
+}
+.tm-surface.is-authed .tm-app-bal { display:flex }
+.tm-app-bal em { font-style:normal; font-size:8.5px; letter-spacing:.14em;
+                 text-transform:uppercase; color:var(--brand); opacity:.85 }
+.tm-app-bal b  { font-size:13px; font-weight:600; color:var(--tm-ink);
+                 font-variant-numeric:tabular-nums }
+.tm-app-bal i  { width:21px; height:21px; border-radius:50%; flex-shrink:0;
+                 background:var(--brand); color:#fff; font-style:normal;
+                 display:grid; place-items:center; font-size:14px; line-height:1 }
+/* o saldo pisca quando muda: sem isso o número troca e ninguém vê */
+.tm-app-bal.is-bump { animation:tmAppBump .62s cubic-bezier(.22,1,.28,1) }
+@keyframes tmAppBump {
+  0%   { transform:none }
+  30%  { transform:scale(1.07) }
+  100% { transform:none }
+}
+
+/* ── o rodapé da barra: saldo + as duas ações de dinheiro ─────────
+   No produto ele fica colado no pé da barra lateral e é de onde sai o
+   depósito. Ocupa o lugar do par Log in/Sign up depois do login.    */
+.tm-side-money { display:none; margin-top:auto; margin-bottom:16px;
+                 border:1px solid var(--tm-line); border-radius:14px;
+                 padding:12px; background:var(--tm-surf); box-shadow:var(--tm-card-sh) }
+.tm-surface.is-authed .tm-side-money { display:block }
+.tm-surface.is-authed .tm-side-auth  { display:none }
+.tm-side-money em { display:block; font-style:normal; font-size:8.5px;
+                    letter-spacing:.14em; text-transform:uppercase;
+                    color:var(--tm-faint) }
+.tm-side-money b  { display:block; font-size:19px; font-weight:600; margin-top:3px;
+                    font-variant-numeric:tabular-nums }
+.tm-side-money .tm-money-btns { display:flex; gap:7px; margin-top:10px }
+.tm-money-dep, .tm-money-wd {
+  flex:1; text-align:center; padding:7px 0; border-radius:999px;
+  font-size:11.5px; font-weight:600; white-space:nowrap;
+}
+.tm-money-dep { background:var(--brand); color:#fff }
+.tm-money-wd  { border:1px solid var(--tm-line); color:var(--tm-ink) }
+
+/* ── a barra de baixo, do telefone ───────────────────────────────
+   O produto troca a barra lateral por esta no telefone, com o Deposit
+   promovido a botão redondo no meio. Ela só existe abaixo de 768px,
+   onde a lateral já saía de cena.                                 */
+.tm-appbar { display:none }
+@media (max-width:767px) {
+  .tm-surface.is-authed + .tm-appbar { display:flex }
+  .tm-appbar {
+    /* bottom:62px, e não 0: a Quebra 2 sobe 62px por cima do palco
+       (.tm-overlap) e engolia exatamente a linha dos rótulos. Aqui a
+       barra encosta na borda VISÍVEL do corte, que é onde ela precisa
+       estar — a barra é moldura, e moldura cortada lê como bug. */
+    /* O fundo encosta na base real do palco — a barra bleeda sob a
+       página como o resto do quadro — mas o CONTEÚDO sobe os 62px que a
+       Quebra 1.5 cobre (.tm-overlap), senão os rótulos ficam escondidos.
+       Padding, e não offset: errar por excesso dá folga, errar por falta
+       corta a moldura. */
+    position:absolute; left:0; right:0; bottom:0; z-index:4;
+    align-items:flex-end; justify-content:space-around; gap:2px;
+    padding:7px 10px calc(9px + 62px); background:var(--tm-surf);
+    border-top:1px solid var(--tm-line);
+  }
+  .tm-appbar span {
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+    font-size:9px; color:var(--tm-faint);
+  }
+  .tm-appbar span svg { width:17px; height:17px }
+  .tm-appbar span.is-on { color:var(--brand) }
+  /* o disco do Deposit sobe acima da barra, como no produto */
+  .tm-appbar .tm-appbar-fab { position:relative; top:-14px; gap:2px }
+  .tm-appbar .tm-appbar-fab i {
+    width:38px; height:38px; border-radius:50%; display:grid; place-items:center;
+    background:var(--brand); color:#fff; font-style:normal;
+    box-shadow:0 6px 16px -6px color-mix(in srgb, var(--brand) 70%, transparent);
+  }
+  .tm-appbar .tm-appbar-fab i svg { width:16px; height:16px }
+  .tm-appbar .tm-appbar-fab b { font-size:8.5px; font-weight:600; color:var(--brand) }
+}
+
+/* ── o portão: login e código ─────────────────────────────────────
+   Cobre o palco inteiro, moldura do app incluída, porque antes de
+   entrar não existe app — existe uma porta. O produto põe só uma volta,
+   a logo e o botão de tema em cima, e o cartão no meio.            */
+.tm-gate {
+  position:absolute; inset:0; z-index:6;
+  background:var(--tm-canvas); color:var(--tm-ink);
+  display:flex; flex-direction:column;
+  transition:opacity .5s ease, transform .5s cubic-bezier(.22,1,.28,1);
+}
+.tm-gate.is-off { opacity:0; transform:scale(1.015); pointer-events:none }
+.tm-gate-bar {
+  display:flex; align-items:center; gap:10px;
+  padding:13px 18px; background:var(--tm-surf);
+  border-bottom:1px solid var(--tm-line);
+}
+.tm-gate-bar .tm-gate-back, .tm-gate-bar .tm-gate-theme {
+  width:28px; height:28px; flex-shrink:0; display:grid; place-items:center;
+  border:1px solid var(--tm-line); border-radius:50%;
+  color:var(--tm-soft); background:var(--tm-surf);
+}
+.tm-gate-bar svg { width:13px; height:13px }
+.tm-gate-bar .tm-gate-theme { margin-left:auto }
+.tm-gate-logo { height:19px; width:auto; display:block }
+/* Centrado, e não colado no topo: numa tela de 706px o cartão encostado
+   em cima deixava dois terços de vazio embaixo — e este é o PRIMEIRO
+   quadro do laço, o que o visitante vê antes de qualquer coisa. Página
+   de login de verdade centra o cartão; aqui isso também é o que faz o
+   quadro parecer cheio no segundo zero. */
+.tm-gate-body { flex:1; display:flex; align-items:center; justify-content:center;
+                padding:0 18px 34px }
+.tm-gate-col  { width:100%; max-width:376px }
+.tm-gate-card {
+  width:100%;
+  background:var(--tm-surf); border:1px solid var(--tm-line);
+  border-radius:14px; padding:22px; box-shadow:var(--tm-card-sh);
+}
+/* a assinatura do produto: linha azul em itálico por cima do título */
+.tm-kicker { display:block; font-style:italic; font-weight:700;
+             font-size:16px; line-height:1.2; color:var(--brand) }
+.tm-gate-card h4 { font-size:17px; font-weight:700; line-height:1.25; margin-top:1px }
+.tm-gate-card p  { font-size:11.5px; line-height:1.5; color:var(--tm-soft); margin-top:6px }
+.tm-gate-card p b { color:var(--tm-ink); font-weight:600 }
+.tm-gate-lbl { display:block; font-size:11.5px; font-weight:600; margin:15px 0 6px }
+.tm-gate-btn {
+  display:block; width:100%; text-align:center; margin-top:12px;
+  padding:11px 0; border-radius:10px; background:var(--brand); color:#fff;
+  font-size:13px; font-weight:700;
+}
+.tm-gate-btn.is-off { background:color-mix(in srgb, var(--brand) 42%, #fff) }
+.tm-gate-foot { text-align:center; font-size:11px; color:var(--tm-soft); margin-top:11px }
+.tm-gate-foot b { color:var(--brand); font-weight:700; text-decoration:underline }
+.tm-gate-legal { text-align:center; font-size:9.5px; color:var(--tm-faint); margin-top:14px }
+.tm-gate-legal b { color:var(--tm-soft); font-weight:400; text-decoration:underline }
+/* as seis casas do código */
+.tm-gate-code { display:grid; grid-template-columns:repeat(6,1fr); gap:7px; margin-top:14px }
+.tm-gate-code i {
+  height:40px; border:1px solid var(--tm-line); border-radius:9px;
+  background:var(--tm-field); display:grid; place-items:center;
+  font-style:normal; font-size:15px; font-weight:600;
+  font-variant-numeric:tabular-nums;
+  transition:border-color .2s ease, background .2s ease;
+}
+.tm-gate-code i.is-in { border-color:var(--brand);
+                        background:color-mix(in srgb, var(--brand) 8%, #fff);
+                        animation:tmAppPop .34s cubic-bezier(.3,1.5,.5,1) }
+@keyframes tmAppPop { 0% { transform:scale(.84) } 100% { transform:scale(1) } }
+
+/* o campo digitado, compartilhado pelo portão e pelas folhas */
+.tm-inp {
+  display:flex; align-items:center; height:42px; padding:0 13px;
+  border:1px solid var(--tm-line); border-radius:10px;
+  background:var(--tm-field); font-size:13.5px; color:var(--tm-ink);
+  transition:border-color .25s ease, box-shadow .3s ease, background .25s ease;
+}
+.tm-inp.is-focus { border-color:var(--brand); background:var(--tm-surf);
+                   box-shadow:0 0 0 3px color-mix(in srgb, var(--brand) 16%, transparent) }
+.tm-inp .tm-ph   { color:#a3a9b4 }
+.tm-inp.is-amount { font-size:17px; font-weight:600;
+                    font-variant-numeric:tabular-nums }
+.tm-inp .tm-cur  { color:var(--tm-soft); margin-right:5px }
+.tm-caret { width:1.5px; height:16px; background:var(--brand); margin-left:1px; opacity:0 }
+.tm-inp.is-focus .tm-caret { animation:tmAppCaret 1.05s steps(1) infinite }
+@keyframes tmAppCaret { 0%,50% { opacity:1 } 50.01%,100% { opacity:0 } }
+
+/* ── a folha: depósito e ordem ────────────────────────────────────
+   Um só componente para os dois, porque o produto usa o mesmo: cartão
+   centrado sobre a tela escurecida. No telefone ele sobe pela base,
+   também como no produto.                                          */
+.tm-sheet-wrap {
+  position:absolute; inset:0; z-index:5; display:flex;
+  align-items:center; justify-content:center; padding:20px;
+  background:#10182800; pointer-events:none;
+  transition:background .34s ease;
+}
+.tm-sheet-wrap.is-on { background:#1018285c; pointer-events:auto }
+.tm-sheet {
+  width:100%; max-width:392px; background:var(--tm-surf);
+  border-radius:16px; padding:22px; box-shadow:0 30px 70px -24px #10182859;
+  opacity:0; transform:translateY(14px) scale(.985);
+  transition:opacity .3s ease, transform .42s cubic-bezier(.22,1,.28,1);
+}
+.tm-sheet-wrap.is-on .tm-sheet { opacity:1; transform:none }
+.tm-sheet-head { display:flex; align-items:flex-start; gap:10px }
+.tm-sheet-head h4 { font-size:17px; font-weight:700; line-height:1.25 }
+.tm-sheet-head .tm-sheet-x { margin-left:auto; color:var(--tm-faint); flex-shrink:0 }
+.tm-sheet-head .tm-sheet-x svg { width:14px; height:14px }
+.tm-sheet-sub { font-size:11.5px; color:var(--tm-soft); margin-top:4px }
+.tm-sheet-sub b { color:var(--tm-ink); font-weight:600 }
+.tm-sheet-lbl { display:block; font-size:11.5px; font-weight:600; margin:15px 0 6px }
+.tm-sheet-note { font-size:10.5px; color:var(--tm-faint); margin-top:6px }
+/* as fichas de valor: $10 · $50 · $100 */
+.tm-chips { display:flex; gap:7px; margin-top:9px }
+.tm-chips span {
+  flex:1; text-align:center; padding:8px 0; border-radius:10px;
+  border:1px solid var(--tm-line); background:var(--tm-surf);
+  font-size:12px; font-weight:600;
+  transition:border-color .2s ease, background .2s ease, color .2s ease;
+}
+.tm-chips span.is-on { border-color:var(--brand); color:var(--brand);
+                       background:color-mix(in srgb, var(--brand) 9%, #fff) }
+/* os pares de alternância: Buy|Sell, Yes|No, Market|Limit */
+.tm-seg { display:flex; gap:7px; margin-top:8px }
+.tm-seg span {
+  flex:1; text-align:center; padding:8px 0; border-radius:9px;
+  background:var(--tm-surf-2); font-size:12px; font-weight:600; color:var(--tm-soft);
+}
+.tm-seg span.is-on { background:color-mix(in srgb, var(--brand) 13%, #fff);
+                     color:var(--brand); box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--brand) 34%, #fff) }
+.tm-seg-row { display:flex; align-items:center; gap:10px; margin-top:12px }
+.tm-seg-row > em { font-style:normal; font-size:11.5px; font-weight:600; flex-shrink:0 }
+.tm-seg-row .tm-seg { margin-top:0; flex:1; max-width:172px; margin-left:auto }
+.tm-sheet-btn {
+  display:block; width:100%; text-align:center; margin-top:16px;
+  padding:12px 0; border-radius:10px; background:var(--brand); color:#fff;
+  font-size:13.5px; font-weight:700;
+  transition:background .25s ease, color .25s ease;
+}
+.tm-sheet-btn.is-off { background:color-mix(in srgb, var(--brand) 42%, #fff) }
+.tm-sheet-cash {
+  display:flex; align-items:center; gap:10px; margin-top:11px;
+  border:1px solid var(--tm-line); border-radius:999px; padding:6px 6px 6px 14px;
+  font-size:11.5px; color:var(--tm-soft);
+}
+.tm-sheet-cash b { color:var(--tm-ink); font-weight:600 }
+.tm-sheet-cash i { margin-left:auto; font-style:normal; padding:6px 13px;
+                   border-radius:999px; background:color-mix(in srgb, var(--brand) 13%, #fff);
+                   color:var(--brand); font-weight:700 }
+.tm-sheet-ioc { font-size:10px; color:var(--brand); text-align:center; margin-top:9px }
+/* o aviso de rede, palavra por palavra do produto */
+.tm-sheet-info {
+  display:flex; gap:8px; margin-top:13px; padding:10px 12px;
+  border-radius:10px; background:#fbf7ef; color:#7a6a4d;
+  font-size:10.5px; line-height:1.5;
+}
+.tm-sheet-info svg { width:13px; height:13px; flex-shrink:0; margin-top:1px }
+/* o fecho: ordem executada */
+.tm-sheet-ok { text-align:center; padding:6px 0 2px }
+.tm-sheet-ok .tm-ok-tick {
+  width:46px; height:46px; border-radius:50%; margin:0 auto 12px;
+  display:grid; place-items:center;
+  background:color-mix(in srgb, var(--tm-yes) 12%, #fff); color:var(--tm-yes);
+  animation:tmAppPop .5s cubic-bezier(.3,1.5,.5,1);
+}
+.tm-sheet-ok .tm-ok-tick svg { width:21px; height:21px }
+.tm-sheet-ok h4 { font-size:17px; font-weight:700 }
+.tm-sheet-ok p  { font-size:12px; color:var(--tm-soft); margin-top:5px }
+
+@media (max-width:767px) {
+  .tm-sheet-wrap { align-items:flex-end; padding:0 0 62px }
+  .tm-sheet { max-width:none; border-radius:18px 18px 0 0; padding:18px 16px 22px }
+  .tm-sheet-wrap.is-on .tm-sheet { transform:none }
+  .tm-sheet::before { content:''; display:block; width:38px; height:4px;
+                      border-radius:99px; background:var(--tm-line); margin:0 auto 13px }
+}
+
+/* ── o quick trade: o painel que abre no próprio card ─────────────
+   É o atalho do produto — opinar sem sair da lista. Ele nasce ancorado
+   na coluna de notícias da Home, que é onde o card mora.           */
+.tm-qt {
+  position:absolute; z-index:4; right:16px; width:min(420px,46%);
+  top:352px; /* só o ponto de partida; quem manda é o qtAnchor em site.js */
+  background:var(--tm-surf); border:1px solid var(--tm-line);
+  border-radius:13px; padding:13px; box-shadow:0 22px 50px -18px #10182840;
+  opacity:0; transform:translateY(8px) scale(.99); pointer-events:none;
+  transition:opacity .28s ease, transform .38s cubic-bezier(.22,1,.28,1);
+}
+.tm-qt.is-on { opacity:1; transform:none }
+.tm-qt-head { display:flex; align-items:flex-start; gap:9px }
+.tm-qt-q { font-size:12.5px; font-weight:600; line-height:1.35 }
+.tm-qt-x { margin-left:auto; color:var(--tm-faint); flex-shrink:0 }
+.tm-qt-x svg { width:12px; height:12px }
+.tm-qt-row { display:flex; align-items:center; gap:7px; margin-top:11px }
+.tm-qt-side {
+  flex-shrink:0; padding:8px 11px; border-radius:9px; font-size:12px; font-weight:600;
+  background:color-mix(in srgb, var(--tm-yes) 11%, #fff); color:var(--tm-yes);
+}
+.tm-qt-amt { flex:1; min-width:0 }
+.tm-qt-adds { display:flex; gap:5px; flex-shrink:0 }
+.tm-qt-adds span {
+  padding:7px 8px; border-radius:8px; font-size:11px; font-weight:600;
+  background:color-mix(in srgb, var(--brand) 11%, #fff); color:var(--brand);
+  transition:transform .18s cubic-bezier(.22,1,.28,1);
+}
+.tm-qt-adds span.is-press { transform:scale(.9) }
+/* o trilho do valor */
+.tm-qt-slider { position:relative; height:4px; border-radius:99px;
+                background:var(--tm-surf-2); margin:12px 0 9px }
+.tm-qt-slider i { position:absolute; left:0; top:0; bottom:0; border-radius:99px;
+                  background:var(--brand); width:12%;
+                  transition:width .5s cubic-bezier(.22,1,.28,1) }
+.tm-qt-slider b { position:absolute; top:50%; width:13px; height:13px; margin:-6.5px 0 0 -6.5px;
+                  border-radius:50%; background:var(--brand); left:12%;
+                  box-shadow:0 1px 4px #10182833;
+                  transition:left .5s cubic-bezier(.22,1,.28,1) }
+.tm-qt-meta { display:flex; justify-content:space-between; gap:10px; font-size:10.5px;
+              color:var(--tm-faint) }
+.tm-qt-meta b { color:var(--tm-yes); font-weight:600 }
+.tm-qt-btns { display:flex; gap:7px; margin-top:11px }
+.tm-qt-btns span {
+  flex:1; text-align:center; padding:9px 0; border-radius:9px;
+  font-size:12px; font-weight:600;
+  transition:background .25s ease, color .25s ease;
+}
+.tm-qt-cancel  { border:1px solid var(--tm-line); color:var(--tm-ink) }
+.tm-qt-confirm { background:var(--brand); color:#fff }
+.tm-qt.is-empty .tm-qt-confirm { background:color-mix(in srgb, var(--brand) 42%, #fff) }
+/* estado final: o painel vira recibo */
+.tm-qt-done { display:none; align-items:center; gap:9px; font-size:12px; font-weight:600 }
+.tm-qt-done i { width:24px; height:24px; border-radius:50%; flex-shrink:0;
+                display:grid; place-items:center; font-style:normal;
+                background:color-mix(in srgb, var(--tm-yes) 12%, #fff); color:var(--tm-yes) }
+.tm-qt-done i svg { width:12px; height:12px }
+.tm-qt-done em { font-style:normal; margin-left:auto; color:var(--tm-faint); font-weight:400;
+                 font-size:10.5px }
+.tm-qt.is-done .tm-qt-head, .tm-qt.is-done .tm-qt-row,
+.tm-qt.is-done .tm-qt-slider, .tm-qt.is-done .tm-qt-meta,
+.tm-qt.is-done .tm-qt-btns { display:none }
+.tm-qt.is-done .tm-qt-done { display:flex }
+
+@media (max-width:1023px) { .tm-qt { width:min(400px,56%) } }
+@media (max-width:767px)  {
+  .tm-qt { right:14px; left:14px; width:auto; top:auto; bottom:calc(62px + 62px) }
+  .tm-qt-adds span { padding:7px 7px }
+}
+
+/* ── a cena do evento ─────────────────────────────────────────────
+   O mercado binário aberto: pergunta, preço, gráfico, livro e a rampa
+   de vida do mercado. O trilho da direita é onde a ordem nasce.     */
+.tm-ev2 { display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:16px;
+          padding:14px 22px 0 }
+.tm-ev2-t { display:flex; align-items:flex-start; gap:11px }
+.tm-ev2-t .tm-card-icon { flex-shrink:0 }
+.tm-ev2-h { font-size:17px; font-weight:700; line-height:1.25 }
+.tm-ev2-meta { display:flex; align-items:center; gap:7px; font-size:10px;
+               color:var(--tm-faint); margin-top:5px }
+.tm-ev2-meta .ds-dot { width:5px; height:5px; background:#c0553f }
+.tm-ev2-meta em { font-style:normal; letter-spacing:.1em; text-transform:uppercase;
+                  color:#c0553f; font-weight:600 }
+.tm-ev2-card { background:var(--tm-surf); border:1px solid var(--tm-line);
+               border-radius:13px; padding:15px; box-shadow:var(--tm-card-sh);
+               margin-top:12px }
+.tm-ev2-px { display:flex; align-items:center; gap:9px }
+.tm-ev2-px strong { font-size:31px; font-weight:700; line-height:1;
+                    font-variant-numeric:tabular-nums }
+.tm-ev2-mult { padding:3px 8px; border-radius:7px; font-size:11px; font-weight:600;
+               background:color-mix(in srgb, var(--brand) 12%, #fff); color:var(--brand) }
+.tm-ev2-chips { margin-left:auto; display:flex; gap:7px }
+.tm-ev2-chips span { padding:5px 10px; border-radius:8px; font-size:10.5px;
+                     border:1px solid var(--tm-line); color:var(--tm-soft) }
+.tm-ev2-chips b { color:var(--tm-ink); font-weight:600 }
+.tm-ev2-sub { font-size:10.5px; color:var(--tm-faint); margin-top:5px }
+/* as três abas do cartão */
+.tm-ev2-tabs { display:flex; gap:7px; margin-top:12px; background:var(--tm-surf-2);
+               border-radius:10px; padding:3px }
+.tm-ev2-tabs span { flex:1; text-align:center; padding:7px 0; border-radius:8px;
+                    font-size:11.5px; font-weight:600; color:var(--tm-soft);
+                    transition:background .25s ease, color .25s ease }
+.tm-ev2-tabs span.is-on { background:color-mix(in srgb, var(--brand) 13%, #fff);
+                          color:var(--brand) }
+/* o gráfico e o livro dividem o mesmo palco: um por vez */
+.tm-ev2-panel { position:relative; margin-top:11px; min-height:150px }
+.tm-ev2-view { position:absolute; inset:0; opacity:0; pointer-events:none;
+               transition:opacity .3s ease }
+.tm-ev2-view.is-on { opacity:1; position:relative }
+.tm-ev2-chart { position:relative }
+.tm-ev2-chart svg { display:block; width:100%; height:126px; overflow:visible }
+.tm-ev2-chart .tm-ev2-line { fill:none; stroke:var(--brand); stroke-width:2;
+                             stroke-linecap:round; stroke-linejoin:round;
+                             stroke-dasharray:1 1; stroke-dashoffset:1 }
+.tm-ev2-chart.is-drawn .tm-ev2-line { stroke-dashoffset:0;
+                             transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.3,1) }
+.tm-ev2-chart .tm-ev2-fill { fill:color-mix(in srgb, var(--brand) 11%, transparent);
+                             opacity:0; transition:opacity .7s ease .5s }
+.tm-ev2-chart.is-drawn .tm-ev2-fill { opacity:1 }
+.tm-ev2-chart .tm-ev2-grid { stroke:var(--tm-line); stroke-width:1; stroke-dasharray:3 4 }
+.tm-ev2-chart .tm-ev2-dot  { fill:var(--brand); opacity:0;
+                             transition:opacity .3s ease 1.4s }
+.tm-ev2-chart.is-drawn .tm-ev2-dot { opacity:1 }
+.tm-ev2-xs { display:flex; justify-content:space-between; font-size:9px;
+             color:var(--tm-faint); margin-top:4px }
+.tm-ev2-ranges { display:flex; gap:6px; justify-content:center; margin-top:9px }
+.tm-ev2-ranges span { padding:4px 10px; border-radius:999px; font-size:10px;
+                      font-weight:600; color:var(--tm-soft); background:var(--tm-surf-2) }
+.tm-ev2-ranges span.is-on { background:var(--brand); color:#fff }
+/* o livro de ofertas */
+.tm-ev2-book-h { font-size:10.5px; color:var(--tm-soft) }
+.tm-ev2-book-h b { color:var(--tm-ink); font-weight:600 }
+.tm-ev2-book-seg { display:flex; gap:7px; margin:9px 0 }
+.tm-ev2-book-seg span { flex:1; text-align:center; padding:7px 0; border-radius:9px;
+                        font-size:11.5px; font-weight:600 }
+.tm-ev2-book-seg .is-yes { background:color-mix(in srgb, var(--tm-yes) 10%, #fff);
+                           color:var(--tm-yes) }
+.tm-ev2-book-seg .is-no  { border:1px solid var(--tm-line); color:var(--tm-soft) }
+.tm-ev2-book { border:1px solid var(--tm-line); border-radius:11px; overflow:hidden }
+.tm-ev2-book-t { display:flex; align-items:center; gap:7px; padding:8px 11px;
+                 font-size:10.5px; font-weight:600;
+                 background:color-mix(in srgb, var(--tm-no) 7%, #fff); color:var(--tm-no) }
+.tm-ev2-book-t.is-bid { background:color-mix(in srgb, var(--tm-yes) 8%, #fff);
+                        color:var(--tm-yes) }
+.tm-ev2-book-t .ds-dot { width:5px; height:5px; background:currentColor }
+.tm-ev2-book-r { position:relative; display:flex; align-items:center;
+                 padding:6px 11px; font-size:10.5px;
+                 border-top:1px solid var(--tm-line);
+                 font-variant-numeric:tabular-nums }
+.tm-ev2-book-r i { position:absolute; right:0; top:0; bottom:0;
+                   background:color-mix(in srgb, var(--tm-no) 9%, transparent) }
+.tm-ev2-book-r span:first-child { width:34%; color:var(--tm-no); font-weight:600;
+                                  position:relative; z-index:1 }
+.tm-ev2-book-r span:nth-child(3) { width:34%; color:var(--tm-soft);
+                                   position:relative; z-index:1 }
+.tm-ev2-book-r span:last-child { margin-left:auto; color:var(--tm-ink);
+                                 position:relative; z-index:1 }
+/* a rampa: o que ainda vai acontecer com este mercado */
+.tm-ev2-tl { margin-top:12px; background:var(--tm-surf); border:1px solid var(--tm-line);
+             border-radius:13px; padding:15px; box-shadow:var(--tm-card-sh) }
+.tm-ev2-tl h5 { font-size:14px; font-weight:700 }
+.tm-ev2-tl div { display:flex; gap:10px; margin-top:11px; font-size:11px }
+.tm-ev2-tl div i { flex-shrink:0; width:9px; height:9px; border-radius:50%; margin-top:3px;
+                   border:2px solid var(--tm-line); background:var(--tm-surf);
+                   position:relative }
+.tm-ev2-tl div:first-of-type i { border-color:var(--brand); background:var(--brand) }
+.tm-ev2-tl div i::after { content:''; position:absolute; left:50%; top:11px;
+                          width:1px; height:19px; margin-left:-.5px;
+                          background:var(--tm-line) }
+.tm-ev2-tl div:last-child i::after { display:none }
+.tm-ev2-tl b { display:block; font-weight:600 }
+.tm-ev2-tl em { font-style:normal; color:var(--tm-faint); font-size:10.5px }
+/* o trilho da direita: onde a ordem nasce */
+.tm-ev2-rail { background:var(--tm-surf); border:1px solid var(--tm-line);
+               border-radius:13px; padding:15px; box-shadow:var(--tm-card-sh);
+               align-self:start }
+.tm-ev2-rail h5 { font-size:14.5px; font-weight:700 }
+.tm-ev2-rail > p { font-size:10.5px; color:var(--tm-faint); margin-top:4px }
+.tm-ev2-side {
+  display:flex; align-items:center; gap:10px; margin-top:10px;
+  padding:11px 13px; border-radius:11px; font-weight:700;
+  transition:box-shadow .25s ease, transform .2s cubic-bezier(.22,1,.28,1);
+}
+.tm-ev2-side.is-yes { background:color-mix(in srgb, var(--tm-yes) 10%, #fff);
+                      color:var(--tm-yes) }
+.tm-ev2-side.is-no  { background:color-mix(in srgb, var(--tm-no) 8%, #fff);
+                      color:var(--tm-no) }
+.tm-ev2-side strong { font-size:13.5px }
+.tm-ev2-side u { margin-left:auto; text-align:right; text-decoration:none }
+.tm-ev2-side u b  { display:block; font-size:12.5px; font-variant-numeric:tabular-nums }
+.tm-ev2-side u em { font-style:normal; display:block; font-size:8.5px;
+                    letter-spacing:.1em; text-transform:uppercase; opacity:.72;
+                    font-weight:600 }
+.tm-ev2-side.is-press { transform:scale(.985) }
+.tm-ev2-facts { margin-top:13px; border-top:1px solid var(--tm-line) }
+.tm-ev2-facts div { display:flex; justify-content:space-between; gap:12px;
+                    padding:8px 0; font-size:11px; border-bottom:1px solid var(--tm-line) }
+.tm-ev2-facts div:last-child { border-bottom:0 }
+.tm-ev2-facts em { font-style:normal; color:var(--tm-soft) }
+.tm-ev2-facts b  { font-weight:600 }
+.tm-ev2-hint { display:flex; gap:8px; margin-top:12px; padding:10px 12px;
+               border-radius:10px; font-size:10px; line-height:1.5;
+               background:color-mix(in srgb, var(--brand) 8%, #fff); color:var(--brand) }
+.tm-ev2-hint svg { width:12px; height:12px; flex-shrink:0; margin-top:1px }
+
+@media (max-width:1023px) {
+  .tm-ev2 { grid-template-columns:minmax(0,1fr) 250px; gap:13px; padding:12px 16px 0 }
+  .tm-ev2-tl { display:none }
+}
+@media (max-width:767px) {
+  /* no telefone o produto empilha, e o trilho da ordem vem primeiro:
+     é a ação, e a ação não espera o gráfico rolar */
+  .tm-ev2 { grid-template-columns:1fr; padding:11px 14px 0 }
+  .tm-ev2-rail { order:-1 }
+  .tm-ev2-h { font-size:15px }
+  .tm-ev2-px strong { font-size:26px }
+  .tm-ev2-chips { display:none }
+}
+
+/* ── a cena do perfil ────────────────────────────────────────────── */
+.tm-prof { max-width:520px; margin:0 auto; padding:16px 22px 0 }
+.tm-prof-card { display:flex; align-items:center; gap:13px;
+                background:var(--tm-surf); border:1px solid var(--tm-line);
+                border-radius:13px; padding:15px; box-shadow:var(--tm-card-sh) }
+.tm-prof-av { width:46px; height:46px; border-radius:50%; flex-shrink:0;
+              display:grid; place-items:center; font-size:14px; font-weight:700;
+              background:color-mix(in srgb, var(--brand) 13%, #fff); color:var(--brand) }
+.tm-prof-mail { font-size:11.5px; color:var(--tm-soft) }
+.tm-prof-vf { display:inline-flex; align-items:center; gap:5px; margin-top:6px;
+              padding:4px 9px; border-radius:999px; font-size:10px; font-weight:600;
+              background:color-mix(in srgb, var(--brand) 11%, #fff); color:var(--brand) }
+.tm-prof-vf svg { width:10px; height:10px }
+.tm-prof-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-top:11px }
+.tm-prof-stats div { background:var(--tm-surf); border:1px solid var(--tm-line);
+                     border-radius:12px; padding:13px 0; text-align:center;
+                     box-shadow:var(--tm-card-sh) }
+.tm-prof-stats b { display:block; font-size:19px; font-weight:700;
+                   font-variant-numeric:tabular-nums }
+.tm-prof-stats em { font-style:normal; font-size:10.5px; color:var(--tm-soft) }
+.tm-prof-list { margin-top:11px; background:var(--tm-surf); border:1px solid var(--tm-line);
+                border-radius:13px; overflow:hidden; box-shadow:var(--tm-card-sh) }
+.tm-prof-list div { display:flex; align-items:center; gap:11px; padding:12px 15px;
+                    border-bottom:1px solid var(--tm-line) }
+.tm-prof-list div:last-child { border-bottom:0 }
+.tm-prof-ic { width:28px; height:28px; border-radius:9px; flex-shrink:0;
+              display:grid; place-items:center;
+              background:color-mix(in srgb, var(--brand) 10%, #fff); color:var(--brand) }
+.tm-prof-ic svg { width:14px; height:14px }
+.tm-prof-list b { display:block; font-size:12px; font-weight:600 }
+.tm-prof-list em { font-style:normal; display:block; font-size:10.5px; color:var(--tm-soft) }
+.tm-prof-list .tm-prof-arw { margin-left:auto; color:var(--tm-faint); flex-shrink:0 }
+.tm-prof-list .tm-prof-arw svg { width:12px; height:12px }
+.tm-prof-out { margin-top:11px; text-align:center; padding:12px 0;
+               border:1px solid color-mix(in srgb, var(--tm-no) 34%, #fff);
+               border-radius:13px; color:var(--tm-no); font-size:12.5px; font-weight:600 }
+
+/* ── a cena da carteira ──────────────────────────────────────────── */
+.tm-pf { padding:16px 22px 0 }
+.tm-pf-bal { background:var(--tm-surf); border:1px solid var(--tm-line);
+             border-radius:13px; padding:16px; margin-top:12px;
+             box-shadow:var(--tm-card-sh); display:flex; align-items:flex-start; gap:16px }
+.tm-pf-bal em { display:block; font-style:normal; font-size:8.5px; letter-spacing:.14em;
+                text-transform:uppercase; color:var(--tm-faint) }
+.tm-pf-bal strong { display:block; font-size:27px; font-weight:700; margin-top:3px;
+                    font-variant-numeric:tabular-nums }
+.tm-pf-bal .tm-pf-sub { font-size:10.5px; color:var(--tm-faint); margin-top:2px }
+.tm-pf-pl { margin-left:auto; text-align:right }
+.tm-pf-pl strong { color:var(--tm-yes) }
+.tm-pf-btns { display:flex; gap:9px; margin-top:13px }
+.tm-pf-btns span { padding:9px 22px; border-radius:999px; font-size:12.5px; font-weight:600 }
+.tm-pf-dep { background:var(--brand); color:#fff }
+.tm-pf-wd  { border:1px solid var(--tm-line); color:var(--tm-ink) }
+.tm-pf-grid { display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:14px;
+              margin-top:13px; align-items:start }
+.tm-pf-tabs { display:flex; gap:7px; background:var(--tm-surf-2); border-radius:10px;
+              padding:3px }
+.tm-pf-tabs span { flex:1; text-align:center; padding:7px 0; border-radius:8px;
+                   font-size:11.5px; font-weight:600; color:var(--tm-soft) }
+.tm-pf-tabs span.is-on { background:color-mix(in srgb, var(--brand) 13%, #fff);
+                         color:var(--brand) }
+.tm-pf-pos { background:var(--tm-surf); border:1px solid var(--tm-line);
+             border-radius:13px; padding:14px; margin-top:11px;
+             box-shadow:var(--tm-card-sh) }
+.tm-pf-pos-q { font-size:12px; font-weight:600; line-height:1.35 }
+.tm-pf-pos-r { display:flex; justify-content:space-between; gap:12px; margin-top:9px;
+               padding-top:9px; border-top:1px solid var(--tm-line); font-size:11px }
+.tm-pf-pos-r em { font-style:normal; color:var(--tm-soft) }
+.tm-pf-pos-r b { font-weight:600; font-variant-numeric:tabular-nums }
+.tm-pf-pos-r b.is-yes { color:var(--tm-yes) }
+.tm-pf-chart { background:var(--tm-surf); border:1px solid var(--tm-line);
+               border-radius:13px; padding:14px; box-shadow:var(--tm-card-sh) }
+.tm-pf-chart-h { display:flex; align-items:flex-start; gap:9px }
+.tm-pf-chart-h em { font-style:normal; font-size:11px; color:var(--tm-soft) }
+.tm-pf-chart-h .ds-dot { width:5px; height:5px; background:var(--tm-yes) }
+.tm-pf-chart-h b { display:block; font-size:19px; font-weight:700; margin-top:2px;
+                   font-variant-numeric:tabular-nums }
+.tm-pf-chart-h .tm-pf-ranges { margin-left:auto; display:flex; gap:5px }
+.tm-pf-ranges span { padding:3px 8px; border-radius:999px; font-size:9.5px; font-weight:600;
+                     color:var(--tm-soft); background:var(--tm-surf-2) }
+.tm-pf-ranges span.is-on { background:var(--brand); color:#fff }
+.tm-pf-chart svg { display:block; width:100%; height:104px; margin-top:9px; overflow:visible }
+.tm-pf-chart .tm-pf-grid-l { stroke:var(--tm-line); stroke-width:1; stroke-dasharray:3 4 }
+.tm-pf-chart .tm-pf-line { fill:none; stroke:var(--tm-yes); stroke-width:2;
+                           stroke-linecap:round; stroke-dasharray:1 1; stroke-dashoffset:1 }
+.tm-pf-chart.is-drawn .tm-pf-line { stroke-dashoffset:0;
+                           transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.3,1) }
+
+@media (max-width:1023px) {
+  .tm-prof, .tm-pf { padding-left:16px; padding-right:16px }
+  .tm-pf-grid { grid-template-columns:1fr }
+}
+@media (max-width:767px) {
+  .tm-prof, .tm-pf { padding-left:14px; padding-right:14px }
+  .tm-pf-bal { flex-direction:column; gap:9px }
+  .tm-pf-pl { margin-left:0; text-align:left }
+  .tm-prof-stats b { font-size:17px }
+}
+
+/* ── o cursor e o toque ──────────────────────────────────────────── */
+.tm-app-cursor {
+  position:absolute; left:0; top:0; z-index:8; width:13px; height:19px;
+  pointer-events:none; opacity:0;
+  transform:var(--tma-pos,translate(0,0));
+  transition:transform .45s cubic-bezier(.33,1,.36,1), opacity .3s ease;
+  filter:drop-shadow(0 2px 5px #10182859);
+}
+.tm-app-cursor.is-on { opacity:1 }
+.tm-app-cursor svg { display:block; width:100%; height:100% }
+.tm-app-cursor.is-tap { transform:var(--tma-pos,translate(0,0)) scale(.82) }
+.tm-app-ripple {
+  position:absolute; left:0; top:0; z-index:7; width:16px; height:16px;
+  margin:-8px 0 0 -8px; border-radius:50%; pointer-events:none;
+  background:color-mix(in srgb, var(--brand) 34%, transparent);
+  animation:tmAppRipple .62s cubic-bezier(.22,1,.28,1) forwards;
+}
+@keyframes tmAppRipple {
+  0%   { opacity:.75; transform:var(--tma-pos) scale(.35) }
+  100% { opacity:0;   transform:var(--tma-pos) scale(3.4) }
+}
+/* o aviso de boas-vindas do produto, que aparece no login */
+.tm-app-toast {
+  position:absolute; left:50%; bottom:22px; z-index:5;
+  transform:translate(-50%,14px); opacity:0;
+  display:flex; align-items:center; gap:8px;
+  padding:9px 15px; border-radius:999px;
+  background:var(--tm-surf); border:1px solid var(--tm-line);
+  box-shadow:0 12px 30px -12px #10182859;
+  font-size:11.5px; font-weight:600; white-space:nowrap;
+  transition:opacity .34s ease, transform .44s cubic-bezier(.22,1,.28,1);
+}
+.tm-app-toast.is-on { opacity:1; transform:translate(-50%,0) }
+.tm-app-toast i { width:16px; height:16px; border-radius:50%; flex-shrink:0;
+                  display:grid; place-items:center; font-style:normal;
+                  background:color-mix(in srgb, var(--tm-yes) 13%, #fff); color:var(--tm-yes) }
+.tm-app-toast i svg { width:9px; height:9px }
+
+/* ── o controle ──────────────────────────────────────────────────
+   Mesmo botão da Quebra 4, no mesmo lugar relativo: fora do quadro,
+   discreto, e só existe para quem quiser parar e olhar um passo.   */
+.tm-banner-right { display:flex; align-items:center; gap:14px; flex-shrink:0 }
+.tm-app-ctl {
+  display:inline-flex; align-items:center; gap:6px; flex-shrink:0;
+  padding:3px 11px; border-radius:999px; border:1px solid #ffffff2b;
+  background:#ffffff0f; color:#c6cbd4; font-size:10px; line-height:1.4;
+  cursor:pointer;
+  transition:color .25s ease, background-color .25s ease, border-color .25s ease;
+}
+.tm-app-ctl:hover { color:#fff; background:#ffffff1a; border-color:#ffffff42 }
+.tm-app-ctl:focus-visible { outline:none; border-color:var(--accent);
+                            box-shadow:0 0 0 3px #8ac5fa2e }
+.tm-app-ctl::before { content:''; width:7px; height:8px; flex-shrink:0;
+                      border-left:2px solid currentColor; border-right:2px solid currentColor }
+.tm-app-ctl.is-paused::before { border:0; width:0; height:0;
+                      border-left:7px solid currentColor;
+                      border-top:4.5px solid transparent; border-bottom:4.5px solid transparent }
+
+/* Quem pediu menos movimento recebe o fim, não o filme: a carteira com
+   a posição aberta, que é onde a jornada chega. */
+@media (prefers-reduced-motion:reduce) {
+  .tm-app-scene, .tm-gate, .tm-sheet, .tm-sheet-wrap, .tm-qt,
+  .tm-app-cursor, .tm-app-toast, .tm-ev2-view { transition:none }
+  .tm-gate-code i.is-in, .tm-sheet-ok .tm-ok-tick { animation:none }
+  .tm-inp.is-focus .tm-caret { animation:none; opacity:1 }
+  .tm-ev2-chart .tm-ev2-line, .tm-pf-chart .tm-pf-line { stroke-dashoffset:0 }
+  .tm-ev2-chart .tm-ev2-fill, .tm-ev2-chart .tm-ev2-dot { opacity:1 }
+  .tm-app-ctl { display:none }
 }
 
 /* ── Browser chrome frame (BackOffice + widget mocks) ─────────────── */

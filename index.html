@@ -181,12 +181,22 @@
       <span class="inline-flex items-center gap-2.5 tm-mono tm-eyebrow" style="color:#8ac5fa;font-size:10px;">
         <span class="ds-dot" style="width:6px;height:6px;"></span>Inside the platform
       </span>
-      <span class="tm-banner-note tm-mono" aria-hidden="true">
-        <i class="tm-banner-live"></i>this same screen ships under your brand
+      <!-- O controle mora aqui, e não sob o palco: embaixo dele a Quebra
+           1.5 sobe 62px por cima (.tm-overlap) e engolia o botão — e a
+           linha extra ainda roubava do corte a altura que ela ocupava.
+           Na barra da moldura ele fica fora do quadro e sempre visível,
+           que é o que o mesmo botão faz na Quebra 4. -->
+      <span class="tm-banner-right">
+        <span class="tm-banner-note tm-mono" aria-hidden="true">
+          <i class="tm-banner-live"></i>this same screen ships under your brand
+        </span>
+        <button type="button" class="tm-app-ctl" id="tm-app-ctl" aria-label="Pause the walkthrough">
+          <span>Pause</span>
+        </button>
       </span>
     </div>
 
-    <span class="sr-only">Preview of the Tipmarket platform in the light theme, carrying Tipmarket’s own brand: a sidebar with Home, Saved, Portfolio, New, Profile and Dark mode, a row of featured markets, and an Explore markets section split between Crypto and Technology. Prices and percentages update on their own; Yes is always green and No is always red.</span>
+    <span class="sr-only">Silent looping walkthrough of the Tipmarket platform in the light theme, carrying Tipmarket’s own brand. It follows one user end to end: a passwordless log in with a six-digit code, a deposit that funds the balance, a quick trade taken straight from a market card, the full event screen with its price chart and order book, an order placed and filled, and finally the profile and the portfolio showing the open position. The sidebar, the header title and the balance persist across the journey. Yes is always green and No is always red.</span>
 
     <div class="tm-screen">
       <div class="tm-surface" aria-hidden="true">
@@ -200,19 +210,19 @@
           </span>
         </div>
         <nav class="tm-side-nav">
-          <span class="tm-side-item is-on">
+          <span class="tm-side-item is-on" data-nav="home">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg><i>Home</i>
           </span>
-          <span class="tm-side-item">
+          <span class="tm-side-item" data-nav="saved">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg><i>Saved</i>
           </span>
-          <span class="tm-side-item">
+          <span class="tm-side-item" data-nav="portfolio">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg><i>Portfolio</i>
           </span>
           <span class="tm-side-item is-dim">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.4l6.1-.8z"/></svg><i>New</i>
           </span>
-          <span class="tm-side-item">
+          <span class="tm-side-item" data-nav="profile">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg><i>Profile</i>
           </span>
           <span class="tm-side-item">
@@ -222,25 +232,58 @@
 
         <!-- o produto ganhou os dois botões no pé da barra. O Sign up é
              o segundo lugar da tela onde a marca se pinta sozinha, então
-             ele entra no repaint junto com o do cabeçalho. -->
+             ele entra no repaint junto com o do cabeçalho.
+
+             Depois do login este par sai e entra o rodapé de dinheiro:
+             é de onde o depósito nasce no produto, e é o que o filme
+             precisa ter à mão no segundo passo da jornada. -->
         <div class="tm-side-auth">
           <span class="tm-side-signup">Sign up</span>
           <span class="tm-side-login">Log in</span>
+        </div>
+        <div class="tm-side-money">
+          <em>Available balance</em>
+          <b id="tm-app-side-bal">$0.00</b>
+          <div class="tm-money-btns">
+            <span class="tm-money-dep" id="tm-app-dep">Deposit</span>
+            <span class="tm-money-wd">Withdraw</span>
+          </div>
         </div>
       </aside>
 
       <!-- ── coluna principal ──────────────────────────────────────── -->
       <div class="tm-main">
 
-        <div class="tm-main-head">
-          <span class="tm-main-title">Markets</span>
+        <!-- A moldura é o que segura o filme. O título troca por cena e
+             ganha a volta quando a cena é filha de outra; o par Log
+             in/Sign up cede o lugar ao saldo depois do login. Nada disso
+             é desenho de cada tela: é um só, mudando de estado. -->
+        <div class="tm-main-head" id="tm-app-head">
+          <span class="tm-app-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 6-6 6 6 6"/></svg>
+          </span>
+          <span class="tm-main-title" id="tm-app-title">Markets</span>
           <span class="tm-icon-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 13.5A8 8 0 1 1 10.5 4a6.5 6.5 0 0 0 9.5 9.5z"/></svg>
           </span>
-          <span class="tm-btn-ghost">Log in</span>
-          <span class="tm-btn-brand">Sign up</span>
+          <span class="tm-app-anon">
+            <span class="tm-btn-ghost">Log in</span>
+            <span class="tm-btn-brand">Sign up</span>
+          </span>
+          <span class="tm-app-bal" id="tm-app-bal">
+            <em>Balance</em>
+            <b id="tm-app-bal-v">$0.00</b>
+            <i>+</i>
+          </span>
         </div>
 
+        <!-- ── as cenas ────────────────────────────────────────────
+             A Home é a que já existia; as outras entram abaixo dela, no
+             mesmo palco, e o diretor (initAppDemo em site.js) troca qual
+             está em cena. -->
+        <div class="tm-app-scenes">
+
+        <div class="tm-app-scene is-on" data-scene="home">
         <div class="tm-search-row">
           <div class="tm-search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg>
@@ -641,9 +684,432 @@
 
         </div>
 
+        </div><!-- /cena home -->
+
+        <!-- ── cena: o evento aberto ──────────────────────────────────
+             O mercado binário do produto. A pergunta é a mesma do card
+             que a pessoa tocou na Home — o filme não troca de assunto no
+             meio, senão o corte lê como slide e não como navegação.
+
+             O trilho da direita é o único lugar da cena que aceita
+             toque: é de lá que a ordem nasce.                        -->
+        <div class="tm-app-scene" data-scene="event">
+          <div class="tm-ev2">
+            <div class="min-w-0">
+
+              <div class="tm-ev2-t">
+                <span class="tm-card-icon" style="--cat:#4f46b8">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>
+                </span>
+                <div>
+                  <span class="tm-kicker">Your call.</span>
+                  <div class="tm-ev2-h">Will the next Mythos-Class model debut as #1?</div>
+                  <div class="tm-ev2-meta">
+                    <span class="ds-dot"></span><em>Technology</em>
+                    <span>· $10.84 traded · closes Jan 30, 2027</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tm-ev2-card">
+                <div class="tm-ev2-px">
+                  <strong>26%</strong>
+                  <span class="tm-ev2-mult">3.85x</span>
+                  <span class="tm-ev2-chips">
+                    <span>Spread <b>$0.00</b></span>
+                    <span>Liquidity <b>31 shares</b></span>
+                  </span>
+                </div>
+                <div class="tm-ev2-sub">Yes chance · $0.26 per share</div>
+
+                <div class="tm-ev2-tabs" id="tm-app-ev2tabs">
+                  <span class="is-on" data-ev2tab="chart">Chart</span>
+                  <span data-ev2tab="book" id="tm-app-book-tab">Order book</span>
+                  <span data-ev2tab="activity">Activity</span>
+                </div>
+
+                <div class="tm-ev2-panel">
+                  <!-- o gráfico desenha ao entrar: é a diferença entre um
+                       preço que andou e um preço que está pintado ali -->
+                  <div class="tm-ev2-view is-on" data-ev2view="chart">
+                    <div class="tm-ev2-chart" id="tm-app-chart">
+                      <svg viewBox="0 0 320 126" preserveAspectRatio="none" aria-hidden="true">
+                        <line class="tm-ev2-grid" x1="0" y1="18" x2="320" y2="18"/>
+                        <line class="tm-ev2-grid" x1="0" y1="53" x2="320" y2="53"/>
+                        <line class="tm-ev2-grid" x1="0" y1="88" x2="320" y2="88"/>
+                        <path class="tm-ev2-fill" d="M6 74 L74 43 L142 40 L210 86 L290 34 L290 120 L6 120 Z"/>
+                        <path class="tm-ev2-line" pathLength="1" d="M6 74 L74 43 L142 40 L210 86 L290 34"/>
+                        <circle class="tm-ev2-dot" cx="290" cy="34" r="4"/>
+                      </svg>
+                      <div class="tm-ev2-xs">
+                        <span>Aug 27</span><span>Sep 1</span><span>Sep 1</span><span>Sep 2</span><span>Sep 2</span>
+                      </div>
+                      <div class="tm-ev2-ranges">
+                        <span>1H</span><span>1D</span><span class="is-on">1W</span><span>1M</span><span>ALL</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tm-ev2-view" data-ev2view="book">
+                    <div class="tm-ev2-book-h">Tap a row to place a <b>limit order</b> at that price.</div>
+                    <div class="tm-ev2-book-seg">
+                      <span class="is-yes">Trade Yes</span>
+                      <span class="is-no">Trade No</span>
+                    </div>
+                    <div class="tm-ev2-book">
+                      <div class="tm-ev2-book-t"><span class="ds-dot"></span>Sell orders (SELL)</div>
+                      <div class="tm-ev2-book-r"><i style="width:88%"></i><span>$0.34</span><span></span><span>7 shares</span><span>$2.38</span></div>
+                      <div class="tm-ev2-book-r"><i style="width:66%"></i><span>$0.31</span><span></span><span>9 shares</span><span>$2.79</span></div>
+                      <div class="tm-ev2-book-r"><i style="width:40%"></i><span>$0.28</span><span></span><span>12 shares</span><span>$3.36</span></div>
+                      <div class="tm-ev2-book-r"><i style="width:8%"></i><span>$0.26</span><span></span><span>3 shares</span><span>$0.78</span></div>
+                      <div class="tm-ev2-book-t is-bid"><span class="ds-dot"></span>Buy orders (BID)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- a rampa de vida do mercado: abre, fecha, resolve, paga.
+                   É o que responde "e depois?" sem ninguém perguntar. -->
+              <div class="tm-ev2-tl">
+                <h5>Timeline</h5>
+                <div><i></i><span><b>Market open</b><em>Trading enabled for everyone</em></span></div>
+                <div><i></i><span><b>Close</b><em>Jan 30, 2027 — last orders</em></span></div>
+                <div><i></i><span><b>Resolution</b><em>Official result published by curation</em></span></div>
+                <div><i></i><span><b>Payout</b><em>Winning shares pay $1.00</em></span></div>
+              </div>
+            </div>
+
+            <div class="tm-ev2-rail">
+              <h5>Place an order</h5>
+              <p>Pick a side — you review before confirming.</p>
+              <div class="tm-ev2-side is-yes" id="tm-app-ev2-yes">
+                <strong>Yes</strong>
+                <u><b>$10.00 → $38.00</b><em>est. if right</em></u>
+              </div>
+              <div class="tm-ev2-side is-no">
+                <strong>No</strong>
+                <u><b>$10.00 → $13.51</b><em>est. if right</em></u>
+              </div>
+              <div class="tm-ev2-facts">
+                <div><em>Total volume</em><b>$10.84</b></div>
+                <div><em>Closes</em><b>Jan 30, 2027</b></div>
+                <div><em>Market type</em><b>Binary (Yes/No)</b></div>
+              </div>
+              <div class="tm-ev2-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.9"/></svg>
+                <span>Each share pays $1.00 if you are right. Price = probability; the multiplier is your payout per dollar.</span>
+              </div>
+            </div>
+          </div>
+        </div><!-- /cena evento -->
+
+        <!-- ── cena: o perfil ─────────────────────────────────────────
+             Curta de propósito. Ela existe no filme para provar duas
+             coisas em três segundos: a conta é verificada por e-mail (o
+             login sem senha fecha o ciclo) e os contadores já não estão
+             em zero — o que a pessoa fez nos passos anteriores está
+             registrado.                                              -->
+        <div class="tm-app-scene" data-scene="profile">
+          <div class="tm-prof">
+            <div class="tm-prof-card">
+              <span class="tm-prof-av">GA</span>
+              <div>
+                <span class="tm-kicker">gabriel.bros</span>
+                <div class="tm-prof-mail">gabriel.bros@tipmarket.com</div>
+                <span class="tm-prof-vf">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+                  Email-verified account
+                </span>
+              </div>
+            </div>
+
+            <div class="tm-prof-stats">
+              <div><b id="tm-app-st-pos">2</b><em>positions</em></div>
+              <div><b id="tm-app-st-ord">2</b><em>orders</em></div>
+              <div><b>0</b><em>saved</em></div>
+            </div>
+
+            <div class="tm-prof-list">
+              <div>
+                <span class="tm-prof-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3v9h9"/></svg></span>
+                <span><b>Portfolio &amp; statement</b><em>Positions, orders and activity</em></span>
+                <span class="tm-prof-arw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 6 6 6-6 6"/></svg></span>
+              </div>
+              <div>
+                <span class="tm-prof-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 15V10a6 6 0 1 0-12 0v5l-2 3h16z"/><path d="M10 21h4"/></svg></span>
+                <span><b>Notification preferences</b><em>Price, resolution and dispute alerts</em></span>
+                <span class="tm-prof-arw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 6 6 6-6 6"/></svg></span>
+              </div>
+              <div>
+                <span class="tm-prof-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.3c-.7.3-1 .8-1 1.6v.3"/><path d="M12 17.2v.4"/></svg></span>
+                <span><b>Help center</b><em>Articles, contact and support chat</em></span>
+                <span class="tm-prof-arw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 6 6 6-6 6"/></svg></span>
+              </div>
+              <div>
+                <span class="tm-prof-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"/><path d="M9 10h7M9 13.5h7M9 17h4"/></svg></span>
+                <span><b>Terms &amp; privacy</b><em>Platform legal documents</em></span>
+                <span class="tm-prof-arw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 6 6 6-6 6"/></svg></span>
+              </div>
+            </div>
+
+            <div class="tm-prof-out">Sign out</div>
+          </div>
+        </div><!-- /cena perfil -->
+
+        <!-- ── cena: a carteira ───────────────────────────────────────
+             O fim da jornada, e o único lugar do filme onde a lista de
+             posições NÃO está vazia: o produto mostra "No open
+             positions" para quem chega, e a peça inteira existe para
+             que, aqui, essa caixa tenha uma linha dentro.            -->
+        <div class="tm-app-scene" data-scene="portfolio">
+          <div class="tm-pf">
+            <span class="tm-kicker">Your money.</span>
+            <div class="tm-ev2-h">Positions, orders and activity.</div>
+
+            <div class="tm-pf-bal">
+              <div>
+                <em>Available balance</em>
+                <strong id="tm-app-pf-bal">$35.00</strong>
+                <div class="tm-pf-sub">All funds available</div>
+                <div class="tm-pf-btns">
+                  <span class="tm-pf-dep">Deposit</span>
+                  <span class="tm-pf-wd">Withdraw</span>
+                </div>
+              </div>
+              <div class="tm-pf-pl">
+                <em>Total P&amp;L</em>
+                <strong>+$0.96</strong>
+                <div class="tm-pf-sub">open + realized</div>
+              </div>
+            </div>
+
+            <div class="tm-pf-grid">
+              <div class="min-w-0">
+                <div class="tm-pf-tabs">
+                  <span class="is-on">Positions</span><span>Orders</span><span>Activity</span>
+                </div>
+                <div class="tm-pf-pos">
+                  <div class="tm-pf-pos-q">Will the next Mythos-Class model debut as #1?</div>
+                  <div class="tm-pf-pos-r">
+                    <em>Yes · 57 shares</em><b>$15.96</b>
+                  </div>
+                  <div class="tm-pf-pos-r">
+                    <em>If you are right</em><b class="is-yes">$57.00</b>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tm-pf-chart" id="tm-app-pfchart">
+                <div class="tm-pf-chart-h">
+                  <div>
+                    <em>P&amp;L over time <span class="ds-dot"></span> live</em>
+                    <b>+$0.96</b>
+                    <div class="tm-pf-sub">today</div>
+                  </div>
+                  <span class="tm-pf-ranges">
+                    <span class="is-on">1D</span><span>1W</span><span>1M</span><span>ALL</span>
+                  </span>
+                </div>
+                <svg viewBox="0 0 300 104" preserveAspectRatio="none" aria-hidden="true">
+                  <line class="tm-pf-grid-l" x1="0" y1="20" x2="300" y2="20"/>
+                  <line class="tm-pf-grid-l" x1="0" y1="52" x2="300" y2="52"/>
+                  <line class="tm-pf-grid-l" x1="0" y1="84" x2="300" y2="84"/>
+                  <path class="tm-pf-line" pathLength="1" d="M6 78 L58 70 L110 74 L162 52 L214 44 L272 24"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div><!-- /cena carteira -->
+
+        </div><!-- /palco de cenas -->
+
+      </div><!-- /.tm-main -->
+      </div><!-- /.tm-surface -->
+
+      <!-- ── a barra de baixo, do telefone ────────────────────────────
+           O produto troca a lateral por ela abaixo de 768px, com o
+           Deposit promovido a disco no meio. Precisa ser irmã de
+           .tm-surface: é de lá que sai o `is-authed` que a acende. -->
+      <nav class="tm-appbar">
+        <span class="is-on" data-nav="home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Home
+        </span>
+        <span data-nav="saved">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>Saved
+        </span>
+        <span class="tm-appbar-fab" id="tm-app-dep-m">
+          <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 6v12M6 12h12"/></svg></i>
+          <b>Deposit</b>
+        </span>
+        <span data-nav="portfolio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg>Portfolio
+        </span>
+        <span data-nav="profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>Profile
+        </span>
+      </nav>
+
+      <!-- ── o quick trade ───────────────────────────────────────────
+           O atalho do produto: opinar sem abrir o evento. Ele abre
+           ancorado na coluna de notícias da Home, que é onde o card que
+           a pessoa tocou está.                                      -->
+      <div class="tm-qt is-empty" id="tm-app-qt" aria-hidden="true">
+        <div class="tm-qt-head">
+          <span class="tm-qt-q">Will the next Mythos-Class model debut as #1?</span>
+          <span class="tm-qt-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+        </div>
+        <div class="tm-qt-row">
+          <span class="tm-qt-side">Yes $0.26</span>
+          <span class="tm-inp tm-qt-amt" id="tm-app-qt-inp">
+            <span class="tm-cur">$</span><span class="tm-typed">0.00</span><i class="tm-caret"></i>
+          </span>
+          <span class="tm-qt-adds">
+            <span id="tm-app-qt-5">+5</span><span>+10</span><span>+50</span>
+          </span>
+        </div>
+        <div class="tm-qt-slider"><i id="tm-app-qt-fill"></i><b id="tm-app-qt-knob"></b></div>
+        <div class="tm-qt-meta">
+          <span id="tm-app-qt-sh">19 shares · 3.85x</span>
+          <span>If right · <b id="tm-app-qt-win">$19.00</b></span>
+        </div>
+        <div class="tm-qt-btns">
+          <span class="tm-qt-cancel">Cancel</span>
+          <span class="tm-qt-confirm" id="tm-app-qt-ok">Confirm</span>
+        </div>
+        <div class="tm-qt-done">
+          <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></i>
+          <span>Filled · Yes, 19 shares</span>
+          <em>$5.00</em>
+        </div>
       </div>
+
+      <!-- ── a folha: um componente, dois usos ───────────────────────
+           Depósito e ordem usam o mesmo cartão porque o produto usa o
+           mesmo. Os dois corpos moram aqui e o diretor mostra um. -->
+      <div class="tm-sheet-wrap" id="tm-app-sheet" aria-hidden="true">
+        <div class="tm-sheet">
+
+          <!-- depósito -->
+          <div data-sheet="deposit">
+            <div class="tm-sheet-head">
+              <h4>Deposit</h4>
+              <span class="tm-sheet-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            </div>
+            <div class="tm-sheet-sub">Funds land as <b>USDC on Polygon</b>.</div>
+            <span class="tm-sheet-lbl">How much?</span>
+            <span class="tm-inp is-amount" id="tm-app-dep-inp">
+              <span class="tm-cur">$</span><span class="tm-typed">0.00</span><i class="tm-caret"></i>
+            </span>
+            <div class="tm-sheet-note">Minimum $10.00.</div>
+            <div class="tm-chips" id="tm-app-dep-chips">
+              <span>$10</span><span id="tm-app-dep-50">$50</span><span>$100</span>
+            </div>
+            <div class="tm-sheet-info">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.9"/></svg>
+              <span>Settlement is asynchronous: we credit the balance as soon as the transfer confirms on-chain.</span>
+            </div>
+            <span class="tm-sheet-btn is-off" id="tm-app-dep-ok">Choose an amount</span>
+          </div>
+
+          <!-- ordem, a partir do trilho do evento -->
+          <div data-sheet="order" hidden>
+            <div class="tm-sheet-head">
+              <h4>You picked <span style="color:var(--tm-yes)">Yes</span></h4>
+              <span class="tm-sheet-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            </div>
+            <div class="tm-sheet-sub">Will the next Mythos-Class model debut as #1?</div>
+            <div class="tm-sheet-note"><b>$0.26</b> · 26% chance · 3.85x</div>
+            <div class="tm-seg"><span class="is-on">Buy</span><span>Sell</span></div>
+            <div class="tm-seg"><span class="is-on">Yes</span><span>No</span></div>
+            <div class="tm-seg-row">
+              <em>Order type</em>
+              <span class="tm-seg"><span class="is-on">Market</span><span>Limit</span></span>
+            </div>
+            <span class="tm-sheet-lbl">How much?</span>
+            <span class="tm-inp is-amount" id="tm-app-ord-inp">
+              <span class="tm-cur">$</span><span class="tm-typed">0.00</span><i class="tm-caret"></i>
+            </span>
+            <div class="tm-chips" id="tm-app-ord-chips">
+              <span id="tm-app-ord-10">$10</span><span>$50</span><span>$100</span>
+            </div>
+            <span class="tm-sheet-btn is-off" id="tm-app-ord-ok">Amount too low</span>
+            <div class="tm-sheet-cash">
+              Your cash <b id="tm-app-ord-cash">$45.00</b>
+              <i>Add cash</i>
+            </div>
+            <div class="tm-sheet-ioc">Market order (IOC): fills right away at the best available price.</div>
+          </div>
+
+          <!-- o recibo, comum aos dois -->
+          <div class="tm-sheet-ok" data-sheet="filled" hidden>
+            <div class="tm-ok-tick">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+            </div>
+            <h4 id="tm-app-ok-h">Order filled</h4>
+            <p id="tm-app-ok-p">Buy Yes · $10.00 · 38 shares</p>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <!-- ── o aviso de boas-vindas, que o produto dá ao entrar ────── -->
+      <div class="tm-app-toast" id="tm-app-toast" aria-hidden="true">
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></i>
+        Welcome back! 👋
+      </div>
+
+      <!-- ── o portão: entrar sem senha ──────────────────────────────
+           Cobre o palco inteiro, moldura do app incluída, porque antes
+           de entrar não existe app — existe uma porta. Duas telas: o
+           e-mail e as seis casas do código.                        -->
+      <div class="tm-gate" id="tm-app-gate">
+        <div class="tm-gate-bar">
+          <span class="tm-gate-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 6-6 6 6 6"/></svg></span>
+          <img class="tm-gate-logo" src="assets/logo-dark.svg" alt="" width="234" height="52">
+          <span class="tm-gate-theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 13.5A8 8 0 1 1 10.5 4a6.5 6.5 0 0 0 9.5 9.5z"/></svg></span>
+        </div>
+
+        <div class="tm-gate-body">
+          <div class="tm-gate-col">
+          <div class="tm-gate-card">
+            <!-- tela 1 · o e-mail -->
+            <div data-gate="email">
+              <span class="tm-kicker">Welcome back.</span>
+              <h4>Log in</h4>
+              <p>No password: we send a 6-digit code to your email.</p>
+              <span class="tm-gate-lbl">Your email</span>
+              <span class="tm-inp" id="tm-app-mail">
+                <span class="tm-ph" id="tm-app-mail-ph">you@example.com</span><span class="tm-typed"></span><i class="tm-caret"></i>
+              </span>
+              <span class="tm-gate-btn" id="tm-app-send">Send code</span>
+              <div class="tm-gate-foot">New here? <b>Sign up</b></div>
+            </div>
+
+            <!-- tela 2 · o código -->
+            <div data-gate="code" hidden>
+              <h4>Check your email</h4>
+              <p>We sent a 6-digit code to <b>gabriel.bros@tipmarket.com</b>.</p>
+              <div class="tm-gate-code" id="tm-app-code">
+                <i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <span class="tm-gate-btn is-off" id="tm-app-login">Log in</span>
+              <div class="tm-gate-foot">Resend code (60s)</div>
+            </div>
+          </div>
+
+          <div class="tm-gate-legal">
+            By continuing, you agree to the <b>Terms of use</b> and the <b>Privacy policy</b>.
+          </div>
+          </div><!-- /.tm-gate-col -->
+        </div><!-- /.tm-gate-body -->
+      </div><!-- /.tm-gate -->
+
+      <!-- o cursor: uma mão, não um teleporte. Duração proporcional à
+           distância, e a onda nasce no ponto de contato. -->
+      <span class="tm-app-cursor" id="tm-app-cursor" aria-hidden="true">
+        <svg viewBox="0 0 12 18" fill="none"><path d="M1 1l10 7.5-4.3.6 2.4 5-2.2 1-2.4-5-3.5 2.6z" fill="#14161a" stroke="#fff" stroke-width="1.1" stroke-linejoin="round"/></svg>
+      </span>
+
+    </div><!-- /.tm-screen -->
   </div>
 </div>
 </section>
