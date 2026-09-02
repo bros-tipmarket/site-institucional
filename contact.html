@@ -106,11 +106,12 @@
 
 <!-- ═══════════════════════════════════════════════════════════════════
      CABEÇALHO DA PÁGINA
-     Fundo branco, como o herói da home: quem clicou em "Quero operar"
-     atravessa para cá sem trocar de terreno. O que muda é o tom — a
-     home argumenta, esta página só quer o formulário preenchido.
+     Papel morno, e não branco: aqui o formulário e a coluna do "o que
+     esperar" são cartões, e é o fundo que os faz ler como cartões. O
+     tom também muda — a home argumenta, esta página só quer o
+     formulário preenchido.
    ═══════════════════════════════════════════════════════════════════ -->
-<section class="bg-white px-6 md:px-8" style="padding-top:132px;">
+<section class="tm-paper px-6 md:px-8" style="padding-top:132px;">
 <div class="max-w-[1280px] mx-auto flex flex-col gap-5" data-reveal>
   <span class="inline-flex items-center gap-2.5 self-start px-4 py-1.5 rounded-full border border-cloud bg-haze">
     <span class="ds-dot" style="background:#3a80c8;"></span>
@@ -138,7 +139,7 @@
      resposta para a pergunta que trava todo mundo antes de digitar o
      e-mail — o que acontece depois que eu apertar isso.
    ═══════════════════════════════════════════════════════════════════ -->
-<section id="form" class="bg-white px-6 md:px-8 pt-[56px] pb-[120px]" style="scroll-margin-top:88px;">
+<section id="form" class="tm-paper px-6 md:px-8 pt-[56px] pb-[120px]" style="scroll-margin-top:88px;">
 <div class="tm-lead-shell max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-[1.08fr_.92fr] gap-10 lg:gap-[72px] items-start" id="tm-lead-shell" data-reveal>
 
   <!-- ── a coluna do formulário ─────────────────────────────────── -->
@@ -151,7 +152,7 @@
 
          data-mailto não é caminho de envio — é só o endereço de socorro
          citado quando o POST falha, para a pessoa não ficar sem saída. -->
-    <form class="tm-lead-form border border-cloud rounded-[24px] p-6 md:p-8 flex flex-col gap-5 bg-white"
+    <form class="tm-lead-form"
           id="tm-lead-form" novalidate
           data-endpoint=""
           data-mailto="comercial@tipmarket.com">
@@ -169,7 +170,7 @@
       <div class="grid grid-cols-1 gap-y-3">
         <div class="tm-field" data-field="name">
           <label class="tm-field-label font-body" for="tm-lead-name">Full name<span class="tm-field-req">*</span></label>
-          <input class="field-input w-full border border-cloud rounded-[10px] px-4 h-[52px] font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white transition-all"
+          <input class="field-input font-body"
                  id="tm-lead-name" name="name" type="text" autocomplete="name"
                  placeholder="Your name" aria-describedby="tm-err-name">
           <span class="tm-field-err font-body" id="tm-err-name"></span>
@@ -177,7 +178,7 @@
 
         <div class="tm-field" data-field="email">
           <label class="tm-field-label font-body" for="tm-lead-email">Work email<span class="tm-field-req">*</span></label>
-          <input class="field-input w-full border border-cloud rounded-[10px] px-4 h-[52px] font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white transition-all"
+          <input class="field-input font-body"
                  id="tm-lead-email" name="email" type="email" autocomplete="email" inputmode="email"
                  placeholder="you@company.com" aria-describedby="tm-err-email">
           <span class="tm-field-err font-body" id="tm-err-email"></span>
@@ -187,7 +188,7 @@
           <!-- afiliado e quem só está avaliando não precisam ter empresa:
                o rótulo e a obrigatoriedade acompanham o produto escolhido -->
           <label class="tm-field-label font-body" for="tm-lead-company"><span id="tm-lead-company-label">Company</span><span class="tm-field-req" id="tm-lead-company-req">*</span><span class="tm-field-opt" id="tm-lead-company-opt" hidden>optional</span></label>
-          <input class="field-input w-full border border-cloud rounded-[10px] px-4 h-[52px] font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white transition-all"
+          <input class="field-input font-body"
                  id="tm-lead-company" name="company" type="text" autocomplete="organization"
                  placeholder="Your company" aria-describedby="tm-err-company">
           <span class="tm-field-err font-body" id="tm-err-company"></span>
@@ -195,7 +196,7 @@
 
         <div class="tm-field" data-field="phone">
           <label class="tm-field-label font-body" for="tm-lead-phone">Phone or WhatsApp<span class="tm-field-opt">optional</span></label>
-          <input class="field-input w-full border border-cloud rounded-[10px] px-4 h-[52px] font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white transition-all"
+          <input class="field-input font-body"
                  id="tm-lead-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"
                  placeholder="+55 11 90000-0000" aria-describedby="tm-err-phone">
           <span class="tm-field-err font-body" id="tm-err-phone"></span>
@@ -230,19 +231,18 @@
 
       <div class="tm-field" data-field="message">
         <label class="tm-field-label font-body" for="tm-lead-message">Tell us more<span class="tm-field-opt">optional</span></label>
-        <textarea class="field-input w-full border border-cloud rounded-[10px] px-4 py-3 font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white resize-none transition-all"
+        <textarea class="field-input font-body"
                   id="tm-lead-message" name="message" rows="5"
-                  placeholder="Who is your audience, what do you already have live, and where are you today?"></textarea>
+                  placeholder="Who is your audience, what do you run today, and what would you like to launch first?"></textarea>
       </div>
 
-      <div class="flex flex-col gap-3 pt-1">
-        <button class="cta-btn flex items-center justify-center gap-3 bg-void text-white font-body text-[16px] leading-[1.62] pl-6 pr-2 h-[52px] rounded-full w-full"
-                id="tm-lead-submit" type="submit">
+      <div class="flex flex-col gap-3.5 pt-1">
+        <button class="tm-lead-submit font-body" id="tm-lead-submit" type="submit">
           <span data-label>Book my walkthrough</span>
-          <span class="cta-icon"><img src="assets/icon-arrow-up-right.svg" alt="" class="w-[18px] h-[18px]"></span>
+          <span class="tm-lead-arrow" aria-hidden="true">↗</span>
         </button>
 
-        <p class="font-body ds-regular-m text-slate text-center">
+        <p class="tm-lead-consent font-body">
           By submitting, you agree to be contacted by Tipmarket about this request.
         </p>
 
@@ -303,12 +303,12 @@
     </div>
 
     <div class="tm-aside-block">
-      <span class="tm-mono tm-eyebrow tm-aside-badge">What we will cover</span>
+      <span class="tm-mono tm-eyebrow tm-aside-badge">What we’ll cover</span>
       <ul class="tm-aside-list font-body" id="tm-lead-cover">
         <li>Which markets make sense for your audience</li>
         <li>Payments, KYC and compliance in your country</li>
         <li>Liquidity, risk management and what the BackOffice delivers</li>
-        <li>A real go-live timeline and what happens after it</li>
+        <li>A real go-live timeline, and what comes after</li>
       </ul>
     </div>
 
@@ -318,8 +318,8 @@
     <div class="tm-aside-block tm-aside-block--dark" id="tm-lead-tech">
       <span class="tm-mono tm-eyebrow tm-aside-badge">For technical teams</span>
       <p class="font-body ds-paragraph" id="tm-lead-tech-body">
-        If you would rather start from the API documentation and the integration scope, say so
-        in your message. <span class="tm-em">We will bring the right engineers to the call.</span>
+        If you’d rather start from the API documentation and the integration scope, say so in
+        your message. <span class="tm-em">We’ll bring the right engineers to the call.</span>
       </p>
     </div>
   </aside>

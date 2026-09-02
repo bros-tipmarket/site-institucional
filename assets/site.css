@@ -2184,22 +2184,44 @@
    PÁGINA DE CONTATO (contato.html)
    ═══════════════════════════════════════════════════════════════════ */
 
+/* ── o terreno ─────────────────────────────────────────────────────
+   Papel morno em vez de branco, como no artefato. Não é decoração: é
+   o que faz o formulário e a coluna da direita lerem como cartões
+   apoiados na página. Em branco sobre branco a borda tinha de fazer
+   sozinha um trabalho que o contraste de fundo faz de graça.       */
+.tm-paper { background:#f7f7f4 }
+
+/* ── o cartão do formulário ─────────────────────────────────────── */
+.tm-lead-form { display:flex; flex-direction:column; gap:20px;
+                background:#fff; border:1px solid #e4e4de; border-radius:28px;
+                padding:34px }
+@media (max-width:639px) { .tm-lead-form { padding:24px; border-radius:22px } }
+
 /* ── campos ────────────────────────────────────────────────────────
    .field-input é do design system e até agora só existia lá dentro,
    porque o site não tinha formulário. Trazido na íntegra — foco, erro
    e desabilitado — para o contrato do campo ser um só nos dois lugares
    em vez de duas cópias que divergem na primeira mexida.            */
-.field-input:focus    { outline:none; border-color:#3a80c8;
-                        box-shadow:0 0 0 3px rgba(58,128,200,.10) }
+.tm-lead-form .field-input {
+  width:100%; border:1px solid #e4e4de; border-radius:14px; background:#fdfdfc;
+  padding:15px 16px; font-size:16px; line-height:1.4; color:#14171d;
+  transition:border-color .15s ease, box-shadow .15s ease }
+.tm-lead-form .field-input::placeholder { color:#a8adb5 }
+.tm-lead-form textarea.field-input      { min-height:120px; resize:vertical }
+.field-input:focus    { outline:none; border-color:#4f7df0;
+                        box-shadow:0 0 0 3px rgba(79,125,240,.15) }
 .field-error          { border-color:#e5484d !important }
 .field-error:focus    { border-color:#e5484d; box-shadow:0 0 0 3px rgba(229,72,77,.12) }
 .field-input:disabled { background:#f2f4f6; color:#c4c8d0; cursor:default;
                         box-shadow:none; border-color:#edf0f2 }
 
-.tm-field       { display:flex; flex-direction:column; gap:6px; min-width:0; border:0; padding:0; margin:0 }
-.tm-field-label { font-size:12px; line-height:1.33; color:#5a6070; padding:0 }
-.tm-field-req   { color:#3a80c8; margin-left:2px }
-.tm-field-opt   { margin-left:6px; font-size:11px; letter-spacing:.02em; color:#c4c8d0 }
+.tm-field       { display:flex; flex-direction:column; gap:9px; min-width:0; border:0; padding:0; margin:0 }
+/* o rótulo é escuro e pesado, não uma legenda cinza: numa coluna só,
+   é ele que marca onde começa cada campo */
+.tm-field-label { font-size:13.5px; line-height:1; font-weight:600; color:#14171d; padding:0 }
+.tm-field-req   { color:#4f7df0; margin-left:3px }
+.tm-field-opt   { margin-left:6px; font-size:13px; font-weight:400;
+                  letter-spacing:0; color:#9aa0a8 }
 
 /* a mensagem de erro entra no lugar em vez de empurrar o campo de
    baixo: reserva a linha desde sempre e só troca a opacidade. Numa
@@ -2220,29 +2242,40 @@
 .tm-choice { display:grid; grid-template-columns:1fr; gap:10px }
 .tm-choice-opt {
   position:relative; display:flex; align-items:center; justify-content:center;
-  min-height:52px; padding:8px 14px; text-align:center;
-  border:1px solid #edf0f2; border-radius:10px; background:#fff;
-  font-size:13.5px; line-height:1.35; color:#5a6070; cursor:pointer;
-  transition:border-color .2s ease, background-color .2s ease, color .2s ease
+  padding:15px 16px; text-align:center;
+  border:1px solid #e4e4de; border-radius:14px; background:#fdfdfc;
+  font-size:14.5px; font-weight:600; line-height:1.2; color:#14171d; cursor:pointer;
+  transition:border-color .12s ease, background-color .12s ease, color .12s ease
 }
 .tm-choice-opt input { position:absolute; inset:0; opacity:0; margin:0;
                        width:100%; height:100%; cursor:pointer }
-.tm-choice-opt:hover { border-color:#c4c8d0; color:#1c1c26 }
-.tm-choice-opt.is-on { border-color:#3a80c8; background:#e8f2fa;
-                       color:#1a3a5c; font-weight:500 }
-.tm-choice-opt:focus-within { border-color:#3a80c8;
-                              box-shadow:0 0 0 3px rgba(58,128,200,.10) }
+.tm-choice-opt:hover { border-color:#c9cfd8 }
+.tm-choice-opt.is-on { border-color:#4f7df0; background:#edf2fd; color:#2b4fa8 }
+.tm-choice-opt:focus-within { border-color:#4f7df0;
+                              box-shadow:0 0 0 3px rgba(79,125,240,.15) }
 .tm-field.is-invalid .tm-choice-opt:not(.is-on) { border-color:#e5484d }
 
-/* ── envio ─────────────────────────────────────────────────────────── */
+/* ── envio ─────────────────────────────────────────────────────────
+   Pílula cheia, escura, com a seta como glifo na própria linha do
+   texto. O .cta-btn da home traz um disco de ícone que serve a um CTA
+   de navegação; aqui o botão é o fim do formulário, e o disco fazia a
+   linha inteira ler como link e não como envio.                    */
 .tm-hp { position:absolute; width:1px; height:1px; overflow:hidden;
          clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap }
 
-#tm-lead-submit[disabled] { opacity:.6; cursor:default }
-#tm-lead-submit[disabled]:hover { box-shadow:none }
-#tm-lead-submit[disabled]:hover::before { opacity:0 }
+.tm-lead-submit {
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  width:100%; border:0; border-radius:999px; background:#14171d; color:#fff;
+  font-size:16.5px; font-weight:600; line-height:1; padding:19px; cursor:pointer;
+  transition:background-color .15s ease }
+.tm-lead-submit:hover { background:#4f7df0 }
+.tm-lead-submit:focus-visible { outline:3px solid #4f7df0; outline-offset:2px }
+.tm-lead-submit .tm-lead-arrow { font-size:15px; line-height:1 }
+.tm-lead-submit[disabled] { background:#5b6069; cursor:default }
 
-.tm-lead-status         { display:none; color:#e5484d }
+.tm-lead-consent { font-size:12.5px; line-height:1.5; color:#8a9099; text-align:center }
+
+.tm-lead-status         { display:none; color:#e5484d; text-align:center }
 .tm-lead-status.is-on   { display:block }
 
 /* ── o cartão de enviado ───────────────────────────────────────────
@@ -2332,32 +2365,32 @@
 }
 
 /* ── a coluna do que esperar ───────────────────────────────────────
-   Sem cartão, de propósito: dois cartões lado a lado dariam o mesmo
-   peso para o que a pessoa preenche e para o que ela lê. Aqui é só
-   texto separado por fio, e o formulário fica sendo o objeto.       */
-.tm-aside-block { display:flex; flex-direction:column; gap:12px; padding:26px 0 }
-.tm-aside-block:first-child { padding-top:0 }
-.tm-aside-block:last-child  { padding-bottom:0 }
-.tm-aside-block + .tm-aside-block { border-top:1px solid #edf0f2 }
-.tm-aside-h     { font-size:20px; line-height:1.3; color:#0e0e14 }
-/* o rótulo mono que abre cada bloco, como no artefato: diz de que
-   assunto é o parágrafo antes de a pessoa começar a ler */
-.tm-aside-badge { color:#8a909b; font-size:10px }
-/* o último bloco é cartão, e escuro: é o fecho da coluna, e o contraste
-   marca que ali a Tipmarket fala em primeira pessoa */
-.tm-aside-block--dark { background:#0e0e14; border-radius:18px; color:#f2f4f8;
-                        padding:24px 26px; margin-top:26px }
-.tm-aside-block--dark + .tm-aside-block,
-.tm-aside-block--dark { border-top:0 }
-.tm-aside-block--dark p { color:rgba(255,255,255,.72) }
-.tm-aside-block--dark .tm-aside-badge { color:#8ac5fa }
-.tm-aside-block--dark .tm-em { color:#fff; font-weight:500 }
+   Três cartões, como no artefato: sobre o papel morno cada bloco fica
+   sendo uma resposta fechada em si — "o que acontece depois", "o que a
+   gente cobre", "para time técnico" — em vez de um texto corrido em
+   que os três assuntos se encostam.                                */
+.tm-aside       { display:grid; gap:16px; align-content:start }
+.tm-aside-block { display:flex; flex-direction:column; gap:10px;
+                  background:#fff; border:1px solid #e4e4de; border-radius:18px;
+                  padding:26px 28px }
+.tm-aside-h     { font-size:19px; line-height:1.25; color:#14171d }
+.tm-aside-block p { font-size:15px; line-height:1.6; color:#5b6069 }
+/* o rótulo mono que abre cada bloco: diz de que assunto é o parágrafo
+   antes de a pessoa começar a ler. Azul, como no artefato — em cinza
+   ele lia como aviso legal em vez de índice. */
+.tm-aside-badge { color:#4f7df0; font-size:11px; letter-spacing:.2em }
+/* o último é escuro: é o fecho da coluna, e o contraste marca que ali
+   a Tipmarket fala em primeira pessoa */
+.tm-aside-block--dark { background:#0a0e15; border-color:#0a0e15; color:#f2f4f8 }
+.tm-aside-block--dark p { color:#98a2b3 }
+.tm-aside-block--dark .tm-aside-badge { color:#8cc5f2 }
+.tm-aside-block--dark .tm-em { color:#fff; font-weight:600 }
 
-.tm-aside-list        { display:flex; flex-direction:column; gap:11px; margin:0; padding:0; list-style:none }
-.tm-aside-list li     { position:relative; padding-left:18px;
-                        font-size:14px; line-height:1.57; color:#5a6070 }
-.tm-aside-list li::before { content:""; position:absolute; left:1px; top:.6em;
-                            width:5px; height:5px; border-radius:50%; background:#3a80c8 }
+.tm-aside-list        { display:grid; gap:10px; margin:0; padding:0; list-style:none }
+.tm-aside-list li     { position:relative; padding-left:17px;
+                        font-size:15px; line-height:1.5; color:#5b6069 }
+.tm-aside-list li::before { content:""; position:absolute; left:0; top:.5em;
+                            width:7px; height:7px; border-radius:50%; background:#4f7df0 }
 
 /* ── o "voltar ao site" do rail ────────────────────────────────────
    Ocupa o lugar do "Quero operar", que na página de contato apontaria

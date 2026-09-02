@@ -767,10 +767,10 @@
         cover: ['Which markets make sense for your audience',
                 'Payments, KYC and compliance in your country',
                 'Liquidity, risk management and what the BackOffice delivers',
-                'A real go-live timeline and what happens after it'],
+                'A real go-live timeline, and what comes after'],
         next: 'We set up a call to understand your audience and show how the operation looks end to end, <span class="text-ink font-medium">from the first live market to the first withdrawal.</span>',
         techBadge: 'For technical teams',
-        tech: 'If you would rather start from the API documentation and the integration scope, say so in your message. <span class="tm-em">We will bring the right engineers to the call.</span>'
+        tech: 'If you’d rather start from the API documentation and the integration scope, say so in your message. <span class="tm-em">We’ll bring the right engineers to the call.</span>'
       },
       widget: {
         value: 'Widget for my site',
@@ -781,10 +781,10 @@
         cover: ['How the widget picks the market for each story',
                 'Your brand: logo, color and language',
                 'What the fast markets add to session time',
-                'A real go-live timeline and what happens after it'],
+                'A real go-live timeline, and what comes after'],
         next: 'We set up a call to look at your site together and show the widget running on content like yours, <span class="text-ink font-medium">installed with one line of code.</span>',
         techBadge: 'For technical teams',
-        tech: 'If you would rather start from the API documentation and the integration scope, say so in your message. <span class="tm-em">We will bring the right engineers to the call.</span>'
+        tech: 'If you’d rather start from the API documentation and the integration scope, say so in your message. <span class="tm-em">We’ll bring the right engineers to the call.</span>'
       },
       affiliate: {
         value: 'Affiliate program',
@@ -803,16 +803,16 @@
       evaluating: {
         value: 'Just exploring for now',
         h1: 'Let’s find your way in.',
-        sub: 'Not sure which of the three products fits? Tell us what you have today. <span class="text-ink font-medium">We will show you the shortest path to a live market.</span>',
+        sub: 'Not sure which of the three products fits? Tell us what you have today. <span class="text-ink font-medium">We’ll show you the shortest path to a live market.</span>',
         cta: 'Talk to a specialist',
         companyLabel: 'Company', companyPh: 'Your company', companyOptional: true,
         cover: ['The three ways in: white-label, widget and affiliates',
                 'What each one asks of you, and what it pays',
                 'Real examples for an audience like yours',
-                'A real go-live timeline and what happens after it'],
+                'A real go-live timeline, and what comes after'],
         next: 'We set up a short call, map what you already have, and recommend <span class="text-ink font-medium">the product that gets you live fastest.</span>',
         techBadge: 'For technical teams',
-        tech: 'If you would rather start from the API documentation and the integration scope, say so in your message. <span class="tm-em">We will bring the right engineers to the call.</span>'
+        tech: 'If you’d rather start from the API documentation and the integration scope, say so in your message. <span class="tm-em">We’ll bring the right engineers to the call.</span>'
       }
     };
     /* O mapa da URL é fechado de propósito: o valor que vem de fora nunca
@@ -877,21 +877,24 @@
 
     /* Quem chega de contact.html?i=affiliate já vem dizendo o que quer —
        obrigar a repetir a escolha é cobrar duas vezes pela mesma
-       informação. Sem ?i= o rádio fica em branco (a escolha é a
-       informação que a página existe para colher) e o texto fica no
-       padrão do white-label, que é o produto principal. */
-    (function () {
-      var m = /[?&]i=([a-z]+)/.exec(window.location.search);
-      var key = m && ALIAS[m[1]];
-      if (!key) { apply('whitelabel'); return; }
+       informação. Sem ?i=, entra o white-label: é o produto principal, e
+       é o que a página já está dizendo no título e na coluna da direita.
+       Deixar o grupo em branco com o texto todo falando de white-label
+       era a página perguntando algo que ela mesma já tinha respondido. */
+    function select(key) {
       var wanted = INTENTS[key].value;
       opts.forEach(function (o) {
         var r = o.querySelector('input');
-        if (!r || r.value !== wanted) return;
-        r.checked = true;
-        o.classList.add('is-on');
+        if (!r) return;
+        var on = r.value === wanted;
+        r.checked = on;
+        o.classList.toggle('is-on', on);
       });
       apply(key);
+    }
+    (function () {
+      var m = /[?&]i=([a-z]+)/.exec(window.location.search);
+      select((m && ALIAS[m[1]]) || 'whitelabel');
     }());
 
     form.addEventListener('change', function (e) {
