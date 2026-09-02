@@ -116,13 +116,16 @@
     <span class="ds-dot" style="background:#3a80c8;"></span>
     <span class="label">Talk to us</span>
   </span>
-  <h1 class="font-display font-semibold text-ink ds-h1 max-w-[16ch]" style="text-wrap:balance;">
-    Let’s design your operation.
+  <!-- O título, a lede, o rótulo do submit e a coluna da direita são
+       reescritos pelo produto que a pessoa escolhe no formulário (ou pelo
+       ?i= com que ela chegou) — ver INTENTS em site.js. O que está no HTML
+       é o estado padrão, o de quem chega sem dizer nada. -->
+  <h1 class="font-display font-semibold text-ink ds-h1 max-w-[16ch]" style="text-wrap:balance;" id="tm-lead-hd">
+    Let’s put your market live.
   </h1>
-  <p class="font-body ds-paragraph text-slate max-w-[62ch]">
-    The infrastructure is ready. The rest is your call: which markets your audience
-    wants, how they look when they go live and
-    <span class="text-ink font-medium">from when.</span>
+  <p class="font-body ds-paragraph text-slate max-w-[62ch]" id="tm-lead-sub">
+    The infrastructure is ready. The rest is your call:
+    <span class="text-ink font-medium">which markets you open, how they look, and when you go live.</span>
   </p>
 </div>
 </section>
@@ -160,7 +163,10 @@
         <input id="tm-lead-site" name="site_url" type="text" tabindex="-1" autocomplete="off">
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-3">
+      <!-- coluna única, como no artefato: quatro campos curtos empilhados
+           leem mais calmos do que dois pares lado a lado, e a pergunta do
+           produto — que é a que decide a conversa — não disputa a linha. -->
+      <div class="grid grid-cols-1 gap-y-3">
         <div class="tm-field" data-field="name">
           <label class="tm-field-label font-body" for="tm-lead-name">Full name<span class="tm-field-req">*</span></label>
           <input class="field-input w-full border border-cloud rounded-[10px] px-4 h-[52px] font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white transition-all"
@@ -178,7 +184,9 @@
         </div>
 
         <div class="tm-field" data-field="company">
-          <label class="tm-field-label font-body" for="tm-lead-company">Company<span class="tm-field-req">*</span></label>
+          <!-- afiliado e quem só está avaliando não precisam ter empresa:
+               o rótulo e a obrigatoriedade acompanham o produto escolhido -->
+          <label class="tm-field-label font-body" for="tm-lead-company"><span id="tm-lead-company-label">Company</span><span class="tm-field-req" id="tm-lead-company-req">*</span><span class="tm-field-opt" id="tm-lead-company-opt" hidden>optional</span></label>
           <input class="field-input w-full border border-cloud rounded-[10px] px-4 h-[52px] font-body text-[16px] leading-[1.62] text-ink placeholder-stone bg-white transition-all"
                  id="tm-lead-company" name="company" type="text" autocomplete="organization"
                  placeholder="Your company" aria-describedby="tm-err-company">
@@ -198,7 +206,7 @@
            diferentes. Perguntar aqui custa um clique; descobrir na
            chamada custa a chamada. -->
       <fieldset class="tm-field" data-field="interest">
-        <legend class="tm-field-label font-body">What are you interested in<span class="tm-field-req">*</span></legend>
+        <legend class="tm-field-label font-body">How do you want to start?<span class="tm-field-req">*</span></legend>
         <div class="tm-choice" id="tm-lead-interest">
           <label class="tm-choice-opt font-body">
             <input type="radio" name="interest" value="White-label platform" aria-describedby="tm-err-interest">
@@ -213,8 +221,8 @@
             <span>Affiliate program</span>
           </label>
           <label class="tm-choice-opt font-body">
-            <input type="radio" name="interest" value="Still evaluating" aria-describedby="tm-err-interest">
-            <span>Still evaluating</span>
+            <input type="radio" name="interest" value="Just exploring for now" aria-describedby="tm-err-interest">
+            <span>Just exploring for now</span>
           </label>
         </div>
         <span class="tm-field-err font-body" id="tm-err-interest"></span>
@@ -230,12 +238,12 @@
       <div class="flex flex-col gap-3 pt-1">
         <button class="cta-btn flex items-center justify-center gap-3 bg-void text-white font-body text-[16px] leading-[1.62] pl-6 pr-2 h-[52px] rounded-full w-full"
                 id="tm-lead-submit" type="submit">
-          <span data-label>Launch your market</span>
+          <span data-label>Book my walkthrough</span>
           <span class="cta-icon"><img src="assets/icon-arrow-up-right.svg" alt="" class="w-[18px] h-[18px]"></span>
         </button>
 
-        <p class="font-body ds-regular-m text-slate">
-          By submitting, you agree that Tipmarket may contact you about this request.
+        <p class="font-body ds-regular-m text-slate text-center">
+          By submitting, you agree to be contacted by Tipmarket about this request.
         </p>
 
         <p class="tm-lead-status font-body ds-regular-l" id="tm-lead-status" role="status" aria-live="polite"></p>
@@ -285,17 +293,18 @@
   <aside class="tm-aside min-w-0">
 
     <div class="tm-aside-block">
-      <h2 class="tm-aside-h font-display font-semibold text-void">What happens next</h2>
-      <p class="font-body ds-paragraph text-slate">
-        A Tipmarket specialist replies within one business day. We set up a call to understand
-        your audience and show how the operation looks end to end — from the first live market
-        to the user’s withdrawal.
+      <span class="tm-mono tm-eyebrow tm-aside-badge">What happens next</span>
+      <h2 class="tm-aside-h font-display font-semibold text-void">A specialist replies within one business day.</h2>
+      <p class="font-body ds-paragraph text-slate" id="tm-lead-next">
+        We set up a call to understand your audience and show how the operation looks end to
+        end, <span class="text-ink font-medium">from the first live market to the first
+        withdrawal.</span>
       </p>
     </div>
 
     <div class="tm-aside-block">
-      <h2 class="tm-aside-h font-display font-semibold text-void">What we will cover</h2>
-      <ul class="tm-aside-list font-body">
+      <span class="tm-mono tm-eyebrow tm-aside-badge">What we will cover</span>
+      <ul class="tm-aside-list font-body" id="tm-lead-cover">
         <li>Which markets make sense for your audience</li>
         <li>Payments, KYC and compliance in your country</li>
         <li>Liquidity, risk management and what the BackOffice delivers</li>
@@ -303,11 +312,14 @@
       </ul>
     </div>
 
-    <div class="tm-aside-block">
-      <h2 class="tm-aside-h font-display font-semibold text-void">For technical teams</h2>
-      <p class="font-body ds-paragraph text-slate">
+    <!-- escuro, e é o único da coluna: fecha o texto e faz par com o
+         cartão de fecho do widget na home. Para quem escolhe afiliados
+         ele troca de assunto — não há integração para discutir. -->
+    <div class="tm-aside-block tm-aside-block--dark" id="tm-lead-tech">
+      <span class="tm-mono tm-eyebrow tm-aside-badge">For technical teams</span>
+      <p class="font-body ds-paragraph" id="tm-lead-tech-body">
         If you would rather start from the API documentation and the integration scope, say so
-        in your message — we will put the right people on the call.
+        in your message. <span class="tm-em">We will bring the right engineers to the call.</span>
       </p>
     </div>
   </aside>

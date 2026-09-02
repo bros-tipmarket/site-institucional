@@ -668,6 +668,7 @@
     var okCard = document.getElementById('tm-lead-ok');
     var okMail = document.getElementById('tm-lead-ok-mail');
     var hp     = form.querySelector('[name="site_url"]');
+    var company = form.elements['company'];
     var FALLBACK_MAIL = form.getAttribute('data-mailto') || 'comercial@tipmarket.com';
 
     var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -685,6 +686,8 @@
           if (!EMAIL_RE.test(v)) return 'That email looks incomplete.';
         } },
       { name: 'company', check: function (v) {
+          /* afiliado e curioso não são cobrados: ver INTENTS */
+          if (!company.required) return;
           if (!v) return 'Which company are you with?';
         } },
       { name: 'phone', check: function (v) {
@@ -744,30 +747,159 @@
        a classe só pinta o cartão que o envolve */
     var opts = Array.prototype.slice.call(form.querySelectorAll('.tm-choice-opt'));
 
+    /* ── a página fala do produto que a pessoa escolheu ──────────────
+       Os três produtos caem em conversas diferentes, e até aqui a página
+       falava só do white-label: quem vinha pelos afiliados lia "which
+       markets you open" e um pedido de empresa que não tem. Agora a
+       escolha reescreve o título, a lede, o rótulo do submit e a coluna
+       da direita — e a empresa deixa de ser cobrada de quem não precisa.
+
+       O texto com ênfase vai por innerHTML de propósito: as frases são
+       literais deste arquivo, nunca valor digitado. Valor de campo
+       continua saindo só por textContent, como no `done()`.          */
+    var INTENTS = {
+      whitelabel: {
+        value: 'White-label platform',
+        h1: 'Let’s put your market live.',
+        sub: 'The infrastructure is ready. The rest is your call: <span class="text-ink font-medium">which markets you open, how they look, and when you go live.</span>',
+        cta: 'Book my walkthrough',
+        companyLabel: 'Company', companyPh: 'Your company', companyOptional: false,
+        cover: ['Which markets make sense for your audience',
+                'Payments, KYC and compliance in your country',
+                'Liquidity, risk management and what the BackOffice delivers',
+                'A real go-live timeline and what happens after it'],
+        next: 'We set up a call to understand your audience and show how the operation looks end to end, <span class="text-ink font-medium">from the first live market to the first withdrawal.</span>',
+        techBadge: 'For technical teams',
+        tech: 'If you would rather start from the API documentation and the integration scope, say so in your message. <span class="tm-em">We will bring the right engineers to the call.</span>'
+      },
+      widget: {
+        value: 'Widget for my site',
+        h1: 'Let’s put markets inside your stories.',
+        sub: 'One line of code, zero changes to your CMS. The rest is your call: <span class="text-ink font-medium">which stories get a market, and how it looks in your pages.</span>',
+        cta: 'Book my walkthrough',
+        companyLabel: 'Company', companyPh: 'Your company or publication', companyOptional: false,
+        cover: ['How the widget picks the market for each story',
+                'Your brand: logo, color and language',
+                'What the fast markets add to session time',
+                'A real go-live timeline and what happens after it'],
+        next: 'We set up a call to look at your site together and show the widget running on content like yours, <span class="text-ink font-medium">installed with one line of code.</span>',
+        techBadge: 'For technical teams',
+        tech: 'If you would rather start from the API documentation and the integration scope, say so in your message. <span class="tm-em">We will bring the right engineers to the call.</span>'
+      },
+      affiliate: {
+        value: 'Affiliate program',
+        h1: 'Let’s get you earning.',
+        sub: 'No integration and no code. You share your link. When your audience trades, <span class="text-ink font-medium">you get paid.</span>',
+        cta: 'Apply as an affiliate',
+        companyLabel: 'Company or channel', companyPh: 'Your company, site or channel', companyOptional: true,
+        cover: ['How your link and tracking work',
+                'Payouts: up to 40% revenue share, plus CPA per referral',
+                'What counts as a qualified referral',
+                'The content formats that convert best'],
+        next: 'We review your audience and your channels, set up your link and your dashboard, and walk you through <span class="text-ink font-medium">how and when you get paid.</span>',
+        techBadge: 'No code needed',
+        tech: 'You share a link. <span class="tm-em">We track everything behind it.</span> No integration, no code, nothing to install.'
+      },
+      evaluating: {
+        value: 'Just exploring for now',
+        h1: 'Let’s find your way in.',
+        sub: 'Not sure which of the three products fits? Tell us what you have today. <span class="text-ink font-medium">We will show you the shortest path to a live market.</span>',
+        cta: 'Talk to a specialist',
+        companyLabel: 'Company', companyPh: 'Your company', companyOptional: true,
+        cover: ['The three ways in: white-label, widget and affiliates',
+                'What each one asks of you, and what it pays',
+                'Real examples for an audience like yours',
+                'A real go-live timeline and what happens after it'],
+        next: 'We set up a short call, map what you already have, and recommend <span class="text-ink font-medium">the product that gets you live fastest.</span>',
+        techBadge: 'For technical teams',
+        tech: 'If you would rather start from the API documentation and the integration scope, say so in your message. <span class="tm-em">We will bring the right engineers to the call.</span>'
+      }
+    };
+    /* O mapa da URL é fechado de propósito: o valor que vem de fora nunca
+       vira conteúdo, só escolhe entre intenções já escritas aqui. */
+    var ALIAS = {
+      affiliate: 'affiliate', affiliates: 'affiliate',
+      widget: 'widget',
+      platform: 'whitelabel', whitelabel: 'whitelabel', b2b: 'whitelabel', operator: 'whitelabel',
+      evaluating: 'evaluating', exploring: 'evaluating'
+    };
+
+    var current = 'whitelabel';
+    var el = {
+      hd:        document.getElementById('tm-lead-hd'),
+      sub:       document.getElementById('tm-lead-sub'),
+      compLabel: document.getElementById('tm-lead-company-label'),
+      compReq:   document.getElementById('tm-lead-company-req'),
+      compOpt:   document.getElementById('tm-lead-company-opt'),
+      next:      document.getElementById('tm-lead-next'),
+      cover:     document.getElementById('tm-lead-cover'),
+      techBadge: document.querySelector('#tm-lead-tech .tm-aside-badge'),
+      techBody:  document.getElementById('tm-lead-tech-body')
+    };
+
+    function apply(key) {
+      var it = INTENTS[key] || INTENTS.whitelabel;
+      current = INTENTS[key] ? key : 'whitelabel';
+
+      if (el.hd)  el.hd.textContent = it.h1;
+      if (el.sub) el.sub.innerHTML = it.sub;
+      if (label && !submit.disabled) label.textContent = it.cta;
+
+      if (el.compLabel) el.compLabel.textContent = it.companyLabel;
+      if (el.compReq)   el.compReq.hidden = it.companyOptional;
+      if (el.compOpt)   el.compOpt.hidden = !it.companyOptional;
+      if (company) {
+        company.required = !it.companyOptional;
+        company.placeholder = it.companyPh;
+      }
+      /* trocar de intenção não pode deixar para trás um erro que já não
+         se aplica — quem virou afiliado não deve nada no campo empresa */
+      var compBox = fieldOf('company');
+      if (compBox && compBox.classList.contains('is-invalid')) validate('company');
+
+      if (el.next) el.next.innerHTML = it.next;
+      if (el.cover) {
+        el.cover.innerHTML = '';
+        it.cover.forEach(function (t) {
+          var li = document.createElement('li');
+          li.textContent = t;
+          el.cover.appendChild(li);
+        });
+      }
+      if (el.techBadge) el.techBadge.textContent = it.techBadge;
+      if (el.techBody)  el.techBody.innerHTML = it.tech;
+    }
+
+    function keyOf(value) {
+      for (var k in INTENTS) { if (INTENTS[k].value === value) return k; }
+      return null;
+    }
+
     /* Quem chega de contact.html?i=affiliate já vem dizendo o que quer —
        obrigar a repetir a escolha é cobrar duas vezes pela mesma
-       informação. O mapa é fechado de propósito: o valor da URL nunca
-       vira conteúdo, só escolhe entre opções que já existem no HTML. */
-    var SHORTCUTS = {
-      affiliate: 'Affiliate program',
-      platform:  'White-label platform',
-      widget:    'Widget for my site'
-    };
+       informação. Sem ?i= o rádio fica em branco (a escolha é a
+       informação que a página existe para colher) e o texto fica no
+       padrão do white-label, que é o produto principal. */
     (function () {
       var m = /[?&]i=([a-z]+)/.exec(window.location.search);
-      var wanted = m && SHORTCUTS[m[1]];
-      if (!wanted) return;
+      var key = m && ALIAS[m[1]];
+      if (!key) { apply('whitelabel'); return; }
+      var wanted = INTENTS[key].value;
       opts.forEach(function (o) {
         var r = o.querySelector('input');
         if (!r || r.value !== wanted) return;
         r.checked = true;
         o.classList.add('is-on');
       });
+      apply(key);
     }());
+
     form.addEventListener('change', function (e) {
       if (e.target.name !== 'interest') return;
       opts.forEach(function (o) { o.classList.toggle('is-on', o.contains(e.target)); });
       validate('interest');
+      var key = keyOf(e.target.value);
+      if (key) apply(key);
     });
 
     function say(message) {
@@ -777,7 +909,7 @@
 
     function busy(on) {
       submit.disabled = on;
-      label.textContent = on ? 'Sending…' : 'Launch your market';
+      label.textContent = on ? 'Sending…' : INTENTS[current].cta;
     }
 
     function payload() {
