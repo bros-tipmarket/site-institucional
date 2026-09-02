@@ -1445,25 +1445,14 @@
               line-height:1.2; font-weight:700; letter-spacing:-.005em;
               color:#1c1c26; margin-bottom:8px }
 .tm-p-byline{ font-size:10.5px; color:#9a9a93; margin-bottom:13px }
-/* capa: nenhuma foto de verdade é dona da Tipmarket para usar aqui, então o
-   "flash" é luz de estádio à noite composta só em gradiente + pontos —
-   lê como foto de arquivo sem precisar de um asset externo */
+/* capa da matéria: foto de verdade, recortada no quadro. O crédito por cima
+   é o que um portal faz — e é ele que satisfaz a atribuição da licença */
 .tm-p-hero  { position:relative; height:168px; border-radius:8px; margin:0 0 14px;
-              overflow:hidden;
-              background:
-                radial-gradient(120% 90% at 20% 0%, rgba(255,255,255,.16), transparent 55%),
-                linear-gradient(180deg,#182a46 0%,#0e1830 60%,#080d1a 100%) }
-.tm-p-hero::before { content:""; position:absolute; inset:0; opacity:.9;
-              background-image:
-                radial-gradient(3px 3px at 12% 28%, rgba(255,255,255,.6), transparent 60%),
-                radial-gradient(2px 2px at 28% 16%, rgba(255,255,255,.4), transparent 60%),
-                radial-gradient(2.5px 2.5px at 48% 24%, rgba(255,255,255,.55), transparent 60%),
-                radial-gradient(2px 2px at 64% 13%, rgba(255,255,255,.35), transparent 60%),
-                radial-gradient(3px 3px at 80% 22%, rgba(255,255,255,.55), transparent 60%),
-                radial-gradient(2px 2px at 92% 32%, rgba(255,255,255,.3), transparent 60%) }
+              overflow:hidden; background:#0e1830 }
+.tm-p-hero img { display:block; width:100%; height:100%; object-fit:cover }
 .tm-p-hero-cred { position:absolute; left:9px; bottom:8px; font-size:9px;
               letter-spacing:.02em; color:rgba(255,255,255,.75);
-              background:rgba(0,0,0,.34); padding:3px 7px; border-radius:4px }
+              background:rgba(0,0,0,.42); padding:3px 7px; border-radius:4px }
 .tm-p-lead  { font-size:12.5px; line-height:1.6; color:#14161a; margin-bottom:11px }
 .tm-p-txt   { font-size:11.5px; line-height:1.75; color:#7a7f88; margin-bottom:9px }
 
@@ -1476,11 +1465,7 @@
 .tm-p-card  { display:flex; gap:9px; padding-top:11px;
               border-top:1px solid #eeeeea; margin-bottom:11px }
 .tm-p-thumb { width:52px; height:40px; flex-shrink:0; border-radius:5px;
-              display:flex; align-items:center; justify-content:center;
-              font-size:16px; line-height:1;
-              background:linear-gradient(150deg,#dfe3e8,#c9ced6) }
-.tm-p-thumb--btc { background:linear-gradient(150deg,#3c2c10,#191207); color:#f0b93d }
-.tm-p-thumb--cl  { background:linear-gradient(150deg,#0f2c21,#081712); font-size:15px }
+              display:block; object-fit:cover; background:#dfe3e8 }
 .tm-p-ct    { font-size:11.5px; line-height:1.34; font-weight:600; color:#14161a }
 
 .tm-w { position:absolute; z-index:2;
