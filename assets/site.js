@@ -334,9 +334,14 @@
 
   /* ── A simulação do widget (Quebra 4) ─────────────────────────
      A seção vende uma sequência, não um objeto: o leitor escolhe um
-     lado, entra só com e-mail, recebe o código, tenta apostar, descobre
-     que precisa depositar, deposita em cripto e vê a posição aberta.
-     Sequência não cabe em foto, então o widget encena os oito passos.
+     lado, escolhe quanto, descobre que precisa depositar, deposita em
+     cripto e vê a posição aberta. Sequência não cabe em foto, então o
+     widget a encena.
+
+     O login não entra no filme. Ele existia — e-mail digitado, código
+     de seis dígitos — e custava 4,8s dos 27, na parte em que o olho
+     ainda está decidindo se vale continuar assistindo. Um formulário de
+     login não é o que esta seção precisa provar.
 
      A linha do tempo é declarativa — cada passo diz que tela mostrar,
      onde pousar o cursor e o que fazer ao chegar. Isso mantém o roteiro
@@ -377,9 +382,6 @@
     });
     var tabs = Array.prototype.slice.call(root.querySelectorAll('.tm-w-tab'));
 
-    var EMAIL = 'you@example.com';
-    var CODE  = '482193';
-
     /* a tela que sai vai para a esquerda e a que entra vem da direita:
        o olho lê "avançou no fluxo" em vez de "trocou de div" */
     var leaving = null;
@@ -401,7 +403,7 @@
          elas não indicam nada e só poluem */
       root.classList.toggle('is-flow', name !== 'market');
     }
-    /* n = quantos passos já foram vencidos (1..4) */
+    /* n = quantos passos já foram vencidos (1..3) */
     var stepEls = Array.prototype.slice.call(
       root.querySelectorAll('#tm-w-steps span'));
     function step(n) {
@@ -460,49 +462,12 @@
       }, 190);
     }
 
-    /* Digitação com variação por caractere e hesitação nos separadores.
-       Intervalo fixo soa metrônomo, e era o detalhe que mais denunciava
-       a simulação. */
-    var typing = null;
-    function type(sel, text, cps, done) {
-      var host = root.querySelector(sel);
-      var out  = host.querySelector('.tm-w-typed');
-      host.classList.add('is-focus');
-      out.textContent = '';
-      var i = 0, base = 1000 / cps;
-      clearTimeout(typing);
-      (function step() {
-        out.textContent = text.slice(0, ++i);
-        if (i >= text.length) { if (done) done(); return; }
-        var ch = text.charAt(i - 1);
-        var d  = base * (0.6 + Math.random() * 0.85);
-        if (ch === '@' || ch === '.' || ch === ' ' || ch === ',') d *= 2.2;
-        typing = setTimeout(step, d);
-      }());
-    }
-    function fillCode(done) {
-      var cells = root.querySelectorAll('#tm-w-code i');
-      Array.prototype.forEach.call(cells, function (c) {
-        c.textContent = ''; c.classList.remove('is-in');
-      });
-      var i = 0;
-      clearTimeout(typing);
-      (function step() {
-        cells[i].textContent = CODE.charAt(i);
-        cells[i].classList.add('is-in');
-        if (++i >= cells.length) { if (done) done(); return; }
-        typing = setTimeout(step, 105 + Math.random() * 90);
-      }());
-    }
-
     function reset() {
-      clearTimeout(typing);
       endCard(false);
       close();
       show('market'); tab('markets'); step(1);
       cursor.classList.remove('is-on');
       root.querySelector('#tm-w-yes').classList.remove('is-picked');
-      root.querySelector('#tm-w-email .tm-w-typed').textContent = '';
       root.querySelector('#tm-w-amount .tm-w-typed').textContent = '';
       var q = root.querySelector('#tm-w-q25');
       if (q) q.classList.remove('is-on');
@@ -518,9 +483,6 @@
       });
       var st = root.querySelector('#tm-w-status');
       st.textContent = 'Waiting for the network…'; st.classList.remove('is-ok');
-      Array.prototype.forEach.call(root.querySelectorAll('.is-focus'), function (e) {
-        e.classList.remove('is-focus');
-      });
     }
 
     /* ── o roteiro ───────────────────────────────────────────── */
@@ -531,17 +493,13 @@
       { at: 2500,  run: function () {
           tap('#tm-w-yes');
           root.querySelector('#tm-w-yes').classList.add('is-picked'); } },
-      { at: 3000,  run: function () { show('email'); step(2); moveTo('#tm-w-email'); } },
-      { at: 3400,  run: function () { type('#tm-w-email', EMAIL, 30); } },
-      { at: 4500,  run: function () { moveTo('#tm-w-send'); } },
-      { at: 5000,  run: function () { tap('#tm-w-send'); } },
-      { at: 5400,  run: function () { show('code'); moveTo('#tm-w-code'); } },
-      { at: 5800,  run: function () { fillCode(); } },
-      { at: 6900,  run: function () { moveTo('#tm-w-enter'); } },
-      { at: 7400,  run: function () { tap('#tm-w-enter'); } },
-      { at: 7800,  run: function () { show('amount'); } },
-      { at: 8200,  run: function () { moveTo('#tm-w-q25'); } },
-      { at: 8700,  run: function () {
+      /* Do lado escolhido direto para o valor: o login saiu do filme, e
+         com ele os 4,8s de e-mail digitado e código de seis dígitos que
+         eram a parte mais lenta do roteiro. O passo "Choose" segue aceso
+         na tela do valor porque escolher quanto ainda é escolher. */
+      { at: 3000,  run: function () { show('amount'); } },
+      { at: 3400,  run: function () { moveTo('#tm-w-q25'); } },
+      { at: 3900,  run: function () {
           tap('#tm-w-q25');
           root.querySelector('#tm-w-q25').classList.add('is-on');
           root.querySelector('#tm-w-amount .tm-w-typed').textContent = '25.00';
@@ -549,29 +507,29 @@
           var bt = root.querySelector('#tm-w-confirm');
           bt.classList.remove('is-off');
           bt.textContent = 'Buy Yes · $25.00'; } },
-      { at: 9400,  run: function () { moveTo('#tm-w-confirm'); } },
-      { at: 9900,  run: function () { tap('#tm-w-confirm'); } },
-      { at: 10300, run: function () { show('fund'); step(3); moveTo('#tm-w-deposit'); } },
-      { at: 11400, run: function () { tap('#tm-w-deposit'); } },
-      { at: 11800, run: function () { show('deposit'); } },
-      { at: 12400, run: function () { moveTo('.tm-w-addr'); } },
-      { at: 12900, run: function () { tap('.tm-w-addr'); } },
-      { at: 13300, run: function () { moveTo(null); } },
-      { at: 14000, run: function () {
+      { at: 4600,  run: function () { moveTo('#tm-w-confirm'); } },
+      { at: 5100,  run: function () { tap('#tm-w-confirm'); } },
+      { at: 5500,  run: function () { show('fund'); step(2); moveTo('#tm-w-deposit'); } },
+      { at: 6600,  run: function () { tap('#tm-w-deposit'); } },
+      { at: 7000,  run: function () { show('deposit'); } },
+      { at: 7600,  run: function () { moveTo('.tm-w-addr'); } },
+      { at: 8100,  run: function () { tap('.tm-w-addr'); } },
+      { at: 8500,  run: function () { moveTo(null); } },
+      { at: 9200,  run: function () {
           var st = root.querySelector('#tm-w-status');
           st.textContent = 'Deposit confirmed · $50.00';
           st.classList.add('is-ok');
           var bal = root.querySelector('#tm-w-bal');
           bal.textContent = '$50.00'; bal.classList.add('is-funded'); } },
-      { at: 15000, run: function () { show('done'); step(4); } },
-      { at: 16400, run: function () { show('positions'); tab('positions'); } },
+      { at: 10200, run: function () { show('done'); step(3); } },
+      { at: 11600, run: function () { show('positions'); tab('positions'); } },
       /* o fecho respira: a posição aberta fica mais um tempo em cena,
          o cartão monta devagar (ver .tm-w-outro no CSS) e só então a
          peça recolhe. O resto do roteiro corre porque está provando
          rapidez; esta parte é a única que pede leitura. */
-      { at: 19800, run: function () { endCard(true); } },
-      { at: 25600, run: function () { endCard(false); close(); } },
-      { at: 26800, run: function () { reset(); } }
+      { at: 15000, run: function () { endCard(true); } },
+      { at: 20800, run: function () { endCard(false); close(); } },
+      { at: 22000, run: function () { reset(); } }
     ];
 
     /* O relógio do laço é guardado para que a pausa devolva de onde
@@ -592,7 +550,7 @@
         if (s.at < offset) return;
         timers.push(setTimeout(function () {
           s.run();
-          if (s.at === 26800) { playing = false; offset = 0; play(); }
+          if (s.at === 22000) { playing = false; offset = 0; play(); }
         }, s.at - offset));
       });
     }
@@ -602,7 +560,6 @@
       playing = false;
       timers.forEach(clearTimeout);
       timers = [];
-      clearTimeout(typing);
     }
 
     /* ── pausa ───────────────────────────────────────────────── */

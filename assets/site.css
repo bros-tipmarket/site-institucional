@@ -1378,16 +1378,14 @@
 
    A primeira versão encenava os passos certos e mesmo assim saía robótica,
    porque toda a animação era a mesma: cada tela entrava com o mesmo fade
-   de 7px, o cursor ia de A a B sempre na mesma duração e a digitação era
-   um metrônomo. O que conserta isso não é mais movimento, é movimento
-   com hierarquia:
+   de 7px e o cursor ia de A a B sempre na mesma duração. O que conserta
+   isso não é mais movimento, é movimento com hierarquia:
 
    · as telas deslizam na direção do avanço — entra pela direita, sai pela
      esquerda — então o olho lê "navegou", não "trocou de div";
    · o cursor tem duração proporcional à distância e passa um fio do alvo
      antes de assentar, que é como a mão se comporta;
    · o clique deixa uma onda no ponto de contato;
-   · a digitação varia por caractere e hesita nos separadores;
    · o sucesso tem mola e clarão, porque é o pico emocional da peça.
 
    Duas decisões estruturais seguram tudo: o corpo tem altura fixa (sem
@@ -1673,15 +1671,8 @@
               font-size:13.5px; color:#14161a; margin-bottom:12px;
               transition:border-color .3s ease, box-shadow .35s ease,
                          background .3s ease }
-.tm-w-field.is-focus { border-color:#3a80c8; background:#fff;
-              box-shadow:0 0 0 3px rgba(58,128,200,.14),
-                         0 2px 10px -4px rgba(58,128,200,.4) }
 .tm-w-field.is-amount { font-size:19px; font-weight:500;
               font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
-.tm-w-caret { width:1.5px; height:17px; background:#3a80c8; margin-left:1px;
-              opacity:0 }
-.tm-w-field.is-focus .tm-w-caret { animation:tmwCaret 1.05s steps(1) infinite }
-@keyframes tmwCaret { 0%,50% { opacity:1 } 50.01%,100% { opacity:0 } }
 
 .tm-w-calc { font-size:11.5px; color:#6a6f78; margin-bottom:12px; min-height:16px;
              opacity:0; transform:translateY(4px);
@@ -1704,21 +1695,7 @@
             box-shadow:0 4px 14px -6px rgba(37,102,171,.8) }
 .tm-w-btn.is-off { background:#eeeeea; color:#a8a8a2; box-shadow:none }
 
-/* ── 3 · o código ─────────────────────────────────────────────────── */
-.tm-w-code   { display:grid; grid-template-columns:repeat(6,1fr); gap:7px;
-               margin-bottom:12px }
-.tm-w-code i { height:42px; border:1px solid #e2e2dd; border-radius:8px;
-               background:#fafaf8; display:flex; align-items:center;
-               justify-content:center; font-style:normal; font-size:16px;
-               font-weight:500; color:#14161a;
-               font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-               transition:border-color .25s ease, background .25s ease }
-.tm-w-code i.is-in { border-color:#b9d5f0;
-               background:linear-gradient(170deg,#eef5fc,#e4eff9);
-               animation:tmwCell .36s cubic-bezier(.3,1.5,.5,1) }
-@keyframes tmwCell { 0% { transform:scale(.82) } 100% { transform:scale(1) } }
-
-/* ── 4 · o lado escolhido ─────────────────────────────────────────── */
+/* ── 3 · o lado escolhido ─────────────────────────────────────────── */
 .tm-w-pick { align-self:flex-start; padding:4px 10px; border-radius:999px;
              background:linear-gradient(170deg,#eef5fc,#e4eff9);
              border:1px solid #b9d5f0; color:#2b6cb0;
@@ -1895,9 +1872,8 @@
   .tm-w, .tm-w-fold, .tm-w-page, .tm-w-chev { transition:none }
   .tm-w-screen, .tm-w-cursor, .tm-w-side, .tm-w-btn, .tm-w-tab { transition:none }
   .tm-w-screen.is-on > *, .tm-w-screen.is-on .tm-w-check,
-  .tm-w-screen.is-on .tm-w-check::after, .tm-w-code i.is-in,
+  .tm-w-screen.is-on .tm-w-check::after,
   .tm-w-live .ds-dot, .tm-w-status::before, .tm-w-side.is-picked { animation:none }
-  .tm-w-field.is-focus .tm-w-caret { animation:none; opacity:1 }
 }
 
 /* ── Numerals & rules ─────────────────────────────────────────────── */
