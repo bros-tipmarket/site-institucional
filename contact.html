@@ -18,6 +18,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/fonts.css">
+<!-- tipografia 1:1 com o artefato v2 (Poppins nos titulos, Inter nos textos) — mesma dupla da home -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
 <script>
   tailwind.config = {
     theme: {
@@ -42,8 +44,8 @@
           no:     '#e5484d'
         },
         fontFamily: {
-          display: ['"Multima"', 'Georgia', 'serif'],
-          body:    ['"Plus Jakarta Sans"', 'sans-serif']
+          display: ['Poppins', 'Inter', 'Arial', 'sans-serif'],
+          body:    ['Inter', '-apple-system', '"Segoe UI"', 'Roboto', 'Arial', 'sans-serif']
         }
       }
     }
@@ -114,7 +116,7 @@
     <span class="ds-dot" style="background:#3a80c8;"></span>
     <span class="label">Talk to us</span>
   </span>
-  <h1 class="font-display font-light text-ink ds-h1 max-w-[16ch]" style="text-wrap:balance;">
+  <h1 class="font-display font-semibold text-ink ds-h1 max-w-[16ch]" style="text-wrap:balance;">
     Let’s design your operation.
   </h1>
   <p class="font-body ds-paragraph text-slate max-w-[62ch]">
@@ -259,7 +261,7 @@
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 8 14.5 16 6"/></svg>
         </span>
 
-        <h2 class="tm-lead-ok-h font-display font-light">Got it.</h2>
+        <h2 class="tm-lead-ok-h font-display font-semibold">Got it.</h2>
 
         <!-- o e-mail digitado volta em destaque: prova que o envio levou
              o que a pessoa escreveu, e deixa o erro de digitação
@@ -283,7 +285,7 @@
   <aside class="tm-aside min-w-0">
 
     <div class="tm-aside-block">
-      <h2 class="tm-aside-h font-display font-light text-void">What happens next</h2>
+      <h2 class="tm-aside-h font-display font-semibold text-void">What happens next</h2>
       <p class="font-body ds-paragraph text-slate">
         A Tipmarket specialist replies within one business day. We set up a call to understand
         your audience and show how the operation looks end to end — from the first live market
@@ -292,7 +294,7 @@
     </div>
 
     <div class="tm-aside-block">
-      <h2 class="tm-aside-h font-display font-light text-void">What we will cover</h2>
+      <h2 class="tm-aside-h font-display font-semibold text-void">What we will cover</h2>
       <ul class="tm-aside-list font-body">
         <li>Which markets make sense for your audience</li>
         <li>Payments, KYC and compliance in your country</li>
@@ -302,7 +304,7 @@
     </div>
 
     <div class="tm-aside-block">
-      <h2 class="tm-aside-h font-display font-light text-void">For technical teams</h2>
+      <h2 class="tm-aside-h font-display font-semibold text-void">For technical teams</h2>
       <p class="font-body ds-paragraph text-slate">
         If you would rather start from the API documentation and the integration scope, say so
         in your message — we will put the right people on the call.

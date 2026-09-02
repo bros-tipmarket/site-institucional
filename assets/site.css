@@ -1831,7 +1831,7 @@
 
 .tm-w-outro-mark { width:132px; height:auto; margin-bottom:4px; opacity:.95 }
 .tm-w-outro-h    { font-size:clamp(30px,3.4vw,44px); line-height:1.06;
-                   font-weight:300; letter-spacing:-.03em; color:#fff }
+                   font-weight:600; letter-spacing:-.03em; color:#fff }
 .tm-w-outro-s    { font-size:14.5px; line-height:1.55; max-width:34ch;
                    color:rgba(255,255,255,.66) }
 @media (max-width:639px) {
@@ -1963,7 +1963,7 @@
    negativa devolve o espaço, então nada se move de lugar. O lado
    direito entra na conta porque o letter-spacing negativo se aplica
    também ao último caractere e encolhia a caixa por cima do %.      */
-.tm-aff-pct  { font-size:clamp(66px,8vw,104px); line-height:.9; font-weight:300;
+.tm-aff-pct  { font-size:clamp(66px,8vw,104px); line-height:.9; font-weight:600;
                letter-spacing:-.05em;
                padding:.14em .09em; margin:-.14em -.09em }
 .tm-aff-lab  { margin-top:4px; font-size:15px; font-weight:500; color:#fff }
@@ -2404,8 +2404,10 @@
 
 /* ── HERO · tipografia 1:1 com o artefato v2 ───────────────────────────
    O artefato compoe o hero em Poppins 600 (titulo, com a segunda frase
-   em azul) e Inter 19px (lede). Escopo fechado no hero: o resto da
-   pagina continua em Multima / Plus Jakarta.
+   em azul) e Inter 19px (lede). A mesma dupla Poppins/Inter agora cobre
+   o site inteiro via .font-display / .font-body (base.css); as regras
+   abaixo só existem porque o hero usa um tamanho e peso próprios, fora
+   do padrão ds-h2/ds-h3 do resto das seções.
    ═══════════════════════════════════════════════════════════════════ */
 .tm-hero-h1 {
   font-family: Poppins, Inter, Arial, sans-serif;

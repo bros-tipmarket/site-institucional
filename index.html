@@ -19,8 +19,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/fonts.css">
-<!-- tipografia do hero: 1:1 com o artefato v2 (Poppins no titulo, Inter na lede) -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter:wght@400;600&display=swap">
+<!-- tipografia 1:1 com o artefato v2 (Poppins nos titulos, Inter nos textos) — mesma dupla da quebra 1, agora cobrindo a pagina inteira -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
 <script>
   tailwind.config = {
     theme: {
@@ -45,8 +45,8 @@
           no:     '#e5484d'
         },
         fontFamily: {
-          display: ['"Multima"', 'Georgia', 'serif'],
-          body:    ['"Plus Jakarta Sans"', 'sans-serif']
+          display: ['Poppins', 'Inter', 'Arial', 'sans-serif'],
+          body:    ['Inter', '-apple-system', '"Segoe UI"', 'Roboto', 'Arial', 'sans-serif']
         }
       }
     }
@@ -685,7 +685,7 @@
 
   <div class="max-w-[749px] flex flex-col gap-4">
     <p class="label">Three products</p>
-    <h2 class="font-display font-light text-ink ds-h3" style="text-wrap:balance;">
+    <h2 class="font-display font-semibold text-ink ds-h3" style="text-wrap:balance;">
       Choose the best way to start.
     </h2>
   </div>
@@ -699,7 +699,7 @@
     <a class="ds-lift bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-4" href="#b2b">
       <span class="tm-mono tm-eyebrow text-signal" style="font-size:10px;">For operators</span>
       <div class="flex flex-col gap-2">
-        <h3 class="font-display font-light text-void ds-h4">White-Label</h3>
+        <h3 class="font-display font-semibold text-void ds-h4">White-Label</h3>
         <p class="font-body ds-regular-l text-slate">The full platform — markets, liquidity, payments and BackOffice — running under your brand.</p>
       </div>
       <span class="font-body ds-bold-s text-signal mt-auto inline-flex items-center gap-1.5">
@@ -711,7 +711,7 @@
     <a class="ds-lift bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-4" href="#widget">
       <span class="tm-mono tm-eyebrow text-signal" style="font-size:10px;">For publishers &amp; platforms</span>
       <div class="flex flex-col gap-2">
-        <h3 class="font-display font-light text-void ds-h4">Market Widget</h3>
+        <h3 class="font-display font-semibold text-void ds-h4">Market Widget</h3>
         <p class="font-body ds-regular-l text-slate">Markets embedded right inside your content, with one line of code and zero changes to your CMS.</p>
       </div>
       <span class="font-body ds-bold-s text-signal mt-auto inline-flex items-center gap-1.5">
@@ -723,7 +723,7 @@
     <a class="ds-lift bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-4" href="#affiliates">
       <span class="tm-mono tm-eyebrow text-signal" style="font-size:10px;">For creators &amp; communities</span>
       <div class="flex flex-col gap-2">
-        <h3 class="font-display font-light text-void ds-h4">Affiliate Program</h3>
+        <h3 class="font-display font-semibold text-void ds-h4">Affiliate Program</h3>
         <p class="font-body ds-regular-l text-slate">No integration at all. Share your link and earn on every trade your audience makes.</p>
       </div>
       <span class="font-body ds-bold-s text-signal mt-auto inline-flex items-center gap-1.5">
@@ -761,7 +761,7 @@
          tese centrada é a pausa que separa o menu do argumento. -->
     <div class="max-w-[749px] text-center flex flex-col gap-4">
       <p class="label">Opportunity</p>
-      <h2 class="font-display font-light text-ink ds-h2" style="text-wrap:balance;">
+      <h2 class="font-display font-semibold text-ink ds-h2" style="text-wrap:balance;">
         Prediction markets are leaving the niche. The first brands in will own them.
       </h2>
       <p class="font-body ds-paragraph text-slate">
@@ -857,7 +857,7 @@
        que "Opportunity" e "Integration" são substantivos nus. -->
   <div class="max-w-[749px] flex flex-col gap-4">
     <p class="label">Revenue</p>
-    <h2 class="font-display font-light text-ink ds-h2" style="text-wrap:balance;">
+    <h2 class="font-display font-semibold text-ink ds-h2" style="text-wrap:balance;">
       New revenue from the audience you already have.
     </h2>
   </div>
@@ -1112,7 +1112,7 @@
            aparece no resto da página — a Quebra 2 abre com "O prediction
            market já está pronto". Traduzi-lo só aqui criaria dois nomes
            para a mesma coisa. -->
-      <h2 class="font-display font-light text-white ds-h2" style="text-wrap:balance;">
+      <h2 class="font-display font-semibold text-white ds-h2" style="text-wrap:balance;">
         Earn with prediction markets. Without building&nbsp;one.
       </h2>
     </div>
@@ -1142,7 +1142,7 @@
     <!-- largo · liquidez — o fragmento de produto que sangra -->
     <article class="tm-bx tm-bx--wide">
       <div class="tm-bx-txt">
-        <h3 class="font-display font-light text-white tm-bx-title tm-bx-title--lg">
+        <h3 class="font-display font-semibold text-white tm-bx-title tm-bx-title--lg">
           Your market never opens empty.
         </h3>
         <p class="font-body ds-paragraph tm-bx-lead">
@@ -1179,7 +1179,7 @@
     <!-- acento · a camada que some com três fornecedores de uma vez -->
     <article class="tm-bx tm-bx--accent">
       <div class="tm-bx-txt">
-        <h3 class="font-display font-light text-white tm-bx-title">
+        <h3 class="font-display font-semibold text-white tm-bx-title">
           Payments and compliance, wired up.
         </h3>
         <p class="font-body ds-paragraph tm-bx-lead">
@@ -1198,7 +1198,7 @@
     <!-- o ciclo, que é o que faz a operação não precisar de gente -->
     <article class="tm-bx tm-bx--cycle">
       <div class="tm-bx-txt">
-        <h3 class="font-display font-light text-white tm-bx-title">
+        <h3 class="font-display font-semibold text-white tm-bx-title">
           From open to payout, on its own.
         </h3>
         <p class="font-body ds-paragraph tm-bx-lead">
@@ -1224,7 +1224,7 @@
          em pixels, para acompanhar as três alturas de curva.          -->
     <article class="tm-bx tm-bx--infra">
       <div class="tm-bx-txt">
-        <h3 class="font-display font-light text-white tm-bx-title">
+        <h3 class="font-display font-semibold text-white tm-bx-title">
           Your site does not go down when everyone shows up.
         </h3>
         <p class="font-body ds-paragraph tm-bx-lead">
@@ -1263,7 +1263,7 @@
          uma API de verdade atrás da promessa. -->
     <article class="tm-bx tm-bx--api">
       <div class="tm-bx-txt">
-        <h3 class="font-display font-light text-white tm-bx-title">
+        <h3 class="font-display font-semibold text-white tm-bx-title">
           API-first under the hood.
         </h3>
         <p class="font-body ds-paragraph tm-bx-lead">
@@ -1308,7 +1308,7 @@
   <div class="flex flex-col gap-6 min-w-0">
     <div class="flex flex-col gap-4">
       <p class="tm-mono tm-eyebrow text-signal">Widget for your site</p>
-      <h2 class="font-display font-light text-ink ds-h2" style="text-wrap:balance;">
+      <h2 class="font-display font-semibold text-ink ds-h2" style="text-wrap:balance;">
         Give your readers a side to take — on every story.
       </h2>
       <p class="font-body ds-paragraph text-slate">
@@ -1324,15 +1324,15 @@
 
     <div class="grid grid-cols-3 gap-4 pt-2">
       <div class="flex flex-col gap-1">
-        <span class="font-display font-light text-ink" style="font-size:32px;line-height:1;">Your brand</span>
+        <span class="font-display font-semibold text-ink" style="font-size:32px;line-height:1;">Your brand</span>
         <span class="font-body ds-regular-l text-slate">logo, color and language</span>
       </div>
       <div class="flex flex-col gap-1">
-        <span class="font-display font-light text-ink" style="font-size:32px;line-height:1;">1 line</span>
+        <span class="font-display font-semibold text-ink" style="font-size:32px;line-height:1;">1 line</span>
         <span class="font-body ds-regular-l text-slate">of code</span>
       </div>
       <div class="flex flex-col gap-1">
-        <span class="font-display font-light text-ink" style="font-size:32px;line-height:1;">0</span>
+        <span class="font-display font-semibold text-ink" style="font-size:32px;line-height:1;">0</span>
         <span class="font-body ds-regular-l text-slate">changes to your CMS</span>
       </div>
     </div>
@@ -1591,7 +1591,7 @@
 
   <div class="max-w-[749px] text-center flex flex-col gap-4">
     <p class="label">Integration</p>
-    <h2 class="font-display font-light text-ink ds-h2" style="text-wrap:balance;">
+    <h2 class="font-display font-semibold text-ink ds-h2" style="text-wrap:balance;">
       Four steps between you and a live market.
     </h2>
     <p class="font-body ds-paragraph text-slate">
@@ -1611,7 +1611,7 @@
     <div class="tm-step-card hiw-glow-1 bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-5 min-h-[240px] md:min-h-[268px]">
       <span class="tm-step-num font-body">01</span>
       <div class="flex flex-col gap-4">
-        <h3 class="font-display font-light text-void ds-h4">Connect your identity</h3>
+        <h3 class="font-display font-semibold text-void ds-h4">Connect your identity</h3>
         <p class="font-body ds-regular-l text-slate">The platform ships looking like you: your domain, your logo, your colors and your language.</p>
       </div>
       <span class="tm-tick font-body mt-auto">
@@ -1623,7 +1623,7 @@
     <div class="tm-step-card hiw-glow-2 bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-5 min-h-[240px] md:min-h-[268px]">
       <span class="tm-step-num font-body">02</span>
       <div class="flex flex-col gap-4">
-        <h3 class="font-display font-light text-void ds-h4">Payments and compliance wired up</h3>
+        <h3 class="font-display font-semibold text-void ds-h4">Payments and compliance wired up</h3>
         <p class="font-body ds-regular-l text-slate">Payment providers, KYC and compliance connected through our layer.</p>
       </div>
       <span class="tm-tick font-body mt-auto">
@@ -1635,7 +1635,7 @@
     <div class="tm-step-card hiw-glow-3 bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-5 min-h-[240px] md:min-h-[268px]">
       <span class="tm-step-num font-body">03</span>
       <div class="flex flex-col gap-4">
-        <h3 class="font-display font-light text-void ds-h4">The market running</h3>
+        <h3 class="font-display font-semibold text-void ds-h4">The market running</h3>
         <p class="font-body ds-regular-l text-slate">Real-time market data, liquidity, settlement and end-to-end management.</p>
       </div>
       <span class="tm-tick font-body mt-auto">
@@ -1647,7 +1647,7 @@
     <div class="tm-step-card hiw-glow-4 bg-white border border-cloud rounded-[24px] p-6 flex flex-col gap-5 min-h-[240px] md:min-h-[268px]">
       <span class="tm-step-num font-body">04</span>
       <div class="flex flex-col gap-4">
-        <h3 class="font-display font-light text-void ds-h4">The controls are yours</h3>
+        <h3 class="font-display font-semibold text-void ds-h4">The controls are yours</h3>
         <p class="font-body ds-regular-l text-slate">Volume, revenue and users in real time in the BackOffice — and our team alongside you after go-live.</p>
       </div>
       <span class="tm-tick font-body mt-auto">
@@ -1698,7 +1698,7 @@
            número para a direita, ao lado dos outros dois blocos.     -->
       <div class="tm-aff-head">
         <p class="tm-mono tm-eyebrow" style="color:#8ac5fa;">Affiliate program</p>
-        <h2 class="font-display font-light text-white ds-h3" style="text-wrap:balance;">
+        <h2 class="font-display font-semibold text-white ds-h3" style="text-wrap:balance;">
           Share a link. Earn up to 40% on every&nbsp;trade.
         </h2>
       </div>
@@ -1789,7 +1789,7 @@
     <img src="assets/logo-wordmark-white.svg" alt="tipmarket" class="select-none" style="height:clamp(30px,4.2vw,40px);width:auto;">
   </div>
 
-  <h2 class="font-display font-light text-white ds-h2" style="text-wrap:balance;">
+  <h2 class="font-display font-semibold text-white ds-h2" style="text-wrap:balance;">
     This market will have owners. Be one&nbsp;of&nbsp;them.
   </h2>
 
