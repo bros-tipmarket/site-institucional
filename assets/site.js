@@ -786,7 +786,7 @@
       { at: 26100, run: function () {
           sheetBody('filled');
           document.getElementById('tm-app-ok-h').textContent = 'Order filled';
-          document.getElementById('tm-app-ok-p').textContent = 'Buy Yes · $10.00 · 38 shares';
+          document.getElementById('tm-app-ok-p').textContent = 'Buy Yes · $10.00 · 35.71 shares';
           cursor.classList.remove('is-on'); } },
       { at: 27050, run: function () { closeSheet(); bal(35, true); } },
 

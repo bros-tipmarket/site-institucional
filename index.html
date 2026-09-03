@@ -289,7 +289,7 @@
         <div class="tm-search-row">
           <div class="tm-search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg>
-            Search events… e.g. Bitcoin, NASCAR
+            Search events… e.g. Bitcoin, Champions League
           </div>
           <span class="tm-icon-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h10M4 17h6"/></svg>
@@ -324,16 +324,23 @@
 
              Os três têm arte. O estado claro do .tm-fcard continua no CSS
              porque é real — evento sem imagem cai no fundo do tema — mas
-             não é o que a fileira mostra.                             -->
+             não é o que a fileira mostra.
+
+             ── de onde vêm os números ─────────────────────────────────
+             Pergunta, preço, multiplicador, volume e data de todos os
+             mercados do quadro — aqui, no Explore e na cena do evento —
+             foram lidos da Polymarket pela API pública dela. O
+             multiplicador é 1/preço, e a porcentagem é o preço; não há
+             número inventado na peça. Mercado que mostra o favorito de
+             um evento com vários resultados troca o rótulo "Yes chance"
+             pelo nome do favorito, que é o que o card diz de verdade. -->
         <div class="tm-feat">
 
           <article class="tm-fcard tm-fcard--dark">
-            <!-- rede de nós com um aceso: o mercado pergunta quem estreia
-                 em #1, e o desenho mostra um ponto destacado no meio dos
-                 outros. Abstrato de propósito — a marca citada no título
-                 não entra como logo aqui pela mesma razão que escudo de
-                 clube não entrava: reproduzir marca alheia no material
-                 de venda sugere licenciamento que não existe. -->
+            <!-- rede de nós com um aceso: o mercado pergunta se as moedas
+                 do Satoshi se mexem, e o desenho é a própria rede com um
+                 ponto que acorda. Abstrato de propósito — nenhum logo de
+                 terceiro entra aqui. -->
             <svg class="tm-fcard-art" viewBox="0 0 340 158" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
               <defs>
                 <linearGradient id="tmArtA" x1="0" y1="0" x2="0" y2="1">
@@ -363,18 +370,18 @@
               <circle cx="306" cy="48" r="5.6" fill="#dfe4ff"/>
             </svg>
             <span class="tm-feat-pill">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/></svg>Featured · $10.84 vol.
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/></svg>Featured · $4.91M vol.
             </span>
             <span class="tm-feat-save">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
             </span>
-            <h3 class="tm-fcard-q">Will OpenAI’s Astra model debut as #1?</h3>
+            <h3 class="tm-fcard-q">Will Satoshi move any Bitcoin in 2026?</h3>
             <div class="tm-fcard-foot">
               <span class="tm-gauge" id="tm-gauge-1">
-                <i class="tm-mono" data-tick="26" data-pair="f1" data-arc="tm-gauge-1" data-suffix="%">26%</i>
+                <i class="tm-mono" data-tick="4" data-pair="f1" data-arc="tm-gauge-1" data-suffix="%">4%</i>
               </span>
               <span class="tm-fcard-meta">
-                <span class="tm-mult tm-mono">3.85x</span>
+                <span class="tm-mult tm-mono">23.5x</span>
                 <span class="tm-fcard-cap">Yes chance</span>
               </span>
               <span class="tm-fcard-cta">Trade</span>
@@ -408,18 +415,18 @@
               </g>
             </svg>
             <span class="tm-feat-pill">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/></svg>Featured · $7.02 vol.
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/></svg>Featured · $11.93M vol.
             </span>
             <span class="tm-feat-save">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
             </span>
-            <h3 class="tm-fcard-q">Bitcoin volatility above 40 on Sep 30?</h3>
+            <h3 class="tm-fcard-q">Clarity Act (H.R.3633) signed into law in 2026?</h3>
             <div class="tm-fcard-foot">
               <span class="tm-gauge" id="tm-gauge-2">
-                <i class="tm-mono" data-tick="41" data-pair="f2" data-arc="tm-gauge-2" data-suffix="%">41%</i>
+                <i class="tm-mono" data-tick="18" data-pair="f2" data-arc="tm-gauge-2" data-suffix="%">18%</i>
               </span>
               <span class="tm-fcard-meta">
-                <span class="tm-mult tm-mono">2.44x</span>
+                <span class="tm-mult tm-mono">5.71x</span>
                 <span class="tm-fcard-cap">Yes chance</span>
               </span>
               <span class="tm-fcard-cta">Trade</span>
@@ -439,41 +446,44 @@
               </defs>
               <rect width="340" height="158" fill="url(#tmArtB)"/>
               <rect width="340" height="158" fill="url(#tmArtBl)"/>
-              <!-- o campo virou oval de autódromo, e é quase a mesma
-                   geometria: a elipse de fora continua sendo a borda, a
-                   do meio deixou de ser o círculo central e virou o
-                   miolo da pista, e a linha de meio-campo virou a linha
-                   de chegada, cruzando a faixa no topo. Arquibancada e
-                   refletores servem aos dois. -->
-              <g fill="none" stroke="#d5e4f5" stroke-width="1.4" opacity=".42">
-                <ellipse cx="170" cy="150" rx="150" ry="52"/>
-                <ellipse cx="170" cy="150" rx="112" ry="32"/>
-                <path d="M170 98v20"/>
-              </g>
-              <ellipse cx="170" cy="150" rx="131" ry="42" fill="none" stroke="#d5e4f5"
-                       stroke-width="1.2" stroke-dasharray="6 8" opacity=".22"/>
+              <!-- o oval de autódromo volta a ser campo, que é o que o
+                   mercado pede agora. Arquibancada e refletores continuam
+                   servindo — são a moldura, não o esporte. Nenhum escudo
+                   entra: o card cita o clube por nome, no rodapé, que é
+                   como o próprio mercado o nomeia. -->
               <g fill="#0c2038" opacity=".75">
                 <path d="M0 74h340v14H0z"/><path d="M0 92h340v10H0z"/>
               </g>
+              <g fill="#e9f3ff" opacity=".06">
+                <path d="M0 110h340v16H0z"/><path d="M0 142h340v16H0z"/>
+              </g>
+              <g fill="none" stroke="#d5e4f5" stroke-width="1.4" opacity=".4">
+                <path d="M14 110h312v70H14z"/>
+                <path d="M170 110v70"/>
+                <circle cx="170" cy="145" r="24"/>
+                <path d="M14 126h40v38H14z"/>
+                <path d="M286 126h40v38h-40z"/>
+              </g>
+              <circle cx="170" cy="145" r="2.6" fill="#d5e4f5" opacity=".5"/>
               <g fill="#e9f3ff" opacity=".38">
                 <circle cx="30" cy="66" r="2.2"/><circle cx="44" cy="63" r="2.2"/>
                 <circle cx="296" cy="66" r="2.2"/><circle cx="310" cy="63" r="2.2"/>
               </g>
             </svg>
             <span class="tm-feat-pill">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/></svg>Featured · $6.45 vol.
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/></svg>Featured · $22.64M vol.
             </span>
             <span class="tm-feat-save">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
             </span>
-            <h3 class="tm-fcard-q">NASCAR: Cook Out Southern 500 Winner</h3>
+            <h3 class="tm-fcard-q">UEFA Champions League: 2027 Champion</h3>
             <div class="tm-fcard-foot">
               <span class="tm-gauge" id="tm-gauge-3">
-                <i class="tm-mono" data-tick="47" data-pair="f3" data-arc="tm-gauge-3" data-suffix="%">47%</i>
+                <i class="tm-mono" data-tick="17" data-pair="f3" data-arc="tm-gauge-3" data-suffix="%">17%</i>
               </span>
               <span class="tm-fcard-meta">
-                <span class="tm-mult tm-mono">2.13x</span>
-                <span class="tm-fcard-cap">Larson leads</span>
+                <span class="tm-mult tm-mono">6.06x</span>
+                <span class="tm-fcard-cap">Barcelona leads</span>
               </span>
               <span class="tm-fcard-cta">Trade</span>
             </div>
@@ -524,21 +534,15 @@
                inicial em cinza diz o mesmo sem competir.
 
                ── coluna: cripto — evento agrupado ───────────────────
-               Era Esportes, e mudou por uma restrição de contagem: a
-               regra é que mercado em destaque não se repete no Explore,
-               e o painel tem três vagas de esporte (um Featured e duas
-               aqui) para as duas corridas que a fonte traz. Duas não
-               enchem três sem repetir uma.
+               Esporte fica na vaga maior — o card Featured, que é onde
+               ele vende mais — e esta coluna é Cripto, que a fonte
+               abastece de sobra e que lê igual em qualquer país. A regra
+               que decide isso: mercado em destaque não se repete aqui.
 
-               Então Esportes fica na vaga maior — o card Featured, que é
-               onde ele vende mais — e a coluna passa a Cripto, que a
-               fonte abastece de sobra e que lê igual em qualquer país.
-
-               O tipo de card não muda de trabalho: continua sendo o
-               evento agrupado, com uma linha por resultado. Só que os
-               resultados agora são faixas de preço em vez de nomes, o
-               que é como o próprio produto lista mercado de preço — e
-               continua provando o que a seção precisa provar, que é a
+               Os dois mercados são de faixa de preço, e é por isso que
+               estão aqui: uma linha por faixa é exatamente o desenho do
+               card de evento agrupado. Contra o binário da coluna ao
+               lado, eles provam o que a seção precisa provar — a
                diferença entre "várias saídas" e "sim/não". -->
           <section class="tm-col">
             <header class="tm-col-head">
@@ -553,27 +557,27 @@
                 <span class="tm-card-icon" style="--cat:#a06a12">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="7" rx="8" ry="3.2"/><path d="M4 7v10c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V7"/><path d="M4 12c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2"/></svg>
                 </span>
-                <h3 class="tm-ev-q">What price will BNB hit in September?</h3>
-                <span class="tm-ev-n">3 markets</span>
+                <h3 class="tm-ev-q">What price will Bitcoin hit in 2026?</h3>
+                <span class="tm-ev-n">32 markets</span>
                 <svg class="tm-ev-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg>
               </header>
               <div class="tm-ev-rows">
                 <span class="tm-ev-row">
-                  <i class="tm-ev-av">↑</i><b>$700</b>
-                  <span class="tm-ev-mult tm-mono">1.85x</span>
-                  <span class="tm-ev-y tm-mono" data-tick="47" data-pair="s1" data-suffix="%">47%</span>
+                  <i class="tm-ev-av">↑</i><b>$85,000</b>
+                  <span class="tm-ev-mult tm-mono">1.26x</span>
+                  <span class="tm-ev-y tm-mono" data-tick="80" data-pair="s1" data-suffix="%">80%</span>
                   <span class="tm-ev-n2">No</span>
                 </span>
                 <span class="tm-ev-row">
-                  <i class="tm-ev-av">↓</i><b>$600</b>
-                  <span class="tm-ev-mult tm-mono">2.78x</span>
-                  <span class="tm-ev-y tm-mono" data-tick="32" data-pair="s2" data-suffix="%">32%</span>
+                  <i class="tm-ev-av">↓</i><b>$75,000</b>
+                  <span class="tm-ev-mult tm-mono">1.31x</span>
+                  <span class="tm-ev-y tm-mono" data-tick="77" data-pair="s2" data-suffix="%">77%</span>
                   <span class="tm-ev-n2">No</span>
                 </span>
               </div>
               <footer class="tm-ev-foot">
-                <span class="tm-ev-more">+ 1 more</span>
-                <span>$6.45 vol. · closes Sep 30, 2026</span>
+                <span class="tm-ev-more">+ 30 more</span>
+                <span>$62.92M vol. · closes Jan 1, 2027</span>
               </footer>
             </article>
 
@@ -582,48 +586,46 @@
                 <span class="tm-card-icon" style="--cat:#2b6fb0">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9.6 14.4 14.4 9.6"/><path d="M7.9 12.1 6 14a3.6 3.6 0 0 0 5.1 5.1l1.9-1.9"/><path d="M16.1 11.9 18 10a3.6 3.6 0 0 0-5.1-5.1L11 6.8"/></svg>
                 </span>
-                <h3 class="tm-ev-q">What price will Chainlink hit in September?</h3>
-                <span class="tm-ev-n">3 markets</span>
+                <h3 class="tm-ev-q">What price will Ethereum hit in 2026?</h3>
+                <span class="tm-ev-n">23 markets</span>
                 <svg class="tm-ev-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg>
               </header>
               <div class="tm-ev-rows">
                 <span class="tm-ev-row">
-                  <i class="tm-ev-av">↑</i><b>$12</b>
-                  <span class="tm-ev-mult tm-mono">2.33x</span>
-                  <span class="tm-ev-y tm-mono" data-tick="41" data-pair="s3" data-suffix="%">41%</span>
+                  <i class="tm-ev-av">↑</i><b>$2,750</b>
+                  <span class="tm-ev-mult tm-mono">1.35x</span>
+                  <span class="tm-ev-y tm-mono" data-tick="74" data-pair="s3" data-suffix="%">74%</span>
                   <span class="tm-ev-n2">No</span>
                 </span>
                 <span class="tm-ev-row">
-                  <i class="tm-ev-av">↓</i><b>$10</b>
-                  <span class="tm-ev-mult tm-mono">2.61x</span>
-                  <span class="tm-ev-y tm-mono" data-tick="36" data-pair="s4" data-suffix="%">36%</span>
+                  <i class="tm-ev-av">↓</i><b>$2,250</b>
+                  <span class="tm-ev-mult tm-mono">1.72x</span>
+                  <span class="tm-ev-y tm-mono" data-tick="58" data-pair="s4" data-suffix="%">58%</span>
                   <span class="tm-ev-n2">No</span>
                 </span>
               </div>
               <footer class="tm-ev-foot">
-                <span class="tm-ev-more">+ 1 more</span>
-                <span>$4.03 vol. · closes Sep 30, 2026</span>
+                <span class="tm-ev-more">+ 21 more</span>
+                <span>$13.39M vol. · closes Jan 1, 2027</span>
               </footer>
             </article>
           </section>
 
-          <!-- ── coluna: tecnologia — mercado binário ───────────────
-               Era Notícias, com desmatamento na Amazônia e Oscar de
-               filme brasileiro. Virou Tecnologia porque é onde a fonte
-               internacional é densa e onde o mercado é legível em
-               qualquer país — "estreia em #1" não depende de saber quem
-               joga nem que prêmio é. A coluna ao lado virou Cripto pelo
-               motivo explicado lá; o argumento da seção é a diferença
-               entre evento agrupado e binário, e isso continua de pé.
+          <!-- ── coluna: economia — mercado binário ─────────────────
+               Binário de verdade nos dois cards: pergunta única, Yes e
+               No com preço. É o contraste com a coluna ao lado, e é o
+               argumento da seção.
 
-               Os dois cards aqui compartilham a moldura "estreia em #1"
-               porque a fonte lista essa família de mercados assim mesmo,
-               um por modelo. São mercados diferentes, com preços
-               diferentes — o que a regra proíbe é o mesmo mercado
-               aparecer em destaque e no Explore. -->
+               Economia porque é onde a fonte é mais densa e mais legível
+               fora dos Estados Unidos — tráfego no Estreito de Ormuz e
+               alta de juros não dependem de saber quem joga nem que
+               prêmio é.
+
+               O primeiro card é o que o filme toca, e por isso é dele o
+               livro de ofertas da cena do evento. -->
           <section class="tm-col">
             <header class="tm-col-head">
-              <span class="tm-col-t" style="--cat:#4f46b8;">Technology<i></i></span>
+              <span class="tm-col-t" style="--cat:#1c7a54;">Economy<i></i></span>
               <span class="tm-col-all">view all (5)
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
               </span>
@@ -642,36 +644,36 @@
                 <header class="tm-bin-head">
                   <!-- chip, e não o logo de quem o mercado cita: o ícone
                        nomeia a categoria do evento, não a empresa -->
-                  <span class="tm-card-icon" style="--cat:#4f46b8">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>
+                  <span class="tm-card-icon" style="--cat:#1c7a54">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.4 15.4h17.2l-2 4.7H5.4z"/><path d="M7.6 15.4V10h8.8v5.4"/><path d="M12 10V6.3M9.7 6.3h4.6"/></svg>
                   </span>
-                  <h3 class="tm-bin-q">Will the next Mythos-Class model debut as #1?</h3>
+                  <h3 class="tm-bin-q">Strait of Hormuz traffic returns to normal by December 31?</h3>
                   <span class="tm-bin-pct">
-                    <b class="tm-mono" data-tick="26" data-pair="n1" data-suffix="%">26%</b>
-                    <i class="tm-mono">3.85x</i>
+                    <b class="tm-mono" data-tick="28" data-pair="n1" data-suffix="%">28%</b>
+                    <i class="tm-mono">3.57x</i>
                   </span>
                 </header>
                 <div class="tm-bin-bars">
                   <span class="tm-bin-bar tm-bin-y">
                     <i class="tm-bin-fill" id="tm-fill-1"></i>
-                    <b>Yes</b><span class="tm-mono" data-tick="0.26" data-format="cents" data-prefix="$" data-pair="b1" data-prob="tm-fill-1">$0.26</span>
+                    <b>Yes</b><span class="tm-mono" data-tick="0.28" data-format="cents" data-prefix="$" data-pair="b1" data-prob="tm-fill-1">$0.28</span>
                   </span>
                   <span class="tm-bin-bar tm-bin-n">
                     <i class="tm-bin-fill" id="tm-fill-2"></i>
-                    <b>No</b><span class="tm-mono" data-mirror="b1" data-prefix="$">$0.74</span>
+                    <b>No</b><span class="tm-mono" data-mirror="b1" data-prefix="$">$0.72</span>
                   </span>
                 </div>
                 <footer class="tm-ev-foot">
-                  <span>$10.84 vol. · closes Jan 30, 2027</span>
+                  <span>$10.36M vol. · closes Dec 31, 2026</span>
                 </footer>
               </article>
               <div class="tm-qt tm-flip-back" id="tm-app-qt" aria-hidden="true">
                 <div class="tm-qt-head">
-                  <span class="tm-qt-q">Will the next Mythos-Class model debut as #1?</span>
+                  <span class="tm-qt-q">Strait of Hormuz traffic returns to normal by December 31?</span>
                   <span class="tm-qt-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
                 </div>
                 <div class="tm-qt-row">
-                  <span class="tm-qt-side">Yes $0.26</span>
+                  <span class="tm-qt-side">Yes $0.28</span>
                   <span class="tm-inp tm-qt-amt" id="tm-app-qt-inp">
                     <span class="tm-cur">$</span><span class="tm-typed">5.00</span><i class="tm-caret"></i>
                   </span>
@@ -681,8 +683,8 @@
                 </div>
                 <div class="tm-qt-slider"><i id="tm-app-qt-fill"></i><b id="tm-app-qt-knob"></b></div>
                 <div class="tm-qt-meta">
-                  <span id="tm-app-qt-sh">19 shares · 3.85x</span>
-                  <span>If right · <b id="tm-app-qt-win">$19.00</b></span>
+                  <span id="tm-app-qt-sh">17.85 shares · 3.57x</span>
+                  <span>If right · <b id="tm-app-qt-win">$17.85</b></span>
                 </div>
                 <div class="tm-qt-btns">
                   <span class="tm-qt-cancel">Cancel</span>
@@ -690,7 +692,7 @@
                 </div>
                 <div class="tm-qt-done">
                   <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></i>
-                  <span>Filled · Yes, 19 shares</span>
+                  <span>Filled · Yes, 17.85 shares</span>
                   <em>$5.00</em>
                 </div>
               </div>
@@ -699,27 +701,27 @@
 
             <article class="tm-bin">
               <header class="tm-bin-head">
-                <span class="tm-card-icon" style="--cat:#1c8fa8">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 3 7.5 12 12l9-4.5z"/><path d="M3 12.2 12 16.7l9-4.5"/><path d="M3 16.8 12 21.3l9-4.5"/></svg>
+                <span class="tm-card-icon" style="--cat:#1c7a54">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.6 9.7 12 4.6l8.4 5.1"/><path d="M6 11v7.6M9.5 11v7.6M14.5 11v7.6M18 11v7.6"/><path d="M3.5 19.4h17"/></svg>
                 </span>
-                <h3 class="tm-bin-q">Will the next Gemini Flash model debut as #1?</h3>
+                <h3 class="tm-bin-q">Fed rate hike in 2026?</h3>
                 <span class="tm-bin-pct">
-                  <b class="tm-mono" data-tick="50" data-pair="n2" data-suffix="%">50%</b>
-                  <i class="tm-mono">2.00x</i>
+                  <b class="tm-mono" data-tick="66" data-pair="n2" data-suffix="%">66%</b>
+                  <i class="tm-mono">1.53x</i>
                 </span>
               </header>
               <div class="tm-bin-bars">
                 <span class="tm-bin-bar tm-bin-y">
                   <i class="tm-bin-fill" id="tm-fill-3"></i>
-                  <b>Yes</b><span class="tm-mono" data-tick="0.50" data-format="cents" data-prefix="$" data-pair="b2" data-prob="tm-fill-3">$0.50</span>
+                  <b>Yes</b><span class="tm-mono" data-tick="0.66" data-format="cents" data-prefix="$" data-pair="b2" data-prob="tm-fill-3">$0.66</span>
                 </span>
                 <span class="tm-bin-bar tm-bin-n">
                   <i class="tm-bin-fill" id="tm-fill-4"></i>
-                  <b>No</b><span class="tm-mono" data-mirror="b2" data-prefix="$">$0.50</span>
+                  <b>No</b><span class="tm-mono" data-mirror="b2" data-prefix="$">$0.34</span>
                 </span>
               </div>
               <footer class="tm-ev-foot">
-                <span>— vol. · closes Jan 15, 2027</span>
+                <span>$8.48M vol. · closes Dec 9, 2026</span>
               </footer>
             </article>
           </section>
@@ -740,29 +742,29 @@
             <div class="min-w-0">
 
               <div class="tm-ev2-t">
-                <span class="tm-card-icon" style="--cat:#4f46b8">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>
+                <span class="tm-card-icon" style="--cat:#1c7a54">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.4 15.4h17.2l-2 4.7H5.4z"/><path d="M7.6 15.4V10h8.8v5.4"/><path d="M12 10V6.3M9.7 6.3h4.6"/></svg>
                 </span>
                 <div>
                   <span class="tm-kicker">Your call.</span>
-                  <div class="tm-ev2-h">Will the next Mythos-Class model debut as #1?</div>
+                  <div class="tm-ev2-h">Strait of Hormuz traffic returns to normal by December 31?</div>
                   <div class="tm-ev2-meta">
-                    <span class="ds-dot"></span><em>Technology</em>
-                    <span>· $10.84 traded · closes Jan 30, 2027</span>
+                    <span class="ds-dot"></span><em>Economy</em>
+                    <span>· $10.36M traded · closes Dec 31, 2026</span>
                   </div>
                 </div>
               </div>
 
               <div class="tm-ev2-card">
                 <div class="tm-ev2-px">
-                  <strong>26%</strong>
-                  <span class="tm-ev2-mult">3.85x</span>
+                  <strong>28%</strong>
+                  <span class="tm-ev2-mult">3.57x</span>
                   <span class="tm-ev2-chips">
-                    <span>Spread <b>$0.00</b></span>
-                    <span>Liquidity <b>31 shares</b></span>
+                    <span>Spread <b>$0.01</b></span>
+                    <span>Liquidity <b>$411K</b></span>
                   </span>
                 </div>
-                <div class="tm-ev2-sub">Yes chance · $0.26 per share</div>
+                <div class="tm-ev2-sub">Yes chance · $0.28 per share</div>
 
                 <div class="tm-ev2-tabs" id="tm-app-ev2tabs">
                   <span class="is-on" data-ev2tab="chart">Chart</span>
@@ -784,7 +786,7 @@
                         <circle class="tm-ev2-dot" cx="290" cy="34" r="4"/>
                       </svg>
                       <!-- o valor corrente vive na ponta da linha, no site -->
-                      <span class="tm-ev2-now">Yes<b>26%</b></span>
+                      <span class="tm-ev2-now">Yes<b>28%</b></span>
                       <!-- o site rotula só as pontas -->
                       <div class="tm-ev2-xs">
                         <span>Aug 26</span><span>Sep 3</span>
@@ -806,21 +808,27 @@
                         <span class="ds-dot"></span>Sell orders (SELL)
                         <i class="tm-ev2-book-cv"></i>
                       </div>
+                      <!-- Preço, tamanho e total vêm do livro real deste
+                           mercado: as quatro melhores ofertas de venda em
+                           ordem decrescente, com a melhor encostada no
+                           spread — que é como o livro se lê. A barra de
+                           profundidade de cada linha é o tamanho dela
+                           contra o maior do livro. -->
                       <div class="tm-ev2-book-hd"><span>Price</span><span>Shares</span><span>Total</span></div>
-                      <div class="tm-ev2-book-r"><i style="width:100%"></i><span>$0.45</span><span>4 shares</span><span>$9.70</span></div>
-                      <div class="tm-ev2-book-r"><i style="width:81%"></i><span>$0.40</span><span>6 shares</span><span>$7.90</span></div>
-                      <div class="tm-ev2-book-r"><i style="width:57%"></i><span>$0.35</span><span>8 shares</span><span>$5.50</span></div>
-                      <div class="tm-ev2-book-r"><i style="width:28%"></i><span>$0.30</span><span>9 shares</span><span>$2.70</span></div>
-                      <div class="tm-ev2-book-sp">Spread: $0.09</div>
+                      <div class="tm-ev2-book-r"><i style="width:44%"></i><span>$0.31</span><span>15,590.72</span><span>$4,833.12</span></div>
+                      <div class="tm-ev2-book-r"><i style="width:61%"></i><span>$0.30</span><span>21,631.99</span><span>$6,489.60</span></div>
+                      <div class="tm-ev2-book-r"><i style="width:69%"></i><span>$0.29</span><span>24,335.58</span><span>$7,057.32</span></div>
+                      <div class="tm-ev2-book-r"><i style="width:60%"></i><span>$0.28</span><span>21,401.90</span><span>$5,992.53</span></div>
+                      <div class="tm-ev2-book-sp">Spread: $0.01</div>
                       <div class="tm-ev2-book-t is-bid">
                         <span class="ds-dot"></span>Buy orders (BID)
                         <i class="tm-ev2-book-cv"></i>
                       </div>
                       <div class="tm-ev2-book-hd"><span>Price</span><span>Shares</span><span>Total</span></div>
-                      <div class="tm-ev2-book-r is-bid"><i style="width:29%"></i><span>$0.21</span><span>24 shares</span><span>$5.04</span></div>
-                      <div class="tm-ev2-book-r is-bid"><i style="width:50%"></i><span>$0.06</span><span>62 shares</span><span>$8.76</span></div>
-                      <div class="tm-ev2-book-r is-bid"><i style="width:100%"></i><span>$0.01</span><span>244 shares</span><span>$11.20</span></div>
-                      <div class="tm-ev2-book-sp">Spread: $0.09</div>
+                      <div class="tm-ev2-book-r is-bid"><i style="width:100%"></i><span>$0.27</span><span>35,494.16</span><span>$9,583.42</span></div>
+                      <div class="tm-ev2-book-r is-bid"><i style="width:99%"></i><span>$0.26</span><span>35,249.06</span><span>$9,164.76</span></div>
+                      <div class="tm-ev2-book-r is-bid"><i style="width:82%"></i><span>$0.25</span><span>29,201.34</span><span>$7,300.34</span></div>
+                      <div class="tm-ev2-book-sp">Spread: $0.01</div>
                     </div>
                   </div>
                 </div>
@@ -831,7 +839,7 @@
               <div class="tm-ev2-tl">
                 <h5>Timeline</h5>
                 <div><i></i><span><b>Market open</b><em>Trading enabled for everyone</em></span></div>
-                <div><i></i><span><b>Close</b><em>Jan 30, 2027 — last orders</em></span></div>
+                <div><i></i><span><b>Close</b><em>Dec 31, 2026 — last orders</em></span></div>
                 <div><i></i><span><b>Resolution</b><em>Official result published by curation</em></span></div>
                 <div><i></i><span><b>Dispute window</b><em>24h to contest with a bond</em></span></div>
                 <div><i></i><span><b>Payout</b><em>Winning shares pay $1.00</em></span></div>
@@ -843,15 +851,15 @@
               <p>Pick a side — you review before confirming.</p>
               <div class="tm-ev2-side is-yes" id="tm-app-ev2-yes">
                 <strong>Yes</strong>
-                <u><b>$10.00 → $38.00</b><em>est. if right</em></u>
+                <u><b>$10.00 → $35.71</b><em>est. if right</em></u>
               </div>
               <div class="tm-ev2-side is-no">
                 <strong>No</strong>
-                <u><b>$10.00 → $13.51</b><em>est. if right</em></u>
+                <u><b>$10.00 → $13.88</b><em>est. if right</em></u>
               </div>
               <div class="tm-ev2-facts">
-                <div><em>Total volume</em><b>$10.84</b></div>
-                <div><em>Closes</em><b>Jan 30, 2027</b></div>
+                <div><em>Total volume</em><b>$10.36M</b></div>
+                <div><em>Closes</em><b>Dec 31, 2026</b></div>
                 <div><em>Market type</em><b>Binary (Yes/No)</b></div>
               </div>
               <div class="tm-ev2-hint">
@@ -941,7 +949,7 @@
               </div>
               <div class="tm-pf-pl">
                 <em>Total P&amp;L</em>
-                <strong>+$0.96</strong>
+                <strong>+$0.53</strong>
                 <div class="tm-pf-sub">open + realized</div>
               </div>
             </div>
@@ -952,12 +960,12 @@
                   <span class="is-on">Positions</span><span>Orders</span><span>Activity</span>
                 </div>
                 <div class="tm-pf-pos">
-                  <div class="tm-pf-pos-q">Will the next Mythos-Class model debut as #1?</div>
+                  <div class="tm-pf-pos-q">Strait of Hormuz traffic returns to normal by December 31?</div>
                   <div class="tm-pf-pos-r">
-                    <em>Yes · 57 shares</em><b>$15.96</b>
+                    <em>Yes · 53.56 shares</em><b>$15.00</b>
                   </div>
                   <div class="tm-pf-pos-r">
-                    <em>If you are right</em><b class="is-yes">$57.00</b>
+                    <em>If you are right</em><b class="is-yes">$53.56</b>
                   </div>
                 </div>
               </div>
@@ -966,7 +974,7 @@
                 <div class="tm-pf-chart-h">
                   <div>
                     <em>P&amp;L over time <span class="ds-dot"></span> live</em>
-                    <b>+$0.96</b>
+                    <b>+$0.53</b>
                     <div class="tm-pf-sub">today</div>
                   </div>
                   <span class="tm-pf-ranges">
@@ -1040,10 +1048,10 @@
            Quem escolhe entre este alvo e o do trilho é o pick(). -->
       <div class="tm-ev2-mobbar" id="tm-app-mobsides" aria-hidden="true">
         <div class="tm-ev2-side is-yes" id="tm-app-mob-yes">
-          <strong>Yes</strong><i class="tm-ev2-px2">$0.26</i>
+          <strong>Yes</strong><i class="tm-ev2-px2">$0.28</i>
         </div>
         <div class="tm-ev2-side is-no">
-          <strong>No</strong><i class="tm-ev2-px2">$0.74</i>
+          <strong>No</strong><i class="tm-ev2-px2">$0.72</i>
         </div>
       </div>
 
@@ -1094,8 +1102,8 @@
               <h4>You picked <span style="color:var(--tm-yes)">Yes</span></h4>
               <span class="tm-sheet-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
             </div>
-            <div class="tm-sheet-sub">Will the next Mythos-Class model debut as #1?</div>
-            <div class="tm-sheet-note"><b>$0.26</b> · 26% chance <i class="tm-mult">3.85x</i></div>
+            <div class="tm-sheet-sub">Strait of Hormuz traffic returns to normal by December 31?</div>
+            <div class="tm-sheet-note"><b>$0.28</b> · 28% chance <i class="tm-mult">3.57x</i></div>
             <div class="tm-seg"><span class="is-on">Buy</span><span>Sell</span></div>
             <div class="tm-seg"><span class="is-on">Yes</span><span>No</span></div>
             <div class="tm-seg-row">
@@ -1124,7 +1132,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
             </div>
             <h4 id="tm-app-ok-h">Order filled</h4>
-            <p id="tm-app-ok-p">Buy Yes · $10.00 · 38 shares</p>
+            <p id="tm-app-ok-p">Buy Yes · $10.00 · 35.71 shares</p>
           </div>
         </div>
       </div>
