@@ -1249,7 +1249,7 @@
              color:var(--tm-faint); margin-top:4px }
 /* o preço corrente mora na ponta da linha, não numa legenda: é assim no
    site, e é o que faz o gráfico ler como leitura e não como enfeite */
-.tm-ev2-now { position:absolute; right:-2px; top:8px; line-height:1.15;
+.tm-ev2-now { position:absolute; right:-2px; top:var(--tm-now-y,8px); line-height:1.15;
               font-size:9.5px; font-weight:700; color:var(--brand); text-align:left }
 .tm-ev2-now b { display:block; font-size:11px }
 .tm-ev2-ranges { display:flex; gap:6px; justify-content:center; margin-top:9px }
