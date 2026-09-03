@@ -629,33 +629,73 @@
               </span>
             </header>
 
-            <article class="tm-bin">
-              <header class="tm-bin-head">
-                <!-- chip, e não o logo de quem o mercado cita: o ícone
-                     nomeia a categoria do evento, não a empresa -->
-                <span class="tm-card-icon" style="--cat:#4f46b8">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>
-                </span>
-                <h3 class="tm-bin-q">Will the next Mythos-Class model debut as #1?</h3>
-                <span class="tm-bin-pct">
-                  <b class="tm-mono" data-tick="26" data-pair="n1" data-suffix="%">26%</b>
-                  <i class="tm-mono">3.85x</i>
-                </span>
-              </header>
-              <div class="tm-bin-bars">
-                <span class="tm-bin-bar tm-bin-y">
-                  <i class="tm-bin-fill" id="tm-fill-1"></i>
-                  <b>Yes</b><span class="tm-mono" data-tick="0.26" data-format="cents" data-prefix="$" data-pair="b1" data-prob="tm-fill-1">$0.26</span>
-                </span>
-                <span class="tm-bin-bar tm-bin-n">
-                  <i class="tm-bin-fill" id="tm-fill-2"></i>
-                  <b>No</b><span class="tm-mono" data-mirror="b1" data-prefix="$">$0.74</span>
-                </span>
+            <!-- ── o card que o filme toca ─────────────────────────────
+                 No produto o atalho é a CONTRACAPA deste card: ao tocar
+                 no Yes o card gira no eixo Y e mostra o painel do outro
+                 lado, na mesma vaga e na mesma largura. Por isso o painel
+                 mora aqui dentro, e não solto sobre a superfície — solto,
+                 ele flutuava por cima do card de baixo em vez de trocar
+                 de lugar com este. Ver .tm-flip no CSS.              -->
+            <div class="tm-flip" id="tm-app-flip">
+              <div class="tm-flip-in">
+                  <article class="tm-bin tm-flip-face">
+                <header class="tm-bin-head">
+                  <!-- chip, e não o logo de quem o mercado cita: o ícone
+                       nomeia a categoria do evento, não a empresa -->
+                  <span class="tm-card-icon" style="--cat:#4f46b8">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>
+                  </span>
+                  <h3 class="tm-bin-q">Will the next Mythos-Class model debut as #1?</h3>
+                  <span class="tm-bin-pct">
+                    <b class="tm-mono" data-tick="26" data-pair="n1" data-suffix="%">26%</b>
+                    <i class="tm-mono">3.85x</i>
+                  </span>
+                </header>
+                <div class="tm-bin-bars">
+                  <span class="tm-bin-bar tm-bin-y">
+                    <i class="tm-bin-fill" id="tm-fill-1"></i>
+                    <b>Yes</b><span class="tm-mono" data-tick="0.26" data-format="cents" data-prefix="$" data-pair="b1" data-prob="tm-fill-1">$0.26</span>
+                  </span>
+                  <span class="tm-bin-bar tm-bin-n">
+                    <i class="tm-bin-fill" id="tm-fill-2"></i>
+                    <b>No</b><span class="tm-mono" data-mirror="b1" data-prefix="$">$0.74</span>
+                  </span>
+                </div>
+                <footer class="tm-ev-foot">
+                  <span>$10.84 vol. · closes Jan 30, 2027</span>
+                </footer>
+              </article>
+              <div class="tm-qt tm-flip-back" id="tm-app-qt" aria-hidden="true">
+                <div class="tm-qt-head">
+                  <span class="tm-qt-q">Will the next Mythos-Class model debut as #1?</span>
+                  <span class="tm-qt-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+                </div>
+                <div class="tm-qt-row">
+                  <span class="tm-qt-side">Yes $0.26</span>
+                  <span class="tm-inp tm-qt-amt" id="tm-app-qt-inp">
+                    <span class="tm-cur">$</span><span class="tm-typed">5.00</span><i class="tm-caret"></i>
+                  </span>
+                  <span class="tm-qt-adds">
+                    <span id="tm-app-qt-5">+5</span><span>+10</span><span>+50</span>
+                  </span>
+                </div>
+                <div class="tm-qt-slider"><i id="tm-app-qt-fill"></i><b id="tm-app-qt-knob"></b></div>
+                <div class="tm-qt-meta">
+                  <span id="tm-app-qt-sh">19 shares · 3.85x</span>
+                  <span>If right · <b id="tm-app-qt-win">$19.00</b></span>
+                </div>
+                <div class="tm-qt-btns">
+                  <span class="tm-qt-cancel">Cancel</span>
+                  <span class="tm-qt-confirm" id="tm-app-qt-ok">Confirm</span>
+                </div>
+                <div class="tm-qt-done">
+                  <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></i>
+                  <span>Filled · Yes, 19 shares</span>
+                  <em>$5.00</em>
+                </div>
               </div>
-              <footer class="tm-ev-foot">
-                <span>$10.84 vol. · closes Jan 30, 2027</span>
-              </footer>
-            </article>
+              </div>
+            </div>
 
             <article class="tm-bin">
               <header class="tm-bin-head">
@@ -975,40 +1015,6 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>Profile
         </span>
       </nav>
-
-      <!-- ── o quick trade ───────────────────────────────────────────
-           O atalho do produto: opinar sem abrir o evento. Ele abre
-           ancorado na coluna de notícias da Home, que é onde o card que
-           a pessoa tocou está.                                      -->
-      <div class="tm-qt" id="tm-app-qt" aria-hidden="true">
-        <div class="tm-qt-head">
-          <span class="tm-qt-q">Will the next Mythos-Class model debut as #1?</span>
-          <span class="tm-qt-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
-        </div>
-        <div class="tm-qt-row">
-          <span class="tm-qt-side">Yes $0.26</span>
-          <span class="tm-inp tm-qt-amt" id="tm-app-qt-inp">
-            <span class="tm-cur">$</span><span class="tm-typed">5.00</span><i class="tm-caret"></i>
-          </span>
-          <span class="tm-qt-adds">
-            <span id="tm-app-qt-5">+5</span><span>+10</span><span>+50</span>
-          </span>
-        </div>
-        <div class="tm-qt-slider"><i id="tm-app-qt-fill"></i><b id="tm-app-qt-knob"></b></div>
-        <div class="tm-qt-meta">
-          <span id="tm-app-qt-sh">19 shares · 3.85x</span>
-          <span>If right · <b id="tm-app-qt-win">$19.00</b></span>
-        </div>
-        <div class="tm-qt-btns">
-          <span class="tm-qt-cancel">Cancel</span>
-          <span class="tm-qt-confirm" id="tm-app-qt-ok">Confirm</span>
-        </div>
-        <div class="tm-qt-done">
-          <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></i>
-          <span>Filled · Yes, 19 shares</span>
-          <em>$5.00</em>
-        </div>
-      </div>
 
       <!-- ── a folha: um componente, dois usos ───────────────────────
            Depósito e ordem usam o mesmo cartão porque o produto usa o

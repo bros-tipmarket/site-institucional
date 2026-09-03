@@ -1039,24 +1039,35 @@
                       border-radius:99px; background:var(--tm-line); margin:0 auto 13px }
 }
 
-/* ── o quick trade: o painel que abre no próprio card ─────────────
-   É o atalho do produto — opinar sem sair da lista. Ele nasce ancorado
-   na coluna de notícias da Home, que é onde o card mora.           */
-/* No produto o atalho SUBSTITUI o card, na mesma vaga e na mesma
-   largura — não flutua por cima com sombra, como o meu fazia. É o que
-   o argumento dele diz: opinar sem sair da lista. O JS o encaixa sobre
-   o card (qtAnchor), e sem sombra ele lê como o card virando painel. */
+/* ── o quick trade: a contracapa do card ──────────────────────────
+   No produto tocar no Yes GIRA o card: ele rotaciona no eixo Y com
+   perspectiva e o painel de valores está do outro lado, na mesma vaga e
+   na mesma largura. Duas coisas que eu tinha errado:
+
+   · o painel era um elemento solto, posicionado por medição sobre a
+     superfície — então ele flutuava POR CIMA do card de baixo em vez de
+     trocar de lugar com o seu próprio card. Agora ele mora dentro do
+     card, como contracapa, e a coluna reflui como deve;
+   · não havia giro nenhum, era um fade.
+
+   A troca de quem está no fluxo acontece no meio do giro, com o card de
+   perfil — é o instante em que nada está visível, e é por isso que a
+   mudança de altura entre frente e contracapa não aparece.          */
+.tm-flip { perspective:1000px }
+.tm-flip-in { position:relative; transform-style:preserve-3d;
+              transition:transform .54s cubic-bezier(.4,0,.2,1) }
+.tm-flip.is-flipped .tm-flip-in { transform:rotateY(180deg) }
+.tm-flip-face, .tm-qt { backface-visibility:hidden }
+/* de saída a frente dita a altura e a contracapa fica sobreposta */
+.tm-qt { position:absolute; inset:0; transform:rotateY(180deg) }
+/* virado, os papéis se invertem: a contracapa passa a ditar a altura */
+.tm-flip.is-back .tm-flip-face { position:absolute; inset:0 }
+.tm-flip.is-back .tm-qt { position:relative; inset:auto }
+
 .tm-qt {
-  position:absolute; z-index:4;
-  background:var(--tm-surf); border:1px solid var(--tm-line);
-  border-radius:13px; padding:13px;
-  /* Entrada só por opacidade: qualquer transform aqui deixa a caixa
-     PINTADA diferente da vaga que o JS mediu, e o painel tem de casar
-     com o card ao pixel — é ele virando painel, não um popup em cima. */
-  opacity:0; pointer-events:none;
-  transition:opacity .26s ease;
+  z-index:2; background:var(--tm-surf-2);
+  border:1px solid var(--tm-line); border-radius:14px; padding:13px;
 }
-.tm-qt.is-on { opacity:1 }
 .tm-qt-head { display:flex; align-items:flex-start; gap:9px }
 .tm-qt-q { font-size:12.5px; font-weight:600; line-height:1.35 }
 .tm-qt-x { margin-left:auto; color:var(--tm-faint); flex-shrink:0 }
@@ -1108,9 +1119,7 @@
 .tm-qt.is-done .tm-qt-btns { display:none }
 .tm-qt.is-done .tm-qt-done { display:flex }
 
-@media (max-width:767px)  {
-  .tm-qt-adds span { padding:7px 7px }
-}
+@media (max-width:767px) { .tm-qt-adds span { padding:7px 7px } }
 
 /* ── a cena do evento ─────────────────────────────────────────────
    O mercado binário aberto: pergunta, preço, gráfico, livro e a rampa
@@ -1456,7 +1465,7 @@
 /* Quem pediu menos movimento recebe o fim, não o filme: a carteira com
    a posição aberta, que é onde a jornada chega. */
 @media (prefers-reduced-motion:reduce) {
-  .tm-app-scene, .tm-gate, .tm-sheet, .tm-sheet-wrap, .tm-qt,
+  .tm-app-scene, .tm-gate, .tm-sheet, .tm-sheet-wrap, .tm-qt, .tm-flip-in,
   .tm-app-cursor, .tm-app-toast, .tm-ev2-view { transition:none }
   .tm-gate-code i.is-in, .tm-sheet-ok .tm-ok-tick { animation:none }
   .tm-inp.is-focus .tm-caret { animation:none; opacity:1 }

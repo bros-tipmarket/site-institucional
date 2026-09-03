@@ -579,7 +579,8 @@
       gateScreen('email');
       surface.classList.remove('is-authed');
       closeSheet(); sheetBody('deposit');
-      qt.classList.remove('is-on', 'is-done', 'is-empty');
+      qt.classList.remove('is-done');
+      if (flip) { clearTimeout(flipT); flip.classList.remove('is-flipped', 'is-back'); }
       toast.classList.remove('is-on');
       show('home'); ev2view('chart');
       drawn('tm-app-chart', false); drawn('tm-app-pfchart', false);
@@ -613,24 +614,26 @@
         if (r.parentNode) r.parentNode.removeChild(r);
       });
     }
-    /* O atalho abre ancorado no card que a pessoa tocou, medido na hora.
-       Um top fixo no CSS servia a uma largura só — e nas outras o painel
-       flutuava longe do card, que é justamente o que ele não pode fazer:
-       o argumento dele é "opinar sem sair da lista". */
-    function qtAnchor() {
-      var card = root.querySelector('.tm-col:last-child .tm-bin:first-of-type');
-      if (!card || !card.getClientRects().length) return;
-      var r = card.getBoundingClientRect(), b = root.getBoundingClientRect();
-      /* Encaixa na vaga do card — mesma esquerda, mesma largura, mesmo
-         topo. No produto o atalho SUBSTITUI o card, e um painel de outra
-         largura flutuando ao lado dele contava outra história. */
-      qt.style.left  = Math.round(r.left - b.left) + 'px';
-      qt.style.width = Math.round(r.width) + 'px';
-      var top = r.top - b.top;
-      /* preso dentro do corte: metade do painel fora do bezel não é um
-         painel, é um erro de layout */
-      var max = b.height - qt.offsetHeight - 12;
-      qt.style.top = Math.max(10, Math.min(top, max)) + 'px';
+    /* ── o giro ─────────────────────────────────────────────────────
+       O card vira e o painel está do outro lado. Quem está NO FLUXO
+       troca no meio da virada, com o card de perfil: naquele instante
+       nada está visível, e é isso que esconde a diferença de altura
+       entre a frente e a contracapa. Sem essa troca, ou a coluna dá um
+       salto na hora do clique, ou o painel fica cortado na altura do
+       card.
+
+       Não há mais medição de posição: o painel é filho do card, então a
+       vaga e a largura são as dele por construção. */
+    var flip = document.getElementById('tm-app-flip');
+    var flipT = null;
+    function flipTo(on) {
+      if (!flip) return;
+      clearTimeout(flipT);
+      flip.classList.toggle('is-flipped', !!on);
+      /* 250ms = metade da transição de .54s declarada no CSS */
+      flipT = setTimeout(function () {
+        flip.classList.toggle('is-back', !!on);
+      }, 250);
     }
 
     function qtSlider(pct) {
@@ -685,14 +688,13 @@
       { at: 13350, run: function () { moveTo('.tm-col:last-child .tm-bin:first-of-type .tm-bin-y'); } },
       { at: 13900, run: function () {
           tap('.tm-col:last-child .tm-bin:first-of-type .tm-bin-y');
-          qtAnchor();
-          qt.classList.add('is-on'); } },
+          flipTo(true); } },
       /* O painel do produto já abre com $5,00: o valor não precisa ser
          digitado, e o filme não precisa fingir que precisa. */
       { at: 15850, run: function () { moveTo('#tm-app-qt-ok'); } },
       { at: 16350, run: function () { tap('#tm-app-qt-ok'); } },
       { at: 16700, run: function () { qt.classList.add('is-done'); bal(45, true); } },
-      { at: 17850, run: function () { qt.classList.remove('is-on'); } },
+      { at: 17850, run: function () { flipTo(false); } },
 
       /* 4 · o evento inteiro */
       { at: 18150, run: function () { moveTo('.tm-col:last-child .tm-bin:first-of-type .tm-bin-q'); } },
