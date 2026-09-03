@@ -1121,11 +1121,20 @@
 .tm-ev2-chart.is-drawn .tm-ev2-dot { opacity:1 }
 .tm-ev2-xs { display:flex; justify-content:space-between; font-size:9px;
              color:var(--tm-faint); margin-top:4px }
+/* o preço corrente mora na ponta da linha, não numa legenda: é assim no
+   site, e é o que faz o gráfico ler como leitura e não como enfeite */
+.tm-ev2-now { position:absolute; right:-2px; top:8px; line-height:1.15;
+              font-size:9.5px; font-weight:700; color:var(--brand); text-align:left }
+.tm-ev2-now b { display:block; font-size:11px }
 .tm-ev2-ranges { display:flex; gap:6px; justify-content:center; margin-top:9px }
 .tm-ev2-ranges span { padding:4px 10px; border-radius:999px; font-size:10px;
                       font-weight:600; color:var(--tm-soft); background:var(--tm-surf-2) }
 .tm-ev2-ranges span.is-on { background:var(--brand); color:#fff }
-/* o livro de ofertas */
+/* o livro de ofertas — conferido no site, e eu tinha errado três coisas:
+   faltava a fileira de rótulos Price/Shares/Total, faltava o lado da
+   compra (o livro tem os dois) e a barra de profundidade cresce da
+   ESQUERDA, proporcional ao total acumulado. A minha crescia da
+   direita, o que invertia a leitura do livro.                      */
 .tm-ev2-book-h { font-size:10.5px; color:var(--tm-soft) }
 .tm-ev2-book-h b { color:var(--tm-ink); font-weight:600 }
 .tm-ev2-book-seg { display:flex; gap:7px; margin:9px 0 }
@@ -1141,31 +1150,39 @@
 .tm-ev2-book-t.is-bid { background:color-mix(in srgb, var(--tm-yes) 8%, #fff);
                         color:var(--tm-yes) }
 .tm-ev2-book-t .ds-dot { width:5px; height:5px; background:currentColor }
+/* o chevron de recolher, que o site tem em cada banda */
+.tm-ev2-book-cv { margin-left:auto; width:7px; height:7px; flex-shrink:0;
+                  border-left:1.5px solid currentColor; border-top:1.5px solid currentColor;
+                  transform:rotate(45deg) }
+.tm-ev2-book-hd { display:flex; padding:6px 11px; font-size:9.5px; color:var(--tm-faint);
+                  border-top:1px solid var(--tm-line) }
+.tm-ev2-book-hd span:first-child { width:34% }
+.tm-ev2-book-hd span:nth-child(2) { width:34% }
+.tm-ev2-book-hd span:last-child { margin-left:auto; text-align:right }
 .tm-ev2-book-r { position:relative; display:flex; align-items:center;
                  padding:6px 11px; font-size:10.5px;
                  border-top:1px solid var(--tm-line);
                  font-variant-numeric:tabular-nums }
-.tm-ev2-book-r i { position:absolute; right:0; top:0; bottom:0;
+.tm-ev2-book-r i { position:absolute; left:0; top:0; bottom:0;
                    background:color-mix(in srgb, var(--tm-no) 9%, transparent) }
-.tm-ev2-book-r span:first-child { width:34%; color:var(--tm-no); font-weight:600;
-                                  position:relative; z-index:1 }
-.tm-ev2-book-r span:nth-child(3) { width:34%; color:var(--tm-soft);
-                                   position:relative; z-index:1 }
-.tm-ev2-book-r span:last-child { margin-left:auto; color:var(--tm-ink);
-                                 position:relative; z-index:1 }
+.tm-ev2-book-r.is-bid i { background:color-mix(in srgb, var(--tm-yes) 10%, transparent) }
+.tm-ev2-book-r span { position:relative; z-index:1 }
+.tm-ev2-book-r span:first-child { width:34%; color:var(--tm-no); font-weight:600 }
+.tm-ev2-book-r.is-bid span:first-child { color:var(--tm-yes) }
+.tm-ev2-book-r span:nth-child(3) { width:34%; color:var(--tm-soft) }
+.tm-ev2-book-r span:last-child { margin-left:auto; color:var(--tm-ink); text-align:right }
+.tm-ev2-book-sp { padding:6px 11px; font-size:9.5px; color:var(--tm-faint);
+                  border-top:1px solid var(--tm-line); background:var(--tm-surf-2) }
 /* a rampa: o que ainda vai acontecer com este mercado */
 .tm-ev2-tl { margin-top:12px; background:var(--tm-surf); border:1px solid var(--tm-line);
              border-radius:13px; padding:15px; box-shadow:var(--tm-card-sh) }
 .tm-ev2-tl h5 { font-size:14px; font-weight:700 }
 .tm-ev2-tl div { display:flex; gap:10px; margin-top:11px; font-size:11px }
-.tm-ev2-tl div i { flex-shrink:0; width:9px; height:9px; border-radius:50%; margin-top:3px;
-                   border:2px solid var(--tm-line); background:var(--tm-surf);
-                   position:relative }
+/* anéis vazados e sem fio entre eles: o site não desenha o conector, e
+   o meu fio fazia a rampa ler como progresso já andado */
+.tm-ev2-tl div i { flex-shrink:0; width:10px; height:10px; border-radius:50%; margin-top:3px;
+                   border:1.5px solid #00000029; background:var(--tm-surf) }
 .tm-ev2-tl div:first-of-type i { border-color:var(--brand); background:var(--brand) }
-.tm-ev2-tl div i::after { content:''; position:absolute; left:50%; top:11px;
-                          width:1px; height:19px; margin-left:-.5px;
-                          background:var(--tm-line) }
-.tm-ev2-tl div:last-child i::after { display:none }
 .tm-ev2-tl b { display:block; font-weight:600 }
 .tm-ev2-tl em { font-style:normal; color:var(--tm-faint); font-size:10.5px }
 /* o trilho da direita: onde a ordem nasce */
@@ -1174,17 +1191,23 @@
                align-self:start }
 .tm-ev2-rail h5 { font-size:14.5px; font-weight:700 }
 .tm-ev2-rail > p { font-size:10.5px; color:var(--tm-faint); margin-top:4px }
+/* O rótulo senta num bloco mais fundo, ocupando o terço da esquerda —
+   detalhe do site que eu tinha achatado num texto solto. */
 .tm-ev2-side {
-  display:flex; align-items:center; gap:10px; margin-top:10px;
-  padding:11px 13px; border-radius:11px; font-weight:700;
+  position:relative; display:flex; align-items:center; gap:10px; margin-top:10px;
+  border-radius:11px; font-weight:700; overflow:hidden;
   transition:box-shadow .25s ease, transform .2s cubic-bezier(.22,1,.28,1);
 }
+.tm-ev2-side strong { padding:11px 0; width:34%; text-align:center; flex-shrink:0 }
+.tm-ev2-side.is-yes strong { background:color-mix(in srgb, var(--tm-yes) 13%, transparent) }
+.tm-ev2-side.is-no  strong { background:color-mix(in srgb, var(--tm-no) 11%, transparent) }
+.tm-ev2-side u { padding-right:13px }
 .tm-ev2-side.is-yes { background:color-mix(in srgb, var(--tm-yes) 10%, #fff);
                       color:var(--tm-yes) }
 .tm-ev2-side.is-no  { background:color-mix(in srgb, var(--tm-no) 8%, #fff);
                       color:var(--tm-no) }
-.tm-ev2-side strong { font-size:13.5px }
 .tm-ev2-side u { margin-left:auto; text-align:right; text-decoration:none }
+.tm-ev2-side strong { font-size:13.5px }
 .tm-ev2-side u b  { display:block; font-size:12.5px; font-variant-numeric:tabular-nums }
 .tm-ev2-side u em { font-style:normal; display:block; font-size:8.5px;
                     letter-spacing:.1em; text-transform:uppercase; opacity:.72;
