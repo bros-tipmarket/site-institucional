@@ -1233,17 +1233,40 @@
 .tm-ev2-view.is-on { opacity:1; position:relative }
 .tm-ev2-chart { position:relative }
 .tm-ev2-chart svg { display:block; width:100%; height:126px; overflow:visible }
-.tm-ev2-chart .tm-ev2-line { fill:none; stroke:var(--brand); stroke-width:2;
-                             stroke-linecap:round; stroke-linejoin:round;
-                             stroke-dasharray:1 1; stroke-dashoffset:1 }
-.tm-ev2-chart.is-drawn .tm-ev2-line { stroke-dashoffset:0;
-                             transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.3,1) }
+/* `non-scaling-stroke` e o que salva este grafico. O SVG desenha num
+   viewBox de 320 e e esticado ate a largura do painel — quase 2,5x no
+   eixo x e 1x no y. Sem isso a ESPESSURA estica junto: trecho vertical
+   sai com 5px de largura, trecho horizontal com 2, e uma serie cheia de
+   degraus vira um borrao. Com isso a espessura e medida em pixel de
+   tela, e 1,75px e 1,75px em qualquer direcao. */
+.tm-ev2-chart .tm-ev2-line { fill:none; stroke:var(--brand); stroke-width:1.75;
+                             vector-effect:non-scaling-stroke;
+                             stroke-linecap:round; stroke-linejoin:round }
+/* A linha se desenhava por tracejado — dasharray 1 1 sobre pathLength 1,
+   o offset descendo de 1 a 0. Com `non-scaling-stroke` isso deixa de
+   funcionar: o tracejado passa a ser medido em pixel de tela, e 1px de
+   risco com 1px de vao devolve uma linha pontilhada em vez de uma linha
+   crescendo. As duas coisas nao convivem.
+
+   Quem desenha agora e uma cortina sobre o SVG inteiro. Sai mais barato
+   (uma propriedade, sem tocar na geometria), independe da espessura, e
+   revela linha e area juntas — que e como grafico de verdade aparece. */
+.tm-ev2-chart svg { clip-path:inset(0 100% 0 0) }
+.tm-ev2-chart.is-drawn svg { clip-path:inset(0 0 0 0);
+                             transition:clip-path 1.5s cubic-bezier(.4,0,.3,1) }
 .tm-ev2-chart .tm-ev2-fill { fill:color-mix(in srgb, var(--brand) 11%, transparent);
                              opacity:0; transition:opacity .7s ease .5s }
 .tm-ev2-chart.is-drawn .tm-ev2-fill { opacity:1 }
-.tm-ev2-chart .tm-ev2-grid { stroke:var(--tm-line); stroke-width:1; stroke-dasharray:3 4 }
-.tm-ev2-chart .tm-ev2-dot  { fill:var(--brand); opacity:0;
-                             transition:opacity .3s ease 1.4s }
+/* a grade pelo mesmo motivo: esticado, o tracejado de 3/4 virava 7/10 e
+   a grade competia com a linha em vez de ficar atras dela */
+.tm-ev2-chart .tm-ev2-grid { stroke:var(--tm-line); stroke-width:1;
+                             vector-effect:non-scaling-stroke;
+                             stroke-dasharray:2 5 }
+.tm-ev2-chart .tm-ev2-dot  { position:absolute; left:var(--dot-x); top:var(--dot-y);
+                             width:7px; height:7px; margin:-3.5px 0 0 -3.5px;
+                             border-radius:50%; background:var(--brand);
+                             box-shadow:0 0 0 3px color-mix(in srgb, var(--brand) 22%, transparent);
+                             opacity:0; transition:opacity .3s ease 1.4s }
 .tm-ev2-chart.is-drawn .tm-ev2-dot { opacity:1 }
 .tm-ev2-xs { display:flex; justify-content:space-between; font-size:9px;
              color:var(--tm-faint); margin-top:4px }
@@ -1482,11 +1505,17 @@
             text-align:right }
 .tm-pf-ys em { font-style:normal; font-size:8.5px; color:var(--tm-faint); line-height:1 }
 .tm-pf-chart svg { display:block; width:100%; height:104px; overflow:visible }
-.tm-pf-chart .tm-pf-grid-l { stroke:var(--tm-line); stroke-width:1; stroke-dasharray:3 4 }
-.tm-pf-chart .tm-pf-line { fill:none; stroke:var(--tm-yes); stroke-width:2;
-                           stroke-linecap:round; stroke-dasharray:1 1; stroke-dashoffset:1 }
-.tm-pf-chart.is-drawn .tm-pf-line { stroke-dashoffset:0;
-                           transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.3,1) }
+.tm-pf-chart .tm-pf-grid-l { stroke:var(--tm-line); stroke-width:1;
+                             vector-effect:non-scaling-stroke; stroke-dasharray:2 5 }
+/* mesma historia do grafico do evento: esticado, o traco engrossava so
+   na vertical. Aqui a serie e curta e o defeito era discreto, mas e o
+   mesmo defeito. */
+.tm-pf-chart .tm-pf-line { fill:none; stroke:var(--tm-yes); stroke-width:1.9;
+                           vector-effect:non-scaling-stroke; stroke-linecap:round;
+                           stroke-linejoin:round }
+.tm-pf-chart svg { clip-path:inset(0 100% 0 0) }
+.tm-pf-chart.is-drawn svg { clip-path:inset(0 0 0 0);
+                           transition:clip-path 1.4s cubic-bezier(.4,0,.3,1) }
 
 @media (max-width:1023px) {
   .tm-prof, .tm-pf { padding-left:16px; padding-right:16px }
@@ -1564,7 +1593,7 @@
   .tm-app-cursor, .tm-app-toast, .tm-ev2-view { transition:none }
   .tm-gate-code i.is-in, .tm-sheet-ok .tm-ok-tick { animation:none }
   .tm-inp.is-focus .tm-caret { animation:none; opacity:1 }
-  .tm-ev2-chart .tm-ev2-line, .tm-pf-chart .tm-pf-line { stroke-dashoffset:0 }
+  .tm-ev2-chart svg, .tm-pf-chart svg { clip-path:none }
   .tm-ev2-chart .tm-ev2-fill, .tm-ev2-chart .tm-ev2-dot { opacity:1 }
   .tm-app-ctl { display:none }
 }
