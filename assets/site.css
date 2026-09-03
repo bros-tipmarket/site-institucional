@@ -1220,11 +1220,13 @@
 .tm-ev2-book-cv { margin-left:auto; width:7px; height:7px; flex-shrink:0;
                   border-left:1.5px solid currentColor; border-top:1.5px solid currentColor;
                   transform:rotate(45deg) }
+/* As tres colunas — Price, Shares, Total — sao :nth-of-type e nao
+   :nth-child de proposito. A barra de profundidade e um <i> e ele conta
+   como primeiro FILHO da linha: com :nth-child a largura do preco caia
+   em nada e a das cotas ia para o span errado, o que colava $0.45 em
+   4 shares num unico bloco. Contando por TIPO, o <i> sai da conta. */
 .tm-ev2-book-hd { display:flex; padding:6px 11px; font-size:9.5px; color:var(--tm-faint);
-                  border-top:1px solid var(--tm-line) }
-.tm-ev2-book-hd span:first-child { width:34% }
-.tm-ev2-book-hd span:nth-child(2) { width:34% }
-.tm-ev2-book-hd span:last-child { margin-left:auto; text-align:right }
+                  border-top:1px solid var(--tm-line); background:#00000005 }
 .tm-ev2-book-r { position:relative; display:flex; align-items:center;
                  padding:6px 11px; font-size:10.5px;
                  border-top:1px solid var(--tm-line);
@@ -1233,10 +1235,17 @@
                    background:color-mix(in srgb, var(--tm-no) 9%, transparent) }
 .tm-ev2-book-r.is-bid i { background:color-mix(in srgb, var(--tm-yes) 10%, transparent) }
 .tm-ev2-book-r span { position:relative; z-index:1 }
-.tm-ev2-book-r span:first-child { width:34%; color:var(--tm-no); font-weight:600 }
-.tm-ev2-book-r.is-bid span:first-child { color:var(--tm-yes) }
-.tm-ev2-book-r span:nth-child(3) { width:34%; color:var(--tm-soft) }
-.tm-ev2-book-r span:last-child { margin-left:auto; color:var(--tm-ink); text-align:right }
+/* uma grade so para o cabecalho e para as linhas */
+.tm-ev2-book-hd span:nth-of-type(1),
+.tm-ev2-book-r  span:nth-of-type(1) { width:34%; flex:none }
+.tm-ev2-book-hd span:nth-of-type(2),
+.tm-ev2-book-r  span:nth-of-type(2) { width:34%; flex:none }
+.tm-ev2-book-hd span:nth-of-type(3),
+.tm-ev2-book-r  span:nth-of-type(3) { margin-left:auto; text-align:right }
+.tm-ev2-book-r span:nth-of-type(1) { color:var(--tm-no); font-weight:700 }
+.tm-ev2-book-r.is-bid span:nth-of-type(1) { color:var(--tm-yes) }
+.tm-ev2-book-r span:nth-of-type(2) { color:var(--tm-soft) }
+.tm-ev2-book-r span:nth-of-type(3) { color:var(--tm-ink) }
 .tm-ev2-book-sp { padding:6px 11px; font-size:9.5px; color:var(--tm-faint);
                   border-top:1px solid var(--tm-line); background:var(--tm-surf-2) }
 /* a rampa: o que ainda vai acontecer com este mercado */
