@@ -233,6 +233,10 @@
      azuis saíam brancos. No palco ela alcança o app inteiro, que é o que
      "a tela é do operador" quer dizer de qualquer forma. */
   --brand:#3a80c8;
+  /* O produto é Poppins de ponta a ponta — o mock estava em Inter, que é
+     a fonte de texto da PÁGINA, não do app. Declarada no palco, ela
+     pega o app, o portão, as folhas e o atalho de uma vez. */
+  font-family:Poppins, Inter, Arial, sans-serif;
   position:relative; z-index:1;
   /* praticamente fixa de propósito: escalar a altura com vw fazia o corte
      passear pelo conteúdo, e entre ~1100 e ~1250px ele caía em cima da
@@ -815,9 +819,17 @@
 }
 
 /* ── o portão: login e código ─────────────────────────────────────
-   Cobre o palco inteiro, moldura do app incluída, porque antes de
-   entrar não existe app — existe uma porta. O produto põe só uma volta,
-   a logo e o botão de tema em cima, e o cartão no meio.            */
+   Medido na tela real (demo.372.one/login, tema claro), não estimado:
+   cartão de 400px com raio 20 e 24 de padding, campo de 56px com raio
+   14, botão 15,5px/800 com raio 15, e a assinatura azul em itálico 800
+   de 20px por cima do título. Os números anteriores eram todos meus.
+
+   Duas coisas que eu tinha errado de forma: a barra é TRANSPARENTE (não
+   um cabeçalho branco com fio) e os quatro elementos dela — volta,
+   marca, nome e tema — andam juntos, centrados como um grupo. E o
+   cartão fica no alto, a ~11% da altura, não centrado: eu havia
+   centrado para o quadro não parecer vazio, mas o vazio embaixo é o que
+   a página realmente tem.                                          */
 .tm-gate {
   position:absolute; inset:0; z-index:6;
   background:var(--tm-canvas); color:var(--tm-ink);
@@ -826,67 +838,61 @@
 }
 .tm-gate.is-off { opacity:0; transform:scale(1.015); pointer-events:none }
 .tm-gate-bar {
-  display:flex; align-items:center; gap:10px;
-  padding:13px 18px; background:var(--tm-surf);
-  border-bottom:1px solid var(--tm-line);
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  height:64px; flex-shrink:0; padding:0 24px;
 }
 .tm-gate-bar .tm-gate-back, .tm-gate-bar .tm-gate-theme {
-  width:28px; height:28px; flex-shrink:0; display:grid; place-items:center;
+  width:32px; height:32px; flex-shrink:0; display:grid; place-items:center;
   border:1px solid var(--tm-line); border-radius:50%;
   color:var(--tm-soft); background:var(--tm-surf);
 }
-.tm-gate-bar svg { width:13px; height:13px }
-.tm-gate-bar .tm-gate-theme { margin-left:auto }
-.tm-gate-logo { height:19px; width:auto; display:block }
-/* Centrado, e não colado no topo: numa tela de 706px o cartão encostado
-   em cima deixava dois terços de vazio embaixo — e este é o PRIMEIRO
-   quadro do laço, o que o visitante vê antes de qualquer coisa. Página
-   de login de verdade centra o cartão; aqui isso também é o que faz o
-   quadro parecer cheio no segundo zero. */
-.tm-gate-body { flex:1; display:flex; align-items:center; justify-content:center;
-                padding:0 18px 34px }
-.tm-gate-col  { width:100%; max-width:376px }
+.tm-gate-bar svg { width:14px; height:14px }
+.tm-gate-logo { height:20px; width:auto; display:block }
+.tm-gate-body { flex:1; display:flex; justify-content:center; padding:33px 18px 0 }
+.tm-gate-col  { width:100%; max-width:400px; align-self:flex-start }
 .tm-gate-card {
-  width:100%;
-  background:var(--tm-surf); border:1px solid var(--tm-line);
-  border-radius:14px; padding:22px; box-shadow:var(--tm-card-sh);
+  width:100%; background:var(--tm-surf);
+  border-radius:20px; padding:24px;
+  box-shadow:0 0 0 1px #0000001f, 0 1px 2px #1018280f, 0 8px 24px -12px #10182824;
 }
 /* a assinatura do produto: linha azul em itálico por cima do título */
-.tm-kicker { display:block; font-style:italic; font-weight:700;
-             font-size:16px; line-height:1.2; color:var(--brand) }
-.tm-gate-card h4 { font-size:17px; font-weight:700; line-height:1.25; margin-top:1px }
-.tm-gate-card p  { font-size:11.5px; line-height:1.5; color:var(--tm-soft); margin-top:6px }
+.tm-kicker { display:block; font-style:italic; font-weight:800;
+             font-size:20px; line-height:1.08; color:var(--brand) }
+.tm-gate-card h4 { font-size:20px; font-weight:800; line-height:1.08; color:#0b0d12 }
+.tm-gate-card p  { font-size:13px; line-height:1.62; color:var(--tm-soft); margin-top:8px }
 .tm-gate-card p b { color:var(--tm-ink); font-weight:600 }
-.tm-gate-lbl { display:block; font-size:11.5px; font-weight:600; margin:15px 0 6px }
+.tm-gate-lbl { display:block; font-size:12.5px; font-weight:600;
+               color:var(--tm-soft); margin:18px 0 7px }
 .tm-gate-btn {
-  display:block; width:100%; text-align:center; margin-top:12px;
-  padding:11px 0; border-radius:10px; background:var(--brand); color:#fff;
-  font-size:13px; font-weight:700;
+  display:block; width:100%; text-align:center; margin-top:14px;
+  padding:15px 0; border-radius:15px; background:var(--brand); color:#f6f7f9;
+  font-size:15.5px; font-weight:800; line-height:1.1;
 }
 .tm-gate-btn.is-off { background:color-mix(in srgb, var(--brand) 42%, #fff) }
-.tm-gate-foot { text-align:center; font-size:11px; color:var(--tm-soft); margin-top:11px }
-.tm-gate-foot b { color:var(--brand); font-weight:700; text-decoration:underline }
-.tm-gate-legal { text-align:center; font-size:9.5px; color:var(--tm-faint); margin-top:14px }
-.tm-gate-legal b { color:var(--tm-soft); font-weight:400; text-decoration:underline }
-/* as seis casas do código */
-.tm-gate-code { display:grid; grid-template-columns:repeat(6,1fr); gap:7px; margin-top:14px }
+.tm-gate-foot { text-align:center; font-size:12.5px; color:var(--tm-soft); margin-top:20px }
+.tm-gate-foot b { color:var(--tm-ink); font-weight:700; text-decoration:underline }
+.tm-gate-legal { text-align:center; font-size:11px; color:var(--tm-faint); margin-top:16px }
+.tm-gate-legal b { color:var(--tm-faint); font-weight:400; text-decoration:underline }
+/* as seis casas do código, na mesma métrica do campo de e-mail */
+.tm-gate-code { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin-top:16px }
 .tm-gate-code i {
-  height:40px; border:1px solid var(--tm-line); border-radius:9px;
-  background:var(--tm-field); display:grid; place-items:center;
-  font-style:normal; font-size:15px; font-weight:600;
+  height:52px; border:.8px solid #00000033; border-radius:14px;
+  background:#00000008; display:grid; place-items:center;
+  font-style:normal; font-size:18px; font-weight:700;
   font-variant-numeric:tabular-nums;
-  transition:border-color .2s ease, background .2s ease;
+  transition:border-color .2s ease, background .2s ease, box-shadow .3s ease;
 }
 .tm-gate-code i.is-in { border-color:var(--brand);
                         background:color-mix(in srgb, var(--brand) 8%, #fff);
+                        box-shadow:0 0 0 3px color-mix(in srgb, var(--brand) 14%, transparent);
                         animation:tmAppPop .34s cubic-bezier(.3,1.5,.5,1) }
 @keyframes tmAppPop { 0% { transform:scale(.84) } 100% { transform:scale(1) } }
 
 /* o campo digitado, compartilhado pelo portão e pelas folhas */
 .tm-inp {
-  display:flex; align-items:center; height:42px; padding:0 13px;
-  border:1px solid var(--tm-line); border-radius:10px;
-  background:var(--tm-field); font-size:13.5px; color:var(--tm-ink);
+  display:flex; align-items:center; height:56px; padding:0 16px;
+  border:.8px solid #00000033; border-radius:14px;
+  background:#00000008; font-size:15px; color:var(--tm-ink);
   transition:border-color .25s ease, box-shadow .3s ease, background .25s ease;
 }
 .tm-inp.is-focus { border-color:var(--brand); background:var(--tm-surf);
