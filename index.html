@@ -314,17 +314,16 @@
         </nav>
 
         <!-- ── cards Featured — o trilho premium acima de Explore ────
-             O produto passou a rodar uma imagem de fundo ligada ao
-             evento em cada card, e a antiga marca-d'água de globo virou
-             a mesma coisa para todos eles. Aqui o fundo é vetorial e
-             desenhado por evento: o mock inteiro é vetor feito à mão,
-             então trocar por foto exigiria hospedar imagem e não deixaria
-             o quadro mais verdadeiro. Se as fotos do produto entrarem em
-             assets/, cada .tm-fcard-art vira um background-image.
+             O produto roda uma imagem de fundo ligada ao evento em cada
+             card, e aqui ela é foto de verdade — uma por mercado, servida
+             de assets/ e cortada em 704×316, que é o dobro do card. As
+             três vêm da Unsplash, cuja licença cobre uso comercial sem
+             exigir crédito; o crédito fica no comentário de cada uma
+             porque é justo, não porque é obrigatório.
 
-             Os três têm arte. O estado claro do .tm-fcard continua no CSS
-             porque é real — evento sem imagem cai no fundo do tema — mas
-             não é o que a fileira mostra.
+             O estado claro do .tm-fcard continua no CSS porque é real —
+             evento sem imagem cai no fundo do tema — mas não é o que a
+             fileira mostra.
 
              ── de onde vêm os números ─────────────────────────────────
              Pergunta, preço, multiplicador, volume e data de todos os
@@ -341,34 +340,9 @@
                  do Satoshi se mexem, e o desenho é a própria rede com um
                  ponto que acorda. Abstrato de propósito — nenhum logo de
                  terceiro entra aqui. -->
-            <svg class="tm-fcard-art" viewBox="0 0 340 158" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <defs>
-                <linearGradient id="tmArtA" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#3a3782"/><stop offset="1" stop-color="#101020"/>
-                </linearGradient>
-                <radialGradient id="tmArtAg" cx="88%" cy="24%" r="54%">
-                  <stop offset="0" stop-color="#b9c2ff" stop-opacity=".32"/>
-                  <stop offset="1" stop-color="#b9c2ff" stop-opacity="0"/>
-                </radialGradient>
-              </defs>
-              <rect width="340" height="158" fill="url(#tmArtA)"/>
-              <rect width="340" height="158" fill="url(#tmArtAg)"/>
-              <g stroke="#aeb8ff" stroke-width="1" opacity=".14" fill="none">
-                <path d="M0 128h340"/><path d="M0 96h340"/>
-              </g>
-              <g stroke="#aeb8ff" stroke-width="1" opacity=".3" fill="none">
-                <path d="M44 118 96 74 152 110 206 58 258 96 306 48"/>
-                <path d="M44 118 152 110 258 96"/>
-                <path d="M96 74 206 58 306 48"/>
-              </g>
-              <g fill="#7d88e8" opacity=".92">
-                <circle cx="44" cy="118" r="3.4"/><circle cx="96" cy="74" r="3.4"/>
-                <circle cx="152" cy="110" r="3.4"/><circle cx="206" cy="58" r="3.4"/>
-                <circle cx="258" cy="96" r="3.4"/>
-              </g>
-              <circle cx="306" cy="48" r="11" fill="none" stroke="#dfe4ff" stroke-width="1.2" opacity=".45"/>
-              <circle cx="306" cy="48" r="5.6" fill="#dfe4ff"/>
-            </svg>
+            <!-- foto: Dmytro Demidko / Unsplash -->
+            <img class="tm-fcard-art" src="assets/feat-bitcoin.jpg" alt="Três moedas de bitcoin douradas sobre fundo preto"
+                 width="704" height="316" decoding="async">
             <span class="tm-feat-pill">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/></svg>Featured · $4.91M vol.
             </span>
@@ -389,31 +363,9 @@
           </article>
 
           <article class="tm-fcard tm-fcard--dark">
-            <svg class="tm-fcard-art" viewBox="0 0 340 158" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <defs>
-                <linearGradient id="tmArtC" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#283946"/><stop offset="1" stop-color="#0c1116"/>
-                </linearGradient>
-                <linearGradient id="tmArtCf" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#4fd39a" stop-opacity=".42"/>
-                  <stop offset="1" stop-color="#4fd39a" stop-opacity="0"/>
-                </linearGradient>
-              </defs>
-              <rect width="340" height="158" fill="url(#tmArtC)"/>
-              <g stroke="#9dc0d6" stroke-width=".8" opacity=".15">
-                <path d="M0 40h340M0 74h340M0 108h340"/>
-                <path d="M58 0v158M126 0v158M194 0v158M262 0v158"/>
-              </g>
-              <path d="M0 122 34 110 68 118 102 94 136 102 170 76 204 86 238 60 272 68 306 44 340 52 340 158 0 158Z" fill="url(#tmArtCf)"/>
-              <path d="M0 122 34 110 68 118 102 94 136 102 170 76 204 86 238 60 272 68 306 44 340 52" fill="none" stroke="#63e3b0" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity=".9"/>
-              <g fill="#9dc0d6" opacity=".2">
-                <rect x="30" y="126" width="4" height="16" rx="1"/>
-                <rect x="98" y="112" width="4" height="20" rx="1"/>
-                <rect x="166" y="96" width="4" height="22" rx="1"/>
-                <rect x="234" y="80" width="4" height="24" rx="1"/>
-                <rect x="302" y="64" width="4" height="26" rx="1"/>
-              </g>
-            </svg>
+            <!-- foto: Pretty Pink / Unsplash -->
+            <img class="tm-fcard-art" src="assets/feat-capitol.jpg" alt="O Capitólio dos Estados Unidos iluminado à noite"
+                 width="704" height="316" decoding="async">
             <span class="tm-feat-pill">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/></svg>Featured · $11.93M vol.
             </span>
@@ -434,42 +386,9 @@
           </article>
 
           <article class="tm-fcard tm-fcard--dark">
-            <svg class="tm-fcard-art" viewBox="0 0 340 158" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <defs>
-                <linearGradient id="tmArtB" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#1b3f6e"/><stop offset="1" stop-color="#0a1220"/>
-                </linearGradient>
-                <radialGradient id="tmArtBl" cx="50%" cy="0%" r="70%">
-                  <stop offset="0" stop-color="#cfe6ff" stop-opacity=".5"/>
-                  <stop offset="1" stop-color="#cfe6ff" stop-opacity="0"/>
-                </radialGradient>
-              </defs>
-              <rect width="340" height="158" fill="url(#tmArtB)"/>
-              <rect width="340" height="158" fill="url(#tmArtBl)"/>
-              <!-- o oval de autódromo volta a ser campo, que é o que o
-                   mercado pede agora. Arquibancada e refletores continuam
-                   servindo — são a moldura, não o esporte. Nenhum escudo
-                   entra: o card cita o clube por nome, no rodapé, que é
-                   como o próprio mercado o nomeia. -->
-              <g fill="#0c2038" opacity=".75">
-                <path d="M0 74h340v14H0z"/><path d="M0 92h340v10H0z"/>
-              </g>
-              <g fill="#e9f3ff" opacity=".06">
-                <path d="M0 110h340v16H0z"/><path d="M0 142h340v16H0z"/>
-              </g>
-              <g fill="none" stroke="#d5e4f5" stroke-width="1.4" opacity=".4">
-                <path d="M14 110h312v70H14z"/>
-                <path d="M170 110v70"/>
-                <circle cx="170" cy="145" r="24"/>
-                <path d="M14 126h40v38H14z"/>
-                <path d="M286 126h40v38h-40z"/>
-              </g>
-              <circle cx="170" cy="145" r="2.6" fill="#d5e4f5" opacity=".5"/>
-              <g fill="#e9f3ff" opacity=".38">
-                <circle cx="30" cy="66" r="2.2"/><circle cx="44" cy="63" r="2.2"/>
-                <circle cx="296" cy="66" r="2.2"/><circle cx="310" cy="63" r="2.2"/>
-              </g>
-            </svg>
+            <!-- foto: Alex Simpson / Unsplash -->
+            <img class="tm-fcard-art" src="assets/feat-stadium.jpg" alt="Partida de futebol num estádio lotado sob os refletores"
+                 width="704" height="316" decoding="async">
             <span class="tm-feat-pill">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 7-7"/><path d="M15 8h5v5"/></svg>Featured · $22.64M vol.
             </span>

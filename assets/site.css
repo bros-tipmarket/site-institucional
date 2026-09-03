@@ -385,19 +385,29 @@
             --gauge-bg:var(--tm-surf); --gauge-track:#e1e5ea;
             --gauge-arc:var(--brand) }
 
-/* A imagem de fundo do evento. Vetor e não foto: o quadro inteiro é
-   desenhado à mão, e uma foto exigiria hospedar arquivo sem deixar o
-   mock mais verdadeiro. Trocar por foto depois é uma linha — o elemento
-   já ocupa o card todo e já tem o véu de contraste por cima.        */
+/* A foto do evento, ocupando o card inteiro. `cover` porque a proporção
+   do card muda com a largura da tela e a do arquivo não; o brilho desce
+   um pouco para a foto não competir com o texto que mora em cima. */
 .tm-fcard-art { position:absolute; inset:0; z-index:0; width:100%; height:100%;
+                object-fit:cover; filter:brightness(.92) saturate(.94);
                 pointer-events:none }
 .tm-fcard--dark { color:#fff; border-color:#ffffff26;
                   --gauge-bg:#0f141b; --gauge-track:#ffffff2e;
                   --gauge-arc:color-mix(in srgb, var(--brand) 62%, #fff) }
-/* O véu rebaixa o desenho, não o apaga: a arte já escurece sozinha para
-   baixo, então aqui basta o suficiente para o texto ganhar contraste. */
+/* O véu rebaixa a foto, não a apaga. Com desenho bastava um gradiente
+   fraco, porque a arte já escurecia sozinha para baixo; foto não faz
+   isso — a cúpula do Capitólio e os refletores do estádio são as áreas
+   mais claras do quadro e caem justamente onde o texto branco mora.
+
+   São dois: um vertical, que segura as duas pontas — a pílula e a
+   pergunta em cima, o medidor e o Trade embaixo — e um diagonal pela
+   esquerda, que é por onde a pergunta se estende. O miolo à direita
+   fica aberto, e é ali que a foto se vê.                            */
 .tm-fcard--dark::after { content:''; position:absolute; inset:0; z-index:0;
-                         background:linear-gradient(160deg,#0b0f1410 0%,#0b0f1450 44%,#0b0f14b5 100%) }
+                         background:
+                           linear-gradient(180deg,#080c11c4 0%,#080c1166 32%,
+                                                   #080c1180 58%,#080c11ec 100%),
+                           linear-gradient(102deg,#080c11a8 0%,#080c1138 56%,#080c1100 100%) }
 .tm-fcard--dark .tm-fcard-q { color:#fff }
 .tm-fcard--dark .tm-feat-pill { color:#e4f1ff; background:#ffffff24 }
 .tm-fcard--dark .tm-feat-save { background:#ffffff2b }
