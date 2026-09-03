@@ -740,9 +740,11 @@
   border:1px solid color-mix(in srgb, var(--brand) 26%, #fff);
 }
 .tm-surface.is-authed .tm-app-bal { display:flex }
-.tm-app-bal em { font-style:normal; font-size:8.5px; letter-spacing:.14em;
+/* empilhados: no produto o rótulo fica ACIMA do valor, não ao lado */
+.tm-app-bal-txt { display:flex; flex-direction:column; line-height:1.05 }
+.tm-app-bal em { font-style:normal; font-size:8px; letter-spacing:.14em;
                  text-transform:uppercase; color:var(--brand); opacity:.85 }
-.tm-app-bal b  { font-size:13px; font-weight:600; color:var(--tm-ink);
+.tm-app-bal b  { font-size:13.5px; font-weight:700; color:var(--tm-ink);
                  font-variant-numeric:tabular-nums }
 .tm-app-bal i  { width:21px; height:21px; border-radius:50%; flex-shrink:0;
                  background:var(--brand); color:#fff; font-style:normal;
@@ -931,6 +933,41 @@
 .tm-sheet-sub b { color:var(--tm-ink); font-weight:600 }
 .tm-sheet-lbl { display:block; font-size:11.5px; font-weight:600; margin:15px 0 6px }
 .tm-sheet-note { font-size:10.5px; color:var(--tm-faint); margin-top:6px }
+/* ── o depósito é um endereço, não um valor ────────────────────────
+   Conferido no site logado. Não há campo de quantia nem fichas: o
+   produto entrega QR + address USDC na Polygon, avisa que outra rede é
+   irrecuperável, e credita sozinho quando a transferência chega.    */
+.tm-qr { width:132px; height:132px; margin:14px auto 0; padding:7px;
+         background:#fff; border:1px solid var(--tm-line); border-radius:10px }
+.tm-qr svg { display:block; width:100%; height:100% }
+.tm-addr { display:flex; align-items:center; gap:9px;
+           border:.8px solid #00000033; border-radius:12px; padding:11px 13px;
+           background:#00000008 }
+.tm-addr span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis;
+                white-space:nowrap; font-size:11px; color:var(--tm-ink);
+                font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
+.tm-addr i { flex-shrink:0; color:var(--tm-faint) }
+.tm-addr i svg { width:14px; height:14px; display:block }
+/* o aviso de rede, em âmbar como no produto */
+.tm-sheet-warn { display:flex; gap:9px; margin-top:13px; padding:11px 13px;
+                 border-radius:11px; background:#fdf6e8; color:#8a6d31;
+                 font-size:11px; line-height:1.5 }
+.tm-sheet-warn svg { width:14px; height:14px; flex-shrink:0; margin-top:1px }
+.tm-sheet-warn b { color:#6f5622; font-weight:700 }
+/* o status: espera, e vira crédito sozinho */
+.tm-dep-status { margin-top:10px; padding:11px 13px; border-radius:11px;
+                 background:var(--tm-surf-2) }
+.tm-dep-status b { display:flex; align-items:center; gap:7px;
+                   font-size:12px; font-weight:700 }
+.tm-dep-status .ds-dot { width:6px; height:6px; background:#c99a2e;
+                         animation:pulse 1.8s ease-in-out infinite }
+.tm-dep-status em { display:block; font-style:normal; margin-top:3px;
+                    font-size:10.5px; color:var(--tm-soft) }
+.tm-dep-status.is-ok { background:color-mix(in srgb, var(--tm-yes) 9%, #fff) }
+.tm-dep-status.is-ok b { color:var(--tm-yes) }
+.tm-dep-status.is-ok .ds-dot { background:var(--tm-yes); animation:none }
+.tm-dep-foot { text-align:center; margin-top:11px }
+
 /* as fichas de valor: $10 · $50 · $100 */
 .tm-chips { display:flex; gap:7px; margin-top:9px }
 .tm-chips span {
@@ -968,7 +1005,13 @@
 .tm-sheet-cash i { margin-left:auto; font-style:normal; padding:6px 13px;
                    border-radius:999px; background:color-mix(in srgb, var(--brand) 13%, #fff);
                    color:var(--brand); font-weight:700 }
-.tm-sheet-ioc { font-size:10px; color:var(--brand); text-align:center; margin-top:9px }
+/* cinza, e não azul: no produto esta linha é nota de rodapé, não link */
+.tm-sheet-ioc { font-size:10px; color:var(--tm-faint); text-align:center; margin-top:9px }
+.tm-sheet-note .tm-mult { font-style:normal; margin-left:5px; padding:2px 7px;
+                          border-radius:6px; font-size:10.5px; font-weight:700;
+                          background:color-mix(in srgb, var(--brand) 12%, #fff);
+                          color:var(--brand) }
+.tm-sheet-rule { height:1px; background:var(--tm-line); margin:16px -22px 0 }
 /* o aviso de rede, palavra por palavra do produto */
 .tm-sheet-info {
   display:flex; gap:8px; margin-top:13px; padding:10px 12px;
@@ -999,15 +1042,21 @@
 /* ── o quick trade: o painel que abre no próprio card ─────────────
    É o atalho do produto — opinar sem sair da lista. Ele nasce ancorado
    na coluna de notícias da Home, que é onde o card mora.           */
+/* No produto o atalho SUBSTITUI o card, na mesma vaga e na mesma
+   largura — não flutua por cima com sombra, como o meu fazia. É o que
+   o argumento dele diz: opinar sem sair da lista. O JS o encaixa sobre
+   o card (qtAnchor), e sem sombra ele lê como o card virando painel. */
 .tm-qt {
-  position:absolute; z-index:4; right:16px; width:min(420px,46%);
-  top:352px; /* só o ponto de partida; quem manda é o qtAnchor em site.js */
+  position:absolute; z-index:4;
   background:var(--tm-surf); border:1px solid var(--tm-line);
-  border-radius:13px; padding:13px; box-shadow:0 22px 50px -18px #10182840;
-  opacity:0; transform:translateY(8px) scale(.99); pointer-events:none;
-  transition:opacity .28s ease, transform .38s cubic-bezier(.22,1,.28,1);
+  border-radius:13px; padding:13px;
+  /* Entrada só por opacidade: qualquer transform aqui deixa a caixa
+     PINTADA diferente da vaga que o JS mediu, e o painel tem de casar
+     com o card ao pixel — é ele virando painel, não um popup em cima. */
+  opacity:0; pointer-events:none;
+  transition:opacity .26s ease;
 }
-.tm-qt.is-on { opacity:1; transform:none }
+.tm-qt.is-on { opacity:1 }
 .tm-qt-head { display:flex; align-items:flex-start; gap:9px }
 .tm-qt-q { font-size:12.5px; font-weight:600; line-height:1.35 }
 .tm-qt-x { margin-left:auto; color:var(--tm-faint); flex-shrink:0 }
@@ -1046,7 +1095,6 @@
 }
 .tm-qt-cancel  { border:1px solid var(--tm-line); color:var(--tm-ink) }
 .tm-qt-confirm { background:var(--brand); color:#fff }
-.tm-qt.is-empty .tm-qt-confirm { background:color-mix(in srgb, var(--brand) 42%, #fff) }
 /* estado final: o painel vira recibo */
 .tm-qt-done { display:none; align-items:center; gap:9px; font-size:12px; font-weight:600 }
 .tm-qt-done i { width:24px; height:24px; border-radius:50%; flex-shrink:0;
@@ -1060,9 +1108,7 @@
 .tm-qt.is-done .tm-qt-btns { display:none }
 .tm-qt.is-done .tm-qt-done { display:flex }
 
-@media (max-width:1023px) { .tm-qt { width:min(400px,56%) } }
 @media (max-width:767px)  {
-  .tm-qt { right:14px; left:14px; width:auto; top:auto; bottom:calc(62px + 62px) }
   .tm-qt-adds span { padding:7px 7px }
 }
 
@@ -1247,6 +1293,7 @@
               display:grid; place-items:center; font-size:14px; font-weight:700;
               background:color-mix(in srgb, var(--brand) 13%, #fff); color:var(--brand) }
 .tm-prof-mail { font-size:11.5px; color:var(--tm-soft) }
+.tm-prof-since { font-size:11px; color:var(--tm-faint); margin-top:1px }
 .tm-prof-vf { display:inline-flex; align-items:center; gap:5px; margin-top:6px;
               padding:4px 9px; border-radius:999px; font-size:10px; font-weight:600;
               background:color-mix(in srgb, var(--brand) 11%, #fff); color:var(--brand) }
@@ -1271,9 +1318,14 @@
 .tm-prof-list em { font-style:normal; display:block; font-size:10.5px; color:var(--tm-soft) }
 .tm-prof-list .tm-prof-arw { margin-left:auto; color:var(--tm-faint); flex-shrink:0 }
 .tm-prof-list .tm-prof-arw svg { width:12px; height:12px }
-.tm-prof-out { margin-top:11px; text-align:center; padding:12px 0;
-               border:1px solid color-mix(in srgb, var(--tm-no) 34%, #fff);
-               border-radius:13px; color:var(--tm-no); font-size:12.5px; font-weight:600 }
+/* borda neutra, não vermelha: no produto só o texto e o ícone são
+   vermelhos — a caixa é um cartão como os de cima */
+.tm-prof-out { display:flex; align-items:center; justify-content:center; gap:8px;
+               margin-top:11px; padding:13px 0;
+               background:var(--tm-surf); border:1px solid var(--tm-line);
+               border-radius:13px; color:var(--tm-no); font-size:12.5px; font-weight:700;
+               box-shadow:var(--tm-card-sh) }
+.tm-prof-out svg { width:14px; height:14px; flex-shrink:0 }
 
 /* ── a cena da carteira ──────────────────────────────────────────── */
 .tm-pf { padding:16px 22px 0 }
@@ -1319,7 +1371,13 @@
 .tm-pf-ranges span { padding:3px 8px; border-radius:999px; font-size:9.5px; font-weight:600;
                      color:var(--tm-soft); background:var(--tm-surf-2) }
 .tm-pf-ranges span.is-on { background:var(--brand); color:#fff }
-.tm-pf-chart svg { display:block; width:100%; height:104px; margin-top:9px; overflow:visible }
+/* eixo y rotulado, como no produto: sem os valores o gráfico é enfeite */
+.tm-pf-plot { position:relative; margin-top:9px; padding-left:30px }
+.tm-pf-ys { position:absolute; left:0; top:0; bottom:0; width:28px;
+            display:flex; flex-direction:column; justify-content:space-between;
+            text-align:right }
+.tm-pf-ys em { font-style:normal; font-size:8.5px; color:var(--tm-faint); line-height:1 }
+.tm-pf-chart svg { display:block; width:100%; height:104px; overflow:visible }
 .tm-pf-chart .tm-pf-grid-l { stroke:var(--tm-line); stroke-width:1; stroke-dasharray:3 4 }
 .tm-pf-chart .tm-pf-line { fill:none; stroke:var(--tm-yes); stroke-width:2;
                            stroke-linecap:round; stroke-dasharray:1 1; stroke-dashoffset:1 }

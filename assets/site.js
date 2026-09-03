@@ -551,6 +551,17 @@
         el.classList.toggle('is-on', el.getAttribute('data-ev2tab') === name);
       });
     }
+    /* o status do depósito: espera, e vira crédito */
+    function depSt(ok) {
+      var st = document.getElementById('tm-app-dep-st');
+      if (!st) return;
+      st.classList.toggle('is-ok', !!ok);
+      st.querySelector('b').lastChild.textContent =
+        ok ? 'Deposit received · $50.00' : 'Waiting for your transfer';
+      st.querySelector('em').textContent = ok
+        ? 'Credited to your balance.'
+        : 'Credits automatically after 12 network confirmations.';
+    }
     function drawn(id, on) {
       var el = document.getElementById(id);
       if (el) el.classList.toggle('is-drawn', !!on);
@@ -568,8 +579,7 @@
       gateScreen('email');
       surface.classList.remove('is-authed');
       closeSheet(); sheetBody('deposit');
-      qt.classList.remove('is-on', 'is-done');
-      qt.classList.add('is-empty');
+      qt.classList.remove('is-on', 'is-done', 'is-empty');
       toast.classList.remove('is-on');
       show('home'); ev2view('chart');
       drawn('tm-app-chart', false); drawn('tm-app-pfchart', false);
@@ -583,21 +593,20 @@
       codeCells.forEach(function (c) { c.textContent = ''; c.classList.remove('is-in'); });
       btn('tm-app-login', false, 'Log in');
 
-      ['tm-app-dep-inp', 'tm-app-ord-inp', 'tm-app-qt-inp'].forEach(function (id) {
-        var h = document.getElementById(id);
-        if (!h) return;
-        h.classList.remove('is-focus');
-        h.querySelector('.tm-typed').textContent = '0.00';
-      });
-      btn('tm-app-dep-ok', false, 'Choose an amount');
+      var ordInp = document.getElementById('tm-app-ord-inp');
+      if (ordInp) { ordInp.classList.remove('is-focus');
+                    ordInp.querySelector('.tm-typed').textContent = '0.00'; }
+      /* o atalho volta ao padrão do produto, que já vem com valor */
+      var qtInp = document.getElementById('tm-app-qt-inp');
+      if (qtInp) { qtInp.classList.remove('is-focus');
+                   qtInp.querySelector('.tm-typed').textContent = '5.00'; }
       btn('tm-app-ord-ok', false, 'Amount too low');
-      ['tm-app-dep-chips', 'tm-app-ord-chips'].forEach(function (id) {
-        var g = document.getElementById(id);
-        if (g) Array.prototype.forEach.call(g.children, function (c) {
-          c.classList.remove('is-on');
-        });
+      var ordChips = document.getElementById('tm-app-ord-chips');
+      if (ordChips) Array.prototype.forEach.call(ordChips.children, function (c) {
+        c.classList.remove('is-on');
       });
-      qtSlider(12);
+      depSt(false);
+      qtSlider(28);
       cursor.classList.remove('is-on', 'is-tap');
       cx = 0; cy = 0; at(0, 0);
       Array.prototype.forEach.call(root.querySelectorAll('.tm-app-ripple'), function (r) {
@@ -611,13 +620,17 @@
     function qtAnchor() {
       var card = root.querySelector('.tm-col:last-child .tm-bin:first-of-type');
       if (!card || !card.getClientRects().length) return;
-      if (window.matchMedia('(max-width:767px)').matches) { qt.style.top = ''; return; }
       var r = card.getBoundingClientRect(), b = root.getBoundingClientRect();
-      var top = r.top - b.top - 8;
-      /* preso dentro do corte: metade do painel para fora do bezel não
-         é um painel, é um erro de layout */
-      var max = b.height - qt.offsetHeight - 14;
-      qt.style.top = Math.max(12, Math.min(top, max)) + 'px';
+      /* Encaixa na vaga do card — mesma esquerda, mesma largura, mesmo
+         topo. No produto o atalho SUBSTITUI o card, e um painel de outra
+         largura flutuando ao lado dele contava outra história. */
+      qt.style.left  = Math.round(r.left - b.left) + 'px';
+      qt.style.width = Math.round(r.width) + 'px';
+      var top = r.top - b.top;
+      /* preso dentro do corte: metade do painel fora do bezel não é um
+         painel, é um erro de layout */
+      var max = b.height - qt.offsetHeight - 12;
+      qt.style.top = Math.max(10, Math.min(top, max)) + 'px';
     }
 
     function qtSlider(pct) {
@@ -660,19 +673,12 @@
       { at: 7950,  run: function () { moveTo(pick('#tm-app-dep-m', '#tm-app-dep')); } },
       { at: 8500,  run: function () { tap(pick('#tm-app-dep-m', '#tm-app-dep')); } },
       { at: 8850,  run: function () { openSheet('deposit'); } },
-      { at: 9500,  run: function () { moveTo('#tm-app-dep-50'); } },
-      { at: 10000,  run: function () {
-          tap('#tm-app-dep-50');
-          chip('tm-app-dep-50');
-          setAmount('tm-app-dep-inp', '50.00');
-          btn('tm-app-dep-ok', true, 'Deposit $50.00'); } },
-      { at: 10750,  run: function () { moveTo('#tm-app-dep-ok'); } },
-      { at: 11250, run: function () { tap('#tm-app-dep-ok'); } },
-      { at: 11600, run: function () {
-          sheetBody('filled');
-          document.getElementById('tm-app-ok-h').textContent = 'Deposit confirmed';
-          document.getElementById('tm-app-ok-p').textContent = '$50.00 · USDC on Polygon';
-          cursor.classList.remove('is-on'); } },
+      /* Sem toque de valor: o depósito do produto é um endereço, e o que
+         a cena tem para mostrar é o status virando crédito sozinho. */
+      { at: 9500,  run: function () { moveTo('.tm-addr'); } },
+      { at: 10000, run: function () { tap('.tm-addr'); } },
+      { at: 10450, run: function () { cursor.classList.remove('is-on'); } },
+      { at: 11500, run: function () { depSt(true); } },
       { at: 12550, run: function () { closeSheet(); bal(50, true); } },
 
       /* 3 · opinar pelo atalho, sem sair da lista */
@@ -681,15 +687,8 @@
           tap('.tm-col:last-child .tm-bin:first-of-type .tm-bin-y');
           qtAnchor();
           qt.classList.add('is-on'); } },
-      { at: 14600, run: function () { moveTo('#tm-app-qt-5'); } },
-      { at: 15100, run: function () {
-          tap('#tm-app-qt-5');
-          document.getElementById('tm-app-qt-5').classList.add('is-press');
-          setAmount('tm-app-qt-inp', '5.00');
-          qtSlider(28);
-          qt.classList.remove('is-empty'); } },
-      { at: 15350, run: function () {
-          document.getElementById('tm-app-qt-5').classList.remove('is-press'); } },
+      /* O painel do produto já abre com $5,00: o valor não precisa ser
+         digitado, e o filme não precisa fingir que precisa. */
       { at: 15850, run: function () { moveTo('#tm-app-qt-ok'); } },
       { at: 16350, run: function () { tap('#tm-app-qt-ok'); } },
       { at: 16700, run: function () { qt.classList.add('is-done'); bal(45, true); } },

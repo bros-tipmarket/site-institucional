@@ -271,8 +271,10 @@
             <span class="tm-btn-brand">Sign up</span>
           </span>
           <span class="tm-app-bal" id="tm-app-bal">
-            <em>Balance</em>
-            <b id="tm-app-bal-v">$0.00</b>
+            <span class="tm-app-bal-txt">
+              <em>Balance</em>
+              <b id="tm-app-bal-v">$0.00</b>
+            </span>
             <i>+</i>
           </span>
         </div>
@@ -833,6 +835,7 @@
               <div>
                 <span class="tm-kicker">your.account</span>
                 <div class="tm-prof-mail">your@email.com</div>
+                <div class="tm-prof-since">User since May 27, 2026</div>
                 <span class="tm-prof-vf">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
                   Email-verified account
@@ -869,7 +872,10 @@
               </div>
             </div>
 
-            <div class="tm-prof-out">Sign out</div>
+            <div class="tm-prof-out">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17l5-5-5-5"/><path d="M20 12H9"/><path d="M12 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6"/></svg>
+              Sign out
+            </div>
           </div>
         </div><!-- /cena perfil -->
 
@@ -927,12 +933,16 @@
                     <span class="is-on">1D</span><span>1W</span><span>1M</span><span>ALL</span>
                   </span>
                 </div>
-                <svg viewBox="0 0 300 104" preserveAspectRatio="none" aria-hidden="true">
-                  <line class="tm-pf-grid-l" x1="0" y1="20" x2="300" y2="20"/>
-                  <line class="tm-pf-grid-l" x1="0" y1="52" x2="300" y2="52"/>
-                  <line class="tm-pf-grid-l" x1="0" y1="84" x2="300" y2="84"/>
-                  <path class="tm-pf-line" pathLength="1" d="M6 78 L58 70 L110 74 L162 52 L214 44 L272 24"/>
-                </svg>
+                <div class="tm-pf-plot">
+                  <span class="tm-pf-ys"><em>$50</em><em>$25</em><em>$0</em><em>-$25</em><em>-$50</em></span>
+                  <svg viewBox="0 0 300 104" preserveAspectRatio="none" aria-hidden="true">
+                    <line class="tm-pf-grid-l" x1="0" y1="10" x2="300" y2="10"/>
+                    <line class="tm-pf-grid-l" x1="0" y1="34" x2="300" y2="34"/>
+                    <line class="tm-pf-grid-l" x1="0" y1="58" x2="300" y2="58"/>
+                    <line class="tm-pf-grid-l" x1="0" y1="82" x2="300" y2="82"/>
+                    <path class="tm-pf-line" pathLength="1" d="M6 74 L58 66 L110 70 L162 48 L214 40 L272 22"/>
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
@@ -970,7 +980,7 @@
            O atalho do produto: opinar sem abrir o evento. Ele abre
            ancorado na coluna de notícias da Home, que é onde o card que
            a pessoa tocou está.                                      -->
-      <div class="tm-qt is-empty" id="tm-app-qt" aria-hidden="true">
+      <div class="tm-qt" id="tm-app-qt" aria-hidden="true">
         <div class="tm-qt-head">
           <span class="tm-qt-q">Will the next Mythos-Class model debut as #1?</span>
           <span class="tm-qt-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
@@ -978,7 +988,7 @@
         <div class="tm-qt-row">
           <span class="tm-qt-side">Yes $0.26</span>
           <span class="tm-inp tm-qt-amt" id="tm-app-qt-inp">
-            <span class="tm-cur">$</span><span class="tm-typed">0.00</span><i class="tm-caret"></i>
+            <span class="tm-cur">$</span><span class="tm-typed">5.00</span><i class="tm-caret"></i>
           </span>
           <span class="tm-qt-adds">
             <span id="tm-app-qt-5">+5</span><span>+10</span><span>+50</span>
@@ -1006,26 +1016,39 @@
       <div class="tm-sheet-wrap" id="tm-app-sheet" aria-hidden="true">
         <div class="tm-sheet">
 
-          <!-- depósito -->
+          <!-- depósito — conferido no site logado, e o que eu tinha aqui
+               era invenção: campo de valor com fichas $10/$50/$100 e um
+               botão "Depositar". O produto não pede valor. Ele dá um
+               ENDEREÇO: QR, address USDC na Polygon, o aviso de rede e um
+               status que credita sozinho. É a mesma gramática que a
+               Quebra 4 já usava — o herói era o fora de padrão. -->
           <div data-sheet="deposit">
             <div class="tm-sheet-head">
-              <h4>Deposit</h4>
+              <h4>Deposit USDC</h4>
               <span class="tm-sheet-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
             </div>
-            <div class="tm-sheet-sub">Funds land as <b>USDC on Polygon</b>.</div>
-            <span class="tm-sheet-lbl">How much?</span>
-            <span class="tm-inp is-amount" id="tm-app-dep-inp">
-              <span class="tm-cur">$</span><span class="tm-typed">0.00</span><i class="tm-caret"></i>
-            </span>
-            <div class="tm-sheet-note">Minimum $10.00.</div>
-            <div class="tm-chips" id="tm-app-dep-chips">
-              <span>$10</span><span id="tm-app-dep-50">$50</span><span>$100</span>
+            <div class="tm-sheet-sub">Send USDC on Polygon to the address below. It credits automatically.</div>
+
+            <!-- o QR é desenhado, não capturado: um endereço de verdade num
+                 material de venda seria um endereço publicado -->
+            <div class="tm-qr" aria-hidden="true"><svg viewBox="0 0 29 29" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><g fill="#14161a"><path d="M0 0h7v7H0zM22 0h7v7h-7zM0 22h7v7H0z"/><path d="M2 2h3v3H2zM24 2h3v3h-3zM2 24h3v3H2z" fill="#fff"/><path d="M9 0h1v1H9zM11 0h1v1h-1zM13 0h2v1h-2zM17 0h1v1h-1zM9 2h2v1H9zM12 2h1v1h-1zM14 2h1v1h-1zM16 2h2v1h-2zM10 4h1v1h-1zM12 4h2v1h-2zM15 4h1v1h-1zM17 4h1v1h-1zM9 6h1v1H9zM11 6h2v1h-2zM14 6h1v1h-1zM16 6h1v1h-1z"/><path d="M0 9h1v1H0zM2 9h1v1H2zM4 9h2v1H4zM0 11h2v1H0zM3 11h1v1H3zM5 11h1v1H5zM1 13h1v1H1zM3 13h2v1H3zM6 13h1v1H6zM0 15h1v1H0zM2 15h2v1H2zM5 15h1v1H5zM1 17h2v1H1zM4 17h1v1H4zM6 17h1v1H6zM0 19h1v1H0zM2 19h1v1H2zM4 19h2v1H4z"/><path d="M23 9h1v1h-1zM25 9h2v1h-2zM28 9h1v1h-1zM22 11h1v1h-1zM24 11h1v1h-1zM26 11h2v1h-2zM23 13h2v1h-2zM26 13h1v1h-1zM28 13h1v1h-1zM22 15h2v1h-2zM25 15h1v1h-1zM27 15h1v1h-1zM23 17h1v1h-1zM25 17h2v1h-2zM22 19h1v1h-1zM24 19h1v1h-1zM26 19h1v1h-1zM28 19h1v1h-1z"/><path d="M9 9h2v2H9zM12 9h1v1h-1zM14 9h2v1h-2zM17 9h2v1h-2zM20 9h1v1h-1zM9 12h1v1H9zM11 11h2v1h-2zM14 11h1v1h-1zM16 11h1v1h-1zM18 11h2v1h-2zM10 13h2v1h-2zM13 13h1v1h-1zM15 13h2v1h-2zM18 13h1v1h-1zM20 13h1v1h-1zM9 15h1v1H9zM11 15h1v1h-1zM13 15h2v1h-2zM16 15h1v1h-1zM18 15h2v1h-2zM10 17h2v1h-2zM13 17h1v1h-1zM15 17h1v1h-1zM17 17h2v1h-2zM20 17h1v1h-1zM9 19h2v1H9zM12 19h1v1h-1zM14 19h2v1h-2zM17 19h1v1h-1zM19 19h2v1h-2z"/><path d="M9 22h1v1H9zM11 22h2v1h-2zM14 22h1v1h-1zM16 22h2v1h-2zM19 22h1v1h-1zM21 22h1v1h-1zM24 22h2v1h-2zM27 22h1v1h-1zM10 24h2v1h-2zM13 24h1v1h-1zM15 24h2v1h-2zM18 24h1v1h-1zM20 24h2v1h-2zM23 24h1v1h-1zM25 24h1v1h-1zM27 24h2v1h-2zM9 26h1v1H9zM11 26h1v1h-1zM13 26h2v1h-2zM16 26h1v1h-1zM18 26h2v1h-2zM21 26h2v1h-2zM24 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM10 28h2v1h-2zM13 28h1v1h-1zM15 28h2v1h-2zM18 28h1v1h-1zM20 28h1v1h-1zM22 28h2v1h-2zM25 28h2v1h-2z"/></g></svg></div>
+
+            <span class="tm-sheet-lbl">Your deposit address</span>
+            <div class="tm-addr">
+              <span>0xA1b2C3d4E5f60718293a4B5c6D7e8F901a2B3c4D</span>
+              <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 5H6a2 2 0 0 0-2 2v9"/></svg></i>
             </div>
-            <div class="tm-sheet-info">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.9"/></svg>
-              <span>Settlement is asynchronous: we credit the balance as soon as the transfer confirms on-chain.</span>
+
+            <div class="tm-sheet-warn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 22 20H2z"/><path d="M12 10v4M12 16.6v.6"/></svg>
+              <span>Send <b>USDC on Polygon only</b>. Any other asset or network is unrecoverable.</span>
             </div>
-            <span class="tm-sheet-btn is-off" id="tm-app-dep-ok">Choose an amount</span>
+
+            <div class="tm-dep-status" id="tm-app-dep-st">
+              <b><span class="ds-dot"></span>Waiting for your transfer</b>
+              <em>Credits automatically after 12 network confirmations.</em>
+            </div>
+            <div class="tm-sheet-note tm-dep-foot">You can close this sheet — the deposit credits on its own.</div>
           </div>
 
           <!-- ordem, a partir do trilho do evento -->
@@ -1035,7 +1058,7 @@
               <span class="tm-sheet-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
             </div>
             <div class="tm-sheet-sub">Will the next Mythos-Class model debut as #1?</div>
-            <div class="tm-sheet-note"><b>$0.26</b> · 26% chance · 3.85x</div>
+            <div class="tm-sheet-note"><b>$0.26</b> · 26% chance <i class="tm-mult">3.85x</i></div>
             <div class="tm-seg"><span class="is-on">Buy</span><span>Sell</span></div>
             <div class="tm-seg"><span class="is-on">Yes</span><span>No</span></div>
             <div class="tm-seg-row">
@@ -1049,6 +1072,7 @@
             <div class="tm-chips" id="tm-app-ord-chips">
               <span id="tm-app-ord-10">$10</span><span>$50</span><span>$100</span>
             </div>
+            <div class="tm-sheet-rule"></div>
             <span class="tm-sheet-btn is-off" id="tm-app-ord-ok">Amount too low</span>
             <div class="tm-sheet-cash">
               Your cash <b id="tm-app-ord-cash">$45.00</b>
