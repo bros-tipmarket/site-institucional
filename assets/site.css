@@ -237,7 +237,8 @@
   /* praticamente fixa de propósito: escalar a altura com vw fazia o corte
      passear pelo conteúdo, e entre ~1100 e ~1250px ele caía em cima da
      pergunta ou dos botões. Altura estável = corte previsível. */
-  height:clamp(706px,49vw,730px);
+  --tm-crop:clamp(706px,49vw,730px);
+  height:var(--tm-crop);
   overflow:hidden;
   border-radius:14px 14px 0 0;
 }
@@ -272,8 +273,15 @@
 }
 
 /* ── sidebar — nearly everything in here is brand ─────────────────── */
+/* Altura do corte e grudada no topo, como no produto: a barra não rola
+   com o conteúdo. Antes ela era min-height:100% e crescia com a Home —
+   então o `margin-top:auto` do cartão de saldo empurrava o cartão para o
+   pé da BARRA, uns 60px abaixo do pé visível do quadro, e o corte comia
+   o Deposit/Withdraw. Com a altura do corte, o pé da barra é o pé que se
+   vê. */
 .tm-side { width:228px; flex-shrink:0; background:var(--tm-surf);
            border-right:1px solid var(--tm-line);
+           position:sticky; top:0; height:var(--tm-crop);
            display:flex; flex-direction:column; gap:14px; padding:14px 12px }
 .tm-side-brand { display:flex; align-items:center; gap:9px; padding:2px 4px 2px }
 /* a lockup inteira no lugar do par marca+nome que girava */
@@ -564,7 +572,7 @@
 
 @media (max-width:1023px) {
   /* the sidebar collapses to the icon rail the app itself uses */
-  .tm-screen  { height:clamp(640px,80vw,704px) }
+  .tm-screen  { --tm-crop:clamp(640px,80vw,704px) }
   .tm-overlap { margin-top:-76px; padding-top:120px }
   .tm-side { width:50px; padding:14px 7px }
   .tm-side-brand { justify-content:center }
@@ -608,7 +616,7 @@
 @media (max-width:767px) {
   .tm-stage   { margin-top:30px; padding:0 12px }
   .tm-bezel   { padding:0 7px; border-radius:20px 20px 0 0 }
-  .tm-screen  { height:clamp(568px,152vw,640px); border-radius:12px 12px 0 0 }
+  .tm-screen  { --tm-crop:clamp(568px,152vw,640px); border-radius:12px 12px 0 0 }
   .tm-overlap { margin-top:-62px; padding-top:104px }
 
   .tm-surface { font-size:12px }
@@ -746,7 +754,10 @@
 /* ── o rodapé da barra: saldo + as duas ações de dinheiro ─────────
    No produto ele fica colado no pé da barra lateral e é de onde sai o
    depósito. Ocupa o lugar do par Log in/Sign up depois do login.    */
-.tm-side-money { display:none; margin-top:auto; margin-bottom:16px;
+/* O recuo é o que a Quebra 1.5 cobre da base do palco, com folga: sem
+   ele o corte caía sobre o Deposit/Withdraw e o cartão aparecia sem as
+   duas ações que são a razão de ele existir. */
+.tm-side-money { display:none; margin-top:auto; margin-bottom:76px;
                  border:1px solid var(--tm-line); border-radius:14px;
                  padding:12px; background:var(--tm-surf); box-shadow:var(--tm-card-sh) }
 .tm-surface.is-authed .tm-side-money { display:block }

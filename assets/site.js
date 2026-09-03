@@ -367,7 +367,9 @@
     var toast   = document.getElementById('tm-app-toast');
     var balPill = document.getElementById('tm-app-bal');
 
-    var EMAIL = 'gabriel.bros@tipmarket.com';
+    /* Endereço de exemplo, não o de ninguém: o quadro é material de
+       venda, e um e-mail real nele é um e-mail publicado. */
+    var EMAIL = 'your@email.com';
     var CODE  = '482193';
 
     /* ── a moldura ──────────────────────────────────────────────── */
@@ -557,7 +559,12 @@
     /* ── o estado de partida ────────────────────────────────────── */
     function reset() {
       clearTimeout(typing);
-      gate.classList.remove('is-off');
+      /* O laço abre na Home, deslogado — e não no portão. Começar na tela
+         de login era mostrar uma porta antes de mostrar o que há atrás
+         dela: quem cai no herói precisa ver o produto no segundo zero. O
+         portão entra quando a pessoa vai lá e clica em Log in, que é
+         também o que prova que a mesma tela serve visitante e cliente. */
+      gate.classList.add('is-off');
       gateScreen('email');
       surface.classList.remove('is-authed');
       closeSheet(); sheetBody('deposit');
@@ -626,105 +633,111 @@
        digitado, e a carteira no fim respira porque é onde a jornada
        chega e a única cena que o olho tem motivo para examinar.    */
     var script = [
-      /* 1 · entrar sem senha */
-      { at: 700,   run: function () { moveTo('#tm-app-mail'); } },
-      { at: 1150,  run: function () {
-          type(document.getElementById('tm-app-mail'), EMAIL, 52); } },
-      { at: 2250,  run: function () { moveTo('#tm-app-send'); } },
-      { at: 2700,  run: function () { tap('#tm-app-send'); } },
-      { at: 3050,  run: function () { gateScreen('code'); cursor.classList.remove('is-on'); } },
-      { at: 3350,  run: function () { fillCode(function () { btn('tm-app-login', true); }); } },
-      { at: 4250,  run: function () { moveTo('#tm-app-login'); } },
-      { at: 4700,  run: function () { tap('#tm-app-login'); } },
-      { at: 5050,  run: function () {
+      /* 1 · a Home deslogada, e a pessoa indo entrar */
+      { at: 800,   run: function () { moveTo(pick('.tm-app-anon .tm-btn-ghost', '.tm-side-login')); } },
+      { at: 1300,  run: function () {
+          tap(pick('.tm-app-anon .tm-btn-ghost', '.tm-side-login')); } },
+      { at: 1650,  run: function () { gate.classList.remove('is-off'); } },
+
+      /* 2 · entrar sem senha */
+      { at: 2200,  run: function () { moveTo('#tm-app-mail'); } },
+      { at: 2600,  run: function () {
+          type(document.getElementById('tm-app-mail'), EMAIL, 46); } },
+      { at: 3500,  run: function () { moveTo('#tm-app-send'); } },
+      { at: 3950,  run: function () { tap('#tm-app-send'); } },
+      { at: 4300,  run: function () { gateScreen('code'); cursor.classList.remove('is-on'); } },
+      { at: 4600,  run: function () { fillCode(function () { btn('tm-app-login', true); }); } },
+      { at: 5500,  run: function () { moveTo('#tm-app-login'); } },
+      { at: 5950,  run: function () { tap('#tm-app-login'); } },
+      { at: 6300,  run: function () {
           gate.classList.add('is-off');
           surface.classList.add('is-authed');
           show('home');
           toast.classList.add('is-on'); } },
-      { at: 6500,  run: function () { toast.classList.remove('is-on'); } },
+      { at: 7750,  run: function () { toast.classList.remove('is-on'); } },
 
       /* 2 · depositar */
-      { at: 6700,  run: function () { moveTo(pick('#tm-app-dep-m', '#tm-app-dep')); } },
-      { at: 7250,  run: function () { tap(pick('#tm-app-dep-m', '#tm-app-dep')); } },
-      { at: 7600,  run: function () { openSheet('deposit'); } },
-      { at: 8250,  run: function () { moveTo('#tm-app-dep-50'); } },
-      { at: 8750,  run: function () {
+      { at: 7950,  run: function () { moveTo(pick('#tm-app-dep-m', '#tm-app-dep')); } },
+      { at: 8500,  run: function () { tap(pick('#tm-app-dep-m', '#tm-app-dep')); } },
+      { at: 8850,  run: function () { openSheet('deposit'); } },
+      { at: 9500,  run: function () { moveTo('#tm-app-dep-50'); } },
+      { at: 10000,  run: function () {
           tap('#tm-app-dep-50');
           chip('tm-app-dep-50');
           setAmount('tm-app-dep-inp', '50.00');
           btn('tm-app-dep-ok', true, 'Deposit $50.00'); } },
-      { at: 9500,  run: function () { moveTo('#tm-app-dep-ok'); } },
-      { at: 10000, run: function () { tap('#tm-app-dep-ok'); } },
-      { at: 10350, run: function () {
+      { at: 10750,  run: function () { moveTo('#tm-app-dep-ok'); } },
+      { at: 11250, run: function () { tap('#tm-app-dep-ok'); } },
+      { at: 11600, run: function () {
           sheetBody('filled');
           document.getElementById('tm-app-ok-h').textContent = 'Deposit confirmed';
           document.getElementById('tm-app-ok-p').textContent = '$50.00 · USDC on Polygon';
           cursor.classList.remove('is-on'); } },
-      { at: 11300, run: function () { closeSheet(); bal(50, true); } },
+      { at: 12550, run: function () { closeSheet(); bal(50, true); } },
 
       /* 3 · opinar pelo atalho, sem sair da lista */
-      { at: 12100, run: function () { moveTo('.tm-col:last-child .tm-bin:first-of-type .tm-bin-y'); } },
-      { at: 12650, run: function () {
+      { at: 13350, run: function () { moveTo('.tm-col:last-child .tm-bin:first-of-type .tm-bin-y'); } },
+      { at: 13900, run: function () {
           tap('.tm-col:last-child .tm-bin:first-of-type .tm-bin-y');
           qtAnchor();
           qt.classList.add('is-on'); } },
-      { at: 13350, run: function () { moveTo('#tm-app-qt-5'); } },
-      { at: 13850, run: function () {
+      { at: 14600, run: function () { moveTo('#tm-app-qt-5'); } },
+      { at: 15100, run: function () {
           tap('#tm-app-qt-5');
           document.getElementById('tm-app-qt-5').classList.add('is-press');
           setAmount('tm-app-qt-inp', '5.00');
           qtSlider(28);
           qt.classList.remove('is-empty'); } },
-      { at: 14100, run: function () {
+      { at: 15350, run: function () {
           document.getElementById('tm-app-qt-5').classList.remove('is-press'); } },
-      { at: 14600, run: function () { moveTo('#tm-app-qt-ok'); } },
-      { at: 15100, run: function () { tap('#tm-app-qt-ok'); } },
-      { at: 15450, run: function () { qt.classList.add('is-done'); bal(45, true); } },
-      { at: 16600, run: function () { qt.classList.remove('is-on'); } },
+      { at: 15850, run: function () { moveTo('#tm-app-qt-ok'); } },
+      { at: 16350, run: function () { tap('#tm-app-qt-ok'); } },
+      { at: 16700, run: function () { qt.classList.add('is-done'); bal(45, true); } },
+      { at: 17850, run: function () { qt.classList.remove('is-on'); } },
 
       /* 4 · o evento inteiro */
-      { at: 16900, run: function () { moveTo('.tm-col:last-child .tm-bin:first-of-type .tm-bin-q'); } },
-      { at: 17400, run: function () { tap('.tm-col:last-child .tm-bin:first-of-type .tm-bin-q'); } },
-      { at: 17750, run: function () {
+      { at: 18150, run: function () { moveTo('.tm-col:last-child .tm-bin:first-of-type .tm-bin-q'); } },
+      { at: 18650, run: function () { tap('.tm-col:last-child .tm-bin:first-of-type .tm-bin-q'); } },
+      { at: 19000, run: function () {
           show('event');
           cursor.classList.remove('is-on');
           drawn('tm-app-chart', true); } },
-      { at: 19600, run: function () { moveTo('#tm-app-book-tab'); } },
-      { at: 20100, run: function () { tap('#tm-app-book-tab'); ev2view('book'); } },
+      { at: 20850, run: function () { moveTo('#tm-app-book-tab'); } },
+      { at: 21350, run: function () { tap('#tm-app-book-tab'); ev2view('book'); } },
 
       /* 5 · a ordem */
-      { at: 21300, run: function () { moveTo('#tm-app-ev2-yes'); } },
-      { at: 21800, run: function () { tap('#tm-app-ev2-yes'); } },
-      { at: 22150, run: function () { openSheet('order'); } },
-      { at: 22800, run: function () { moveTo('#tm-app-ord-10'); } },
-      { at: 23300, run: function () {
+      { at: 22550, run: function () { moveTo('#tm-app-ev2-yes'); } },
+      { at: 23050, run: function () { tap('#tm-app-ev2-yes'); } },
+      { at: 23400, run: function () { openSheet('order'); } },
+      { at: 24050, run: function () { moveTo('#tm-app-ord-10'); } },
+      { at: 24550, run: function () {
           tap('#tm-app-ord-10');
           chip('tm-app-ord-10');
           setAmount('tm-app-ord-inp', '10.00');
           btn('tm-app-ord-ok', true, 'Buy Yes · $10.00'); } },
-      { at: 24000, run: function () { moveTo('#tm-app-ord-ok'); } },
-      { at: 24500, run: function () { tap('#tm-app-ord-ok'); } },
-      { at: 24850, run: function () {
+      { at: 25250, run: function () { moveTo('#tm-app-ord-ok'); } },
+      { at: 25750, run: function () { tap('#tm-app-ord-ok'); } },
+      { at: 26100, run: function () {
           sheetBody('filled');
           document.getElementById('tm-app-ok-h').textContent = 'Order filled';
           document.getElementById('tm-app-ok-p').textContent = 'Buy Yes · $10.00 · 38 shares';
           cursor.classList.remove('is-on'); } },
-      { at: 25800, run: function () { closeSheet(); bal(35, true); } },
+      { at: 27050, run: function () { closeSheet(); bal(35, true); } },
 
       /* 6 · o perfil: a conta existe e já tem histórico */
-      { at: 26500, run: function () { moveTo(pick('.tm-appbar [data-nav="profile"]', '.tm-side [data-nav="profile"]')); } },
-      { at: 27000, run: function () {
+      { at: 27750, run: function () { moveTo(pick('.tm-appbar [data-nav="profile"]', '.tm-side [data-nav="profile"]')); } },
+      { at: 28250, run: function () {
           tap(pick('.tm-appbar [data-nav="profile"]', '.tm-side [data-nav="profile"]'));
           show('profile'); } },
 
       /* 7 · a carteira: a posição aberta, que é onde isto chega */
-      { at: 28800, run: function () { moveTo(pick('.tm-appbar [data-nav="portfolio"]', '.tm-side [data-nav="portfolio"]')); } },
-      { at: 29300, run: function () {
+      { at: 30050, run: function () { moveTo(pick('.tm-appbar [data-nav="portfolio"]', '.tm-side [data-nav="portfolio"]')); } },
+      { at: 30550, run: function () {
           tap(pick('.tm-appbar [data-nav="portfolio"]', '.tm-side [data-nav="portfolio"]'));
           show('portfolio');
           drawn('tm-app-pfchart', true); } },
-      { at: 29900, run: function () { cursor.classList.remove('is-on'); } },
-      { at: 33600, run: function () { reset(); } }
+      { at: 31150, run: function () { cursor.classList.remove('is-on'); } },
+      { at: 34850, run: function () { reset(); } }
     ];
 
     /* O relógio é guardado para a pausa devolver de onde parou. Sair de
@@ -740,7 +753,7 @@
         if (s.at < offset) return;
         timers.push(setTimeout(function () {
           s.run();
-          if (s.at === 33600) { playing = false; offset = 0; play(); }
+          if (s.at === 34850) { playing = false; offset = 0; play(); }
         }, s.at - offset));
       });
     }
