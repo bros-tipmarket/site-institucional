@@ -515,6 +515,24 @@
                 background:color-mix(in srgb, var(--cat) 11%, #fff);
                 box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--cat) 26%, #fff) }
 .tm-card-icon svg { width:15px; height:15px }
+/* A marca do mercado. Logo respira dentro do ladrilho tingido — é o
+   contraste entre os dois que faz a marca ler; foto sangra até a borda,
+   e aí o tingimento só sujaria. O anel fino fica nos dois casos, porque
+   é ele que fecha o quadrado quando a imagem é clara. */
+.tm-card-icon img { width:100%; height:100%; padding:16%; box-sizing:border-box;
+                    object-fit:contain }
+.tm-card-icon.is-photo { overflow:hidden; background:var(--tm-surf-2);
+                         box-shadow:inset 0 0 0 1px #1018281f }
+.tm-card-icon.is-photo img { padding:0; object-fit:cover }
+/* Na página do mercado ela cresce, que é o que a fonte faz: o mesmo
+   ladrilho, do tamanho do bloco de título. */
+.tm-card-icon.is-big { width:46px; height:46px; border-radius:13px }
+/* Selo tem detalhe demais para 28px: em linha preta sobre ladrilho claro
+   ele vira um disco sujo. Invertido sobre azul institucional a leitura
+   inverte junto — o que sobra no tamanho pequeno e a silhueta clara do
+   brasao, que e o que se reconhece. */
+.tm-card-icon.is-seal { background:#14294a; box-shadow:inset 0 0 0 1px #14294a }
+.tm-card-icon.is-seal img { padding:9%; filter:invert(1) brightness(1.45) }
 
 .tm-ev, .tm-bin { border:1px solid var(--tm-line); border-radius:14px;
                   background:var(--tm-surf); padding:11px 12px;

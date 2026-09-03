@@ -432,9 +432,17 @@
              largura cheia e que o mock mostrava de propósito um desenho
              melhor. Isso deixou de ser verdade: o produto chegou lá.
 
-             O ícone de cada card carrega a cor fixa da categoria
-             (--cat-*). São elas que não se movem quando a marca se
-             repinta.                                                 -->
+             Cada card leva a MARCA DO MERCADO, não um glifo de
+             categoria: o logo do ativo, o selo da instituição, a foto do
+             assunto. É o que a fonte faz, e é o que faz uma lista de
+             mercados parecer uma lista de coisas em vez de uma lista de
+             rótulos. Quem abre o mercado reencontra a mesma marca, maior,
+             ao lado do título — é ela que costura o card à página.
+
+             Onde a marca é logo, o ladrilho tingido de --cat continua por
+             trás dela; onde é foto, a foto sangra até a borda e dispensa
+             o tingimento. A cor da categoria é a que não se move quando a
+             marca do operador se repinta.                             -->
         <div class="tm-cols">
 
           <!-- Cada evento leva o seu próprio ícone, não o da categoria:
@@ -474,7 +482,8 @@
             <article class="tm-ev">
               <header class="tm-ev-head">
                 <span class="tm-card-icon" style="--cat:#a06a12">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="7" rx="8" ry="3.2"/><path d="M4 7v10c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V7"/><path d="M4 12c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2"/></svg>
+                  <!-- logo do Bitcoin — domínio público, via Wikimedia Commons -->
+                  <img src="assets/mk-bitcoin.png" alt="Logotipo do Bitcoin" width="56" height="56" decoding="async">
                 </span>
                 <h3 class="tm-ev-q">What price will Bitcoin hit in 2026?</h3>
                 <span class="tm-ev-n">32 markets</span>
@@ -502,8 +511,9 @@
 
             <article class="tm-ev">
               <header class="tm-ev-head">
-                <span class="tm-card-icon" style="--cat:#2b6fb0">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9.6 14.4 14.4 9.6"/><path d="M7.9 12.1 6 14a3.6 3.6 0 0 0 5.1 5.1l1.9-1.9"/><path d="M16.1 11.9 18 10a3.6 3.6 0 0 0-5.1-5.1L11 6.8"/></svg>
+                <span class="tm-card-icon" style="--cat:#5b5aa8">
+                  <!-- logo do Ethereum — domínio público, via Wikimedia Commons -->
+                  <img src="assets/mk-ethereum.png" alt="Logotipo do Ethereum" width="56" height="56" decoding="async">
                 </span>
                 <h3 class="tm-ev-q">What price will Ethereum hit in 2026?</h3>
                 <span class="tm-ev-n">23 markets</span>
@@ -563,9 +573,10 @@
                 <header class="tm-bin-head">
                   <!-- chip, e não o logo de quem o mercado cita: o ícone
                        nomeia a categoria do evento, não a empresa -->
-                  <span class="tm-card-icon" style="--cat:#1c7a54">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.4 15.4h17.2l-2 4.7H5.4z"/><path d="M7.6 15.4V10h8.8v5.4"/><path d="M12 10V6.3M9.7 6.3h4.6"/></svg>
-                  </span>
+                  <span class="tm-card-icon is-photo">
+                  <!-- foto: Andreas Dittberner / Unsplash -->
+                  <img src="assets/mk-hormuz.jpg" alt="Navio porta-contêineres no mar" width="56" height="56" decoding="async">
+                </span>
                   <h3 class="tm-bin-q">Strait of Hormuz traffic returns to normal by December 31?</h3>
                   <span class="tm-bin-pct">
                     <b class="tm-mono" data-tick="28" data-pair="n1" data-suffix="%">28%</b>
@@ -620,8 +631,9 @@
 
             <article class="tm-bin">
               <header class="tm-bin-head">
-                <span class="tm-card-icon" style="--cat:#1c7a54">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.6 9.7 12 4.6l8.4 5.1"/><path d="M6 11v7.6M9.5 11v7.6M14.5 11v7.6M18 11v7.6"/><path d="M3.5 19.4h17"/></svg>
+                <span class="tm-card-icon is-seal">
+                  <!-- selo do Federal Reserve — domínio público, via Wikimedia Commons -->
+                  <img src="assets/mk-fed.png" alt="Selo do Federal Reserve dos Estados Unidos" width="56" height="56" decoding="async">
                 </span>
                 <h3 class="tm-bin-q">Fed rate hike in 2026?</h3>
                 <span class="tm-bin-pct">
@@ -661,8 +673,9 @@
             <div class="min-w-0">
 
               <div class="tm-ev2-t">
-                <span class="tm-card-icon" style="--cat:#1c7a54">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.4 15.4h17.2l-2 4.7H5.4z"/><path d="M7.6 15.4V10h8.8v5.4"/><path d="M12 10V6.3M9.7 6.3h4.6"/></svg>
+                <span class="tm-card-icon is-photo is-big">
+                  <!-- a mesma marca do card: entrar no mercado não troca a cara dele -->
+                  <img src="assets/mk-hormuz.jpg" alt="Navio porta-contêineres no mar" width="56" height="56" decoding="async">
                 </span>
                 <div>
                   <span class="tm-kicker">Your call.</span>
