@@ -394,7 +394,10 @@
         cur.classList.add('is-out');
         clearTimeout(leaving);
         (function (el) {
-          leaving = setTimeout(function () { el.classList.remove('is-out'); }, 500);
+          leaving = setTimeout(function () {
+            el.classList.remove('is-out');
+            el.style.transform = '';
+          }, 500);
         }(cur));
       }
       Object.keys(scenes).forEach(function (k) {
@@ -429,7 +432,12 @@
     var rolled = 0;
     function rollReset() {
       rolled = 0;
-      if (scenesEl) scenesEl.style.transform = '';
+      /* a cena que esta saindo fica onde esta: zerar o rolo dela no meio
+         do corte devolveria 300px de uma vez, e o que era uma troca de
+         tela viraria um solavanco. Ela e limpa quando ja sumiu. */
+      root.querySelectorAll('.tm-app-scene:not(.is-out)').forEach(function (el) {
+        el.style.transform = '';
+      });
     }
     /* Tudo por LAYOUT (offsetTop/offsetHeight), nunca por
        getBoundingClientRect: o retangulo ja carrega o transform do rolo,
@@ -462,7 +470,8 @@
       var want = Math.max(0, Math.min(y + el.offsetHeight - band, Math.max(0, y - 8)));
       if (want === rolled) return;
       rolled = want;
-      scenesEl.style.transform = rolled ? 'translateY(' + (-rolled) + 'px)' : '';
+      var scene = root.querySelector('.tm-app-scene.is-on');
+      if (scene) scene.style.transform = rolled ? 'translateY(' + (-rolled) + 'px)' : '';
     }
 
     /* ── o dinheiro: um número, quatro lugares ─────────────────── */

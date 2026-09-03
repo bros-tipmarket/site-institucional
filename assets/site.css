@@ -335,7 +335,10 @@
    which is exactly the squeezed-app problem this pass exists to fix. */
 .tm-main > * { flex-shrink:0 }
 
-.tm-main-head { display:flex; align-items:center; gap:8px;
+/* `relative` + z-index: o cabeçalho é moldura, e nada da cena
+   pinta por cima dele */
+.tm-main-head { position:relative; z-index:2;
+                display:flex; align-items:center; gap:8px;
                 padding:13px 22px 12px; background:var(--tm-surf) }
 .tm-main-title { font-size:19px; font-weight:800; color:var(--tm-ink);
                  letter-spacing:-.03em; margin-right:auto }
@@ -706,20 +709,28 @@
    passando pelo corte do bezel, que é o comportamento que o quadro já
    tinha. Com `inset:0` ela seria cortada na altura do palco e o corte
    deixaria de acontecer na moldura.                                */
-/* O palco das cenas rola: no telefone o corte tem ~570px e o que a peca
-   precisa mostrar — o painel do atalho, as linhas do livro, a posicao na
-   carteira — cai abaixo dele. Quem rola e este container, por transform,
-   e a moldura (cabecalho, barra lateral, tab bar) fica parada por cima —
-   que e exatamente o que um app faz quando a pessoa desliza a tela. */
-.tm-app-scenes { position:relative; flex:1; min-width:0;
-                 transition:transform .62s cubic-bezier(.33,1,.36,1) }
+/* O palco das cenas rola: no telefone o corte tem ~570px e o que a peça
+   precisa mostrar — o painel do atalho, as linhas do livro, a posição na
+   carteira — cai abaixo dele.
+
+   Quem rola é a CENA; o palco fica parado e é ele quem recorta. Rolar o
+   palco parecia dar no mesmo e não dava: a caixa dele subia junto com o
+   conteúdo, levando o próprio recorte, e a cena passava a ser escrita
+   por cima do cabeçalho — "Your call." saía em cima de "Binary market".
+   Com o recorte numa caixa que não se move, o conteúdo desliza por
+   baixo da moldura, que é o que um app faz quando a pessoa arrasta. */
+.tm-app-scenes { position:relative; flex:1; min-width:0; overflow:hidden }
 .tm-app-scene {
   position:absolute; top:0; left:0; right:0;
   opacity:0; transform:translateX(14px);
   pointer-events:none;
   transition:opacity .34s ease, transform .44s cubic-bezier(.22,1,.28,1);
 }
-.tm-app-scene.is-on  { opacity:1; transform:none; position:relative }
+/* a cena no ar troca a curva: aqui `transform` deixa de ser a entrada
+   lateral e passa a ser a rolagem, que pede um tempo mais longo */
+.tm-app-scene.is-on  { opacity:1; transform:none; position:relative;
+                       transition:opacity .34s ease,
+                                  transform .62s cubic-bezier(.33,1,.36,1) }
 .tm-app-scene.is-out { opacity:0; transform:translateX(-14px) }
 
 /* ── o cabeçalho, agora com estado ────────────────────────────────
@@ -1521,7 +1532,7 @@
 /* Quem pediu menos movimento recebe o fim, não o filme: a carteira com
    a posição aberta, que é onde a jornada chega. */
 @media (prefers-reduced-motion:reduce) {
-  .tm-app-scene, .tm-app-scenes, .tm-gate, .tm-sheet, .tm-sheet-wrap, .tm-qt, .tm-flip-in,
+  .tm-app-scene, .tm-gate, .tm-sheet, .tm-sheet-wrap, .tm-qt, .tm-flip-in,
   .tm-app-cursor, .tm-app-toast, .tm-ev2-view { transition:none }
   .tm-gate-code i.is-in, .tm-sheet-ok .tm-ok-tick { animation:none }
   .tm-inp.is-focus .tm-caret { animation:none; opacity:1 }
