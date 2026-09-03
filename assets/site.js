@@ -402,6 +402,9 @@
         else if (scenes[k] !== cur) scenes[k].classList.remove('is-on');
       });
       var meta = SCENES[name] || SCENES.home;
+      /* a cena tambem vira atributo do palco: e assim que a barra de
+         lados do telefone sabe que so existe no evento */
+      root.dataset.scene = name;
       if (title) title.textContent = meta.title;
       if (head)  head.classList.toggle('has-back', meta.back);
       /* Home e a carteira/perfil acendem o item da barra; o evento é
@@ -707,8 +710,8 @@
       { at: 21350, run: function () { tap('#tm-app-book-tab'); ev2view('book'); } },
 
       /* 5 · a ordem */
-      { at: 22550, run: function () { moveTo('#tm-app-ev2-yes'); } },
-      { at: 23050, run: function () { tap('#tm-app-ev2-yes'); } },
+      { at: 22550, run: function () { moveTo(pick('#tm-app-mob-yes', '#tm-app-ev2-yes')); } },
+      { at: 23050, run: function () { tap(pick('#tm-app-mob-yes', '#tm-app-ev2-yes')); } },
       { at: 23400, run: function () { openSheet('order'); } },
       { at: 24050, run: function () { moveTo('#tm-app-ord-10'); } },
       { at: 24550, run: function () {

@@ -787,7 +787,10 @@
    onde a lateral já saía de cena.                                 */
 .tm-appbar { display:none }
 @media (max-width:767px) {
-  .tm-surface.is-authed + .tm-appbar { display:flex }
+  /* `~` e nao `+`: as duas barras sao irmas da superficie, e a ordem
+     entre elas nao pode decidir qual estado aparece */
+  .tm-surface.is-authed ~ .tm-appbar--auth { display:flex }
+  .tm-surface:not(.is-authed) ~ .tm-appbar--anon { display:flex }
   .tm-appbar {
     /* bottom:62px, e não 0: a Quebra 2 sobe 62px por cima do palco
        (.tm-overlap) e engolia exatamente a linha dos rótulos. Aqui a
@@ -1130,7 +1133,19 @@
 .tm-qt.is-done .tm-qt-btns { display:none }
 .tm-qt.is-done .tm-qt-done { display:flex }
 
-@media (max-width:767px) { .tm-qt-adds span { padding:7px 7px } }
+@media (max-width:767px) {
+  .tm-qt-adds span { padding:7px 7px }
+
+  /* No login o grupo NAO e centrado como no desktop: volta e marca a
+     esquerda, o tema empurrado para a direita. */
+  .tm-gate-bar { justify-content:flex-start }
+  .tm-gate-bar .tm-gate-theme { margin-left:auto }
+
+  /* O cartao "Place an order" nao existe no telefone: quem faz o papel
+     dele e a .tm-ev2-mobbar, irma da tab bar. */
+  .tm-ev2-rail { display:none }
+  .tm-screen[data-scene="event"] .tm-ev2-mobbar { display:flex }
+}
 
 /* ── a cena do evento ─────────────────────────────────────────────
    O mercado binário aberto: pergunta, preço, gráfico, livro e a rampa
@@ -1310,8 +1325,23 @@
   .tm-ev2-rail { order:-1 }
   .tm-ev2-h { font-size:15px }
   .tm-ev2-px strong { font-size:26px }
-  .tm-ev2-chips { display:none }
+  /* Spread e Liquidity descem para uma linha propria em vez de sumir:
+     eles sao a leitura de liquidez do mercado, e eu os escondia. */
+  .tm-ev2-px { flex-wrap:wrap }
+  .tm-ev2-chips { margin-left:0; width:100%; margin-top:9px }
 }
+
+/* ── os lados, no telefone ──────────────────────────────────────── */
+.tm-ev2-mobbar { display:none; position:absolute; left:0; right:0; z-index:3;
+                 gap:8px; padding:10px 14px;
+                 /* 62px que a Quebra 1.5 cobre + a altura da tab bar */
+                 bottom:calc(62px + 76px) }
+.tm-ev2-mobbar .tm-ev2-side { flex:1; margin-top:0; padding:0;
+                              box-shadow:0 8px 22px -12px #1018284d }
+.tm-ev2-mobbar .tm-ev2-side strong { width:auto; flex:none; background:none;
+                                     padding:12px 0 12px 13px }
+.tm-ev2-px2 { margin-left:auto; padding-right:13px; font-style:normal;
+              font-weight:700; font-variant-numeric:tabular-nums }
 
 /* ── a cena do perfil ────────────────────────────────────────────── */
 .tm-prof { max-width:520px; margin:0 auto; padding:16px 22px 0 }

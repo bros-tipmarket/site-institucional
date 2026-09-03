@@ -993,11 +993,26 @@
       </div><!-- /.tm-main -->
       </div><!-- /.tm-surface -->
 
+      <!-- Deslogado, o produto mostra Home / Search / Log in: tres itens,
+           sem o disco de Deposit. Faltava inteira — antes do login o
+           telefone ficava sem barra nenhuma. -->
+      <nav class="tm-appbar tm-appbar--anon">
+        <span class="is-on">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Home
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg>Search
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 17l5-5-5-5"/><path d="M20 12H9"/><path d="M12 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6"/></svg>Log in
+        </span>
+      </nav>
+
       <!-- ── a barra de baixo, do telefone ────────────────────────────
            O produto troca a lateral por ela abaixo de 768px, com o
            Deposit promovido a disco no meio. Precisa ser irmã de
            .tm-surface: é de lá que sai o `is-authed` que a acende. -->
-      <nav class="tm-appbar">
+      <nav class="tm-appbar tm-appbar--auth">
         <span class="is-on" data-nav="home">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Home
         </span>
@@ -1015,6 +1030,22 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>Profile
         </span>
       </nav>
+
+      <!-- ── os lados, no telefone ────────────────────────────────────
+           No telefone o produto não tem o cartão "Place an order": ele põe
+           uma barra fixa de Yes/No acima da tab bar, com o PREÇO de cada
+           lado em vez da estimativa. Ela é irmã da tab bar, e não filha da
+           cena, porque `bottom` dentro da cena mede a altura do conteúdo
+           dela — que passa do corte — e a barra parava no meio da tela.
+           Quem escolhe entre este alvo e o do trilho é o pick(). -->
+      <div class="tm-ev2-mobbar" id="tm-app-mobsides" aria-hidden="true">
+        <div class="tm-ev2-side is-yes" id="tm-app-mob-yes">
+          <strong>Yes</strong><i class="tm-ev2-px2">$0.26</i>
+        </div>
+        <div class="tm-ev2-side is-no">
+          <strong>No</strong><i class="tm-ev2-px2">$0.74</i>
+        </div>
+      </div>
 
       <!-- ── a folha: um componente, dois usos ───────────────────────
            Depósito e ordem usam o mesmo cartão porque o produto usa o
