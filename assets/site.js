@@ -607,7 +607,7 @@
         c.classList.remove('is-on');
       });
       depSt(false);
-      qtSlider(28);
+      qtSlider(10);
       cursor.classList.remove('is-on', 'is-tap');
       cx = 0; cy = 0; at(0, 0);
       Array.prototype.forEach.call(root.querySelectorAll('.tm-app-ripple'), function (r) {

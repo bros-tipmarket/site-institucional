@@ -1065,7 +1065,10 @@
 .tm-flip.is-back .tm-qt { position:relative; inset:auto }
 
 .tm-qt {
-  z-index:2; background:var(--tm-surf-2);
+  /* branco, como no site: eu tinha posto o cinza --tm-surf-2 pelo nome da
+     classe que li no DOM, mas na tela o painel e branco e quem e cinza e
+     o campo de valor. Trocado, o painel parava de parecer desabilitado. */
+  z-index:2; background:var(--tm-surf);
   border:1px solid var(--tm-line); border-radius:14px; padding:13px;
 }
 .tm-qt-head { display:flex; align-items:flex-start; gap:9px }
@@ -1077,7 +1080,13 @@
   flex-shrink:0; padding:8px 11px; border-radius:9px; font-size:12px; font-weight:600;
   background:color-mix(in srgb, var(--tm-yes) 11%, #fff); color:var(--tm-yes);
 }
-.tm-qt-amt { flex:1; min-width:0 }
+/* O campo do atalho e branco com borda visivel, e o valor vem em NEGRITO
+   escuro. O meu herdava o .tm-inp do portao — fundo cinza, texto normal —
+   e o numero, que e a unica coisa editavel do painel, lia como desligado. */
+.tm-qt-amt { flex:1; min-width:0; height:42px; padding:0 13px;
+             background:var(--tm-surf); border-color:#00000026 }
+.tm-qt-amt .tm-typed { font-weight:700; color:var(--tm-ink) }
+.tm-qt-amt .tm-cur { color:var(--tm-soft); font-weight:400 }
 .tm-qt-adds { display:flex; gap:5px; flex-shrink:0 }
 .tm-qt-adds span {
   padding:7px 8px; border-radius:8px; font-size:11px; font-weight:600;
@@ -1087,17 +1096,19 @@
 .tm-qt-adds span.is-press { transform:scale(.9) }
 /* o trilho do valor */
 .tm-qt-slider { position:relative; height:4px; border-radius:99px;
-                background:var(--tm-surf-2); margin:12px 0 9px }
+                background:#00000014; margin:13px 0 9px }
 .tm-qt-slider i { position:absolute; left:0; top:0; bottom:0; border-radius:99px;
-                  background:var(--brand); width:12%;
+                  background:var(--brand); width:10%;
                   transition:width .5s cubic-bezier(.22,1,.28,1) }
 .tm-qt-slider b { position:absolute; top:50%; width:13px; height:13px; margin:-6.5px 0 0 -6.5px;
-                  border-radius:50%; background:var(--brand); left:12%;
+                  border-radius:50%; background:var(--brand); left:10%;
                   box-shadow:0 1px 4px #10182833;
                   transition:left .5s cubic-bezier(.22,1,.28,1) }
 .tm-qt-meta { display:flex; justify-content:space-between; gap:10px; font-size:10.5px;
               color:var(--tm-faint) }
-.tm-qt-meta b { color:var(--tm-yes); font-weight:600 }
+/* a linha inteira do retorno e verde e negrito, nao so o numero */
+.tm-qt-meta > span:last-child { color:var(--tm-yes); font-weight:700 }
+.tm-qt-meta b { color:var(--tm-yes); font-weight:700 }
 .tm-qt-btns { display:flex; gap:7px; margin-top:11px }
 .tm-qt-btns span {
   flex:1; text-align:center; padding:9px 0; border-radius:9px;
