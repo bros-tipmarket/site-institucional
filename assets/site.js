@@ -405,6 +405,7 @@
       /* a cena tambem vira atributo do palco: e assim que a barra de
          lados do telefone sabe que so existe no evento */
       root.dataset.scene = name;
+      rollReset();
       if (title) title.textContent = meta.title;
       if (head)  head.classList.toggle('has-back', meta.back);
       /* Home e a carteira/perfil acendem o item da barra; o evento é
@@ -413,6 +414,55 @@
       navs.forEach(function (n) {
         n.classList.toggle('is-on', n.getAttribute('data-nav') === lit);
       });
+    }
+
+    /* ── rolar a tela ───────────────────────────────────────────────
+       O corte do telefone tem ~570px, e as tres coisas que a jornada
+       precisa mostrar de perto — o painel do atalho, as linhas do livro
+       e a posicao na carteira — nascem abaixo dele. Antes o filme
+       apontava para elas fora de cena.
+
+       Rola o container das cenas, nao a pagina: a moldura fica parada e
+       o conteudo desliza por baixo dela. E so rola o que falta, medido —
+       no desktop tudo cabe e a funcao nao faz nada.                  */
+    var scenesEl = root.querySelector('.tm-app-scenes');
+    var rolled = 0;
+    function rollReset() {
+      rolled = 0;
+      if (scenesEl) scenesEl.style.transform = '';
+    }
+    /* Tudo por LAYOUT (offsetTop/offsetHeight), nunca por
+       getBoundingClientRect: o retangulo ja carrega o transform do rolo,
+       e ler de volta um transform recem-aplicado nao e confiavel. Com
+       offsets a conta e sempre no espaco nao-rolado, entao chamar duas
+       vezes para o mesmo alvo da o mesmo numero.
+
+       Rola o minimo: leva o fundo do alvo ate a borda visivel, e nunca
+       passa do ponto em que o TOPO dele encosta no alto — passar disso
+       corta justamente o que se queria mostrar.                      */
+    function rollTo(sel, pad) {
+      if (!scenesEl) return;
+      var el = root.querySelector(sel);
+      if (!el || !el.getClientRects().length) return;
+
+      var y = 0, n = el;
+      while (n && n !== scenesEl) { y += n.offsetTop; n = n.offsetParent; }
+
+      var crop = root.clientHeight;
+      /* o que a Quebra 1.5 cobre, ou a barra de baixo, o que for maior */
+      var covered = 62;
+      ['.tm-appbar--auth', '.tm-appbar--anon', '.tm-ev2-mobbar'].forEach(function (s2) {
+        var bar = root.querySelector(s2);
+        if (bar && bar.getClientRects().length) {
+          covered = Math.max(covered, crop - bar.offsetTop);
+        }
+      });
+
+      var band = crop - scenesEl.offsetTop - covered - (pad || 12);
+      var want = Math.max(0, Math.min(y + el.offsetHeight - band, Math.max(0, y - 8)));
+      if (want === rolled) return;
+      rolled = want;
+      scenesEl.style.transform = rolled ? 'translateY(' + (-rolled) + 'px)' : '';
     }
 
     /* ── o dinheiro: um número, quatro lugares ─────────────────── */
@@ -585,7 +635,7 @@
       qt.classList.remove('is-done');
       if (flip) { clearTimeout(flipT); flip.classList.remove('is-flipped', 'is-back'); }
       toast.classList.remove('is-on');
-      show('home'); ev2view('chart');
+      show('home'); ev2view('chart'); rollReset();
       drawn('tm-app-chart', false); drawn('tm-app-pfchart', false);
       bal(0);
 
@@ -688,10 +738,12 @@
       { at: 12550, run: function () { closeSheet(); bal(50, true); } },
 
       /* 3 · opinar pelo atalho, sem sair da lista */
-      { at: 13350, run: function () { moveTo('.tm-col:last-child .tm-bin:first-of-type .tm-bin-y'); } },
-      { at: 13900, run: function () {
+      { at: 12900, run: function () { rollTo('.tm-flip'); } },
+      { at: 13600, run: function () { moveTo('.tm-col:last-child .tm-bin:first-of-type .tm-bin-y'); } },
+      { at: 14100, run: function () {
           tap('.tm-col:last-child .tm-bin:first-of-type .tm-bin-y');
           flipTo(true); } },
+      { at: 14900, run: function () { rollTo('#tm-app-qt'); } },
       /* O painel do produto já abre com $5,00: o valor não precisa ser
          digitado, e o filme não precisa fingir que precisa. */
       { at: 15850, run: function () { moveTo('#tm-app-qt-ok'); } },
@@ -708,6 +760,7 @@
           drawn('tm-app-chart', true); } },
       { at: 20850, run: function () { moveTo('#tm-app-book-tab'); } },
       { at: 21350, run: function () { tap('#tm-app-book-tab'); ev2view('book'); } },
+      { at: 21800, run: function () { rollTo('.tm-ev2-book'); } },
 
       /* 5 · a ordem */
       { at: 22550, run: function () { moveTo(pick('#tm-app-mob-yes', '#tm-app-ev2-yes')); } },
@@ -740,7 +793,8 @@
           tap(pick('.tm-appbar [data-nav="portfolio"]', '.tm-side [data-nav="portfolio"]'));
           show('portfolio');
           drawn('tm-app-pfchart', true); } },
-      { at: 31150, run: function () { cursor.classList.remove('is-on'); } },
+      { at: 31100, run: function () { rollTo('.tm-pf-pos'); } },
+      { at: 31400, run: function () { cursor.classList.remove('is-on'); } },
       { at: 34850, run: function () { reset(); } }
     ];
 

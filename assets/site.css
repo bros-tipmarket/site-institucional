@@ -706,7 +706,13 @@
    passando pelo corte do bezel, que é o comportamento que o quadro já
    tinha. Com `inset:0` ela seria cortada na altura do palco e o corte
    deixaria de acontecer na moldura.                                */
-.tm-app-scenes { position:relative; flex:1; min-width:0 }
+/* O palco das cenas rola: no telefone o corte tem ~570px e o que a peca
+   precisa mostrar — o painel do atalho, as linhas do livro, a posicao na
+   carteira — cai abaixo dele. Quem rola e este container, por transform,
+   e a moldura (cabecalho, barra lateral, tab bar) fica parada por cima —
+   que e exatamente o que um app faz quando a pessoa desliza a tela. */
+.tm-app-scenes { position:relative; flex:1; min-width:0;
+                 transition:transform .62s cubic-bezier(.33,1,.36,1) }
 .tm-app-scene {
   position:absolute; top:0; left:0; right:0;
   opacity:0; transform:translateX(14px);
@@ -1515,7 +1521,7 @@
 /* Quem pediu menos movimento recebe o fim, não o filme: a carteira com
    a posição aberta, que é onde a jornada chega. */
 @media (prefers-reduced-motion:reduce) {
-  .tm-app-scene, .tm-gate, .tm-sheet, .tm-sheet-wrap, .tm-qt, .tm-flip-in,
+  .tm-app-scene, .tm-app-scenes, .tm-gate, .tm-sheet, .tm-sheet-wrap, .tm-qt, .tm-flip-in,
   .tm-app-cursor, .tm-app-toast, .tm-ev2-view { transition:none }
   .tm-gate-code i.is-in, .tm-sheet-ok .tm-ok-tick { animation:none }
   .tm-inp.is-focus .tm-caret { animation:none; opacity:1 }
