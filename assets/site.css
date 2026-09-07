@@ -36,6 +36,13 @@
   --yes:     #2ebd85;
   --no:      #e5484d;
   --border:  #ffffff14;
+  --section-space: 80px;
+}
+
+.tm-section-top { padding-top:var(--section-space) }
+.tm-section-bottom { padding-bottom:var(--section-space) }
+@media (max-width:639px) {
+  :root { --section-space:48px }
 }
 
 /* ── LAYER E · typography ─────────────────────────────────────────── */
@@ -246,9 +253,8 @@
   overflow:hidden;
   border-radius:14px 14px 0 0;
 }
-/* Quebra 2 climbs over the bottom of the screen. Its top padding carries
-   the overlap so the copy inside keeps its original 120px of air. */
-.tm-overlap { position:relative; z-index:3; margin-top:-84px; padding-top:120px }
+/* Products overlaps the screen while keeping the shared section spacing. */
+.tm-overlap { position:relative; z-index:3; margin-top:-84px; padding-top:var(--section-space) }
 .tm-banner-head {
   display:flex; align-items:center; justify-content:space-between; gap:16px;
   padding:15px 22px 0;
@@ -608,7 +614,7 @@
 @media (max-width:1023px) {
   /* the sidebar collapses to the icon rail the app itself uses */
   .tm-screen  { --tm-crop:clamp(640px,80vw,704px) }
-  .tm-overlap { margin-top:-76px; padding-top:120px }
+  .tm-overlap { margin-top:-76px; padding-top:var(--section-space) }
   .tm-side { width:50px; padding:14px 7px }
   .tm-side-brand { justify-content:center }
   /* a lockup inteira não cabe em 50px; recortada pela esquerda ela vira
@@ -652,7 +658,7 @@
   .tm-stage   { margin-top:30px; padding:0 12px }
   .tm-bezel   { padding:0 7px; border-radius:20px 20px 0 0 }
   .tm-screen  { --tm-crop:clamp(568px,152vw,640px); border-radius:12px 12px 0 0 }
-  .tm-overlap { margin-top:-62px; padding-top:104px }
+  .tm-overlap { margin-top:-62px; padding-top:var(--section-space) }
 
   .tm-surface { font-size:12px }
   .tm-side { display:none }
@@ -1792,7 +1798,7 @@
 .tm-bo-kpi-l { font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--bo-faint) }
 .tm-bo-kpi-v { font-size:20px; font-weight:600; letter-spacing:-.02em; color:var(--bo-text);
                font-variant-numeric:tabular-nums; line-height:1 }
-.tm-bo-kpi-f { display:flex; align-items:flex-end; justify-content:space-between; gap:8px }
+.tm-bo-kpi-f { display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:8px; margin-top:auto }
 .tm-bo-delta { display:inline-flex; align-items:center; gap:3px; font-size:10.5px;
                font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap }
 .tm-bo-delta svg     { width:11px; height:11px }
@@ -1800,7 +1806,7 @@
 .tm-bo-delta.is-up   { color:var(--bo-up) }
 .tm-bo-delta.is-down { color:var(--bo-down) }
 
-.tm-spark    { width:54px; height:20px; flex-shrink:0 }
+.tm-spark    { display:block; width:54px; height:20px; flex-shrink:0; margin-left:auto; overflow:visible }
 .tm-spark path           { fill:none; stroke:var(--brand); stroke-width:1.5;
                            stroke-linecap:round; stroke-linejoin:round }
 .tm-spark .tm-spark-fill { stroke:none; fill:color-mix(in srgb, var(--brand) 14%, transparent) }
@@ -1882,16 +1888,20 @@
   .tm-bo-status  { white-space:normal; line-height:1.25 }
 
   .tm-bo-kpi   { padding:11px 12px }
+  .tm-bo-kpi-l { min-height:3em }
   .tm-bo-kpi-v { font-size:18px }
+  .tm-bo-kpi-f { flex-direction:column; align-items:stretch }
+  .tm-bo-delta { flex-wrap:wrap }
+  .tm-bo-delta i { flex-basis:100% }
+  .tm-spark { align-self:flex-end }
   .tm-bo-head  { gap:10px }
 }
 
 /* A seção de baixo abre o topo para o painel pousar nela. Sem isso o
    "Produto 01" nasceria debaixo da moldura.                        */
-.tm-under { position:relative; padding-top:168px }
+.tm-under { position:relative; padding-top:calc(var(--section-space) + 48px) }
 /* Abaixo de 1024px nada atravessa, então o topo volta ao normal. */
-@media (max-width:1023px) { .tm-under { padding-top:120px } }
-@media (max-width:639px)  { .tm-under { padding-top:104px } }
+@media (max-width:1023px) { .tm-under { padding-top:var(--section-space) } }
 
 /* ── e a seção de cima precisa estar acima ─────────────────────
    Abrir o topo da Quebra 3 não basta: ela é .tm-under, ou seja
@@ -2003,7 +2013,7 @@
      retangulo branco plantado no preto só parece erro de margem. A
      margem positiva devolve o rodapé que a seção abriu mão (pb-0) para
      o desktop poder transbordar. */
-  .tm-bo-stage { perspective:none; padding-bottom:0; margin-bottom:96px }
+  .tm-bo-stage { perspective:none; padding-bottom:0; margin-bottom:var(--section-space) }
   .tm-bo-tilt  { transform:none;
                  box-shadow:0 30px 60px -38px rgba(20,32,54,.34) }
   .tm-bo-stage.is-armed .tm-bo-tilt { transform:translateY(20px); opacity:0 }
