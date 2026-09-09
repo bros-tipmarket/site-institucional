@@ -257,7 +257,7 @@
 .tm-overlap { position:relative; z-index:3; margin-top:-84px; padding-top:var(--section-space) }
 .tm-banner-head {
   display:flex; align-items:center; justify-content:space-between; gap:16px;
-  padding:15px 22px 0;
+  padding:10px 14px;
 }
 .tm-banner-note { display:flex; align-items:center; gap:7px;
                   font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
@@ -657,6 +657,7 @@
 @media (max-width:767px) {
   .tm-stage   { margin-top:30px; padding:0 12px }
   .tm-bezel   { padding:0 7px; border-radius:20px 20px 0 0 }
+  .tm-banner-head { padding-inline:8px; gap:10px }
   .tm-screen  { --tm-crop:clamp(568px,152vw,640px); border-radius:12px 12px 0 0 }
   .tm-overlap { margin-top:-62px; padding-top:var(--section-space) }
 
